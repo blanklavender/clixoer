@@ -7,7 +7,9 @@
 	"oer_url": "https://phet.colorado.edu/",
 	"oer_href": {
 	    "https://www.youtube.com/embed/H9rdIl3rPgI": "https://img.youtube.com/vi/H9rdIl3rPgI/0.jpg"
-	    }
+	    },
+        "oer_website": "https://phet.colorado.edu/en/teaching-resources/tipsForUsingPhet"
+        
 
 
 
@@ -16,20 +18,26 @@
 	"oer_url": "https://phet.colorado.edu/",
 	"oer_href": {
 	    "https://www.youtube.com/embed/H9rdIl3rPgI": "https://img.youtube.com/vi/H9rdIl3rPgI/0.jpg"
-	    }
+	    },
+	"oer_website": "https://phet.colorado.edu/en/teaching-resources/tipsForUsingPhet"
+
 	},
     "Phet-Tamil": {
 	"oer_url": "https://phet.colorado.edu/",
 	"oer_href": {
 	    "https://www.youtube.com/embed/H9rdIl3rPgI": "https://img.youtube.com/vi/H9rdIl3rPgI/0.jpg"
-	    }
+	    },
+	"oer_website": "https://phet.colorado.edu/en/teaching-resources/tipsForUsingPhet"
+
 
 	},
     "Phet-Telugu": {
 	"oer_url": "https://phet.colorado.edu/",
 	"oer_href": {
 	    "https://www.youtube.com/embed/H9rdIl3rPgI": "https://img.youtube.com/vi/H9rdIl3rPgI/0.jpg"
-	    }
+	    },
+	"oer_website": "https://phet.colorado.edu/en/teaching-resources/tipsForUsingPhet"
+
 	},
 
     "ePathshala": {
@@ -46,23 +54,23 @@
 	},
     "GeoGebra": {
 	"oer_url": "https://www.geogebra.org",
-	"oer_href": {"https://youtu.be/whpCnzWECAI" :  "https://img.youtube.com/whpCnzWECAI/0.jpg" ,
-		     "https://www.youtube.com/watch?v=Yoo2qhQ1FAw" :  "https://img.youtube.com/Yoo2qhQ1FAw/0.jpg"}
+	"oer_href": {"https://www.youtube.com/embed/whpCnzWECAI" :  "/static/ndf/noun_Video_1559825.svg" ,
+		     "https://www.youtube.com/embed/Yoo2qhQ1FAw" :  "/static/ndf/noun_Video_1559825.svg"}
 	},
     "GeoGebra-Hindi": {
 	"oer_url": "https://www.geogebra.org",
-	"oer_href": {"https://youtu.be/whpCnzWECAI" :  "https://img.youtube.com/whpCnzWECAI/0.jpg" ,
-		     "https://www.youtube.com/watch?v=Yoo2qhQ1FAw" :  "https://img.youtube.com/Yoo2qhQ1FAw/0.jpg"} 
+	"oer_href": {"https://www.youtube.com/embed/whpCnzWECAI" :  "/static/ndf/noun_Video_1559825.svg" ,
+		     "https://www.youtube.com/embed/Yoo2qhQ1FAw" :  "/static/ndf/noun_Video_1559825.svg"} 
 	},
     "GeoGebra-Tamil": {
 	"oer_url": "https://www.geogebra.org",
-	"oer_href": {"https://youtu.be/whpCnzWECAI" :  "https://img.youtube.com/whpCnzWECAI/0.jpg" ,
-		     "https://www.youtube.com/watch?v=Yoo2qhQ1FAw" :  "https://img.youtube.com/Yoo2qhQ1FAw/0.jpg"} 
+	"oer_href": {"https://www.youtube.com/embed/whpCnzWECAI" :  "/static/ndf/noun_Video_1559825.svg" ,
+		     "https://www.youtube.com/embed/Yoo2qhQ1FAw" :  "/static/ndf/noun_Video_1559825.svg"} 
 	},
     "GeoGebra-Telugu": {
 	"oer_url": "https://www.geogebra.org",
-	"oer_href": {"https://youtu.be/whpCnzWECAI" :  "https://img.youtube.com/whpCnzWECAI/0.jpg" ,
-		     "https://www.youtube.com/watch?v=Yoo2qhQ1FAw" :  "https://img.youtube.com/Yoo2qhQ1FAw/0.jpg"} 
+	"oer_href": {"https://www.youtube.com/embed/whpCnzWECAI" :  "/static/ndf/noun_Video_1559825.svg" ,
+		     "https://www.youtube.com/embed/Yoo2qhQ1FAw" :  "/static/ndf/noun_Video_1559825.svg"} 
 	},
     "Dept of School Education-Tamilnadu": {
 	"oer_url": "http://tnschools.gov.in/textbooks",
@@ -165,14 +173,17 @@
 	    "https://www.youtube.com/embed/UY8EIfI3qXE": "https://img.youtube.com/vi/UY8EIfI3qXE/0.jpg"
 	    ,
 	    
-	    "https://www.youtube.com/embed/o3513gpzIMw": "https://img.youtube.com/vi/o3513gpzIMw/0.jpg"
+	    "https://www.youtube.com/embed/o3513gpzIMw": "/static/ndf/noun_Video_1559825.svg"
 	    ,
 	    
 	    "hhttps://www.youtube.com/embed/bzDyQ9oquQ": "https://img.youtube.com/vi/bzDyQ9oquQ/0.jpg"
 	    ,
 	    
 	    "https://www.youtube.com/embed/0KEzQ8tiuyU": "https://img.youtube.com/vi/0KEzQ8tiuyU/0.jpg"
-	    }	
+	    },
+	"oer_website": "https://storyweaver.org.in/lists/74754-devising-specific-exercises-using-stories"
+
+      	
 	},
      "Storyweaver-Punjabi": {
         "oer_url": "https://storyweaver.org.in/",
@@ -181,14 +192,15 @@
             "https://www.youtube.com/embed/UY8EIfI3qXE": "https://img.youtube.com/vi/UY8EIfI3qXE/0.jpg"
             ,
 
-            "https://www.youtube.com/embed/o3513gpzIMw": "https://img.youtube.com/vi/o3513gpzIMw/0.jpg"
+            "https://www.youtube.com/embed/o3513gpzIMw": "/static/ndf/noun_Video_1559825.svg"
             ,
 
             "hhttps://www.youtube.com/embed/bzDyQ9oquQ": "https://img.youtube.com/vi/bzDyQ9oquQ/0.jpg"
             ,
 
             "https://www.youtube.com/embed/0KEzQ8tiuyU": "https://img.youtube.com/vi/0KEzQ8tiuyU/0.jpg"
-            }
+             },
+	 "oer_website": "https://storyweaver.org.in/lists/74754-devising-specific-exercises-using-stories"
 
         },
 

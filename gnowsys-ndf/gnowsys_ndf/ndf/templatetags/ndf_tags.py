@@ -225,6 +225,7 @@ def get_download_preview_cnt(ndname):
         objs = hit_counters.objects.values('visitednode_name').annotate(total_downloadcnt = Sum('download_count')).annotate(total_previewcnt = Sum('preview_count')).annotate(total_visitcnt = Sum('visit_count'))
         obj = [nd for nd in objs if nd['visitednode_name'] == ndname]
         if obj:
+                print "counts:",obj[0]
                 return obj[0]
         else:
                 return ""
@@ -353,7 +354,7 @@ def get_key(li, key):
     #print "dictionary,key",li, key                                                                                                                            
     for each in li:
             if isinstance(each, AttrDict):
-                    print "inside if", 
+                    #print "inside if", 
                     d = each.to_dict()
                     if d.has_key(key):
                             if key == 'educationallevel':
@@ -368,6 +369,23 @@ def get_date_format(val):
     dt = datetime.datetime.strptime(val, '%d/%m/%Y %H:%M:%S:%f')
     frmtDt = dt.strftime("%d %B %Y")
     return frmtDt
+
+@register.assignment_tag
+def get_resource_img(rsrc_type):
+    print "in get resource image:",rsrc_type.encode('utf-8')
+    
+    #dt = datetime.datetime.strptime(val, '%d/%m/%Y %H:%M:%S:%f')
+    if rsrc_type in ['Tool',u'\u091f\u0942\u0932',u'\u0c2a\u0c28\u0c3f\u0c2e\u0c41\u0c1f\u0c4d\u0c1f\u0c41',u'\u0b95\u0bb0\u0bc1\u0bb5\u0bbf',u'\u0a38\u0a70\u0a26']:
+            img = 'noun_Gears_1111296.svg'
+    elif rsrc_type in ['Simulation',u'\u0938\u093f\u092e\u094d\u092f\u0941\u0932\u0947\u0936\u0928',u'\u0c05\u0c28\u0c41\u0c15\u0c30\u0c23',u'\u0b89\u0bb0\u0bc1\u0bb5\u0b95\u0baa\u0bcd\u0baa\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4\u0bc1\u0ba4\u0bb2\u0bcd']:
+            img = 'noun_atom_954768.svg'
+    elif rsrc_type in ['Hands-on',u'\u092a\u094d\u0930\u093e\u092f\u094b\u0917\u093f\u0915']:
+            img = 'noun_Game_694760.svg'
+    elif rsrc_type in ['Forum']:
+            img = 'noun_forum_563603.png'
+    else:
+            img = 'noun_Gears_1111296.svg'
+    return img
 
 @get_execution_time
 @register.filter

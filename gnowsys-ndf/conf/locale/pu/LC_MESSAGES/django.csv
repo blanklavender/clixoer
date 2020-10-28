@@ -1,9 +1,9 @@
-#. extracted from django_hindi_1.csv
+#. extracted from django_pu_1.csv
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-05 17:13+0530\n"
+"POT-Creation-Date: 2020-10-22 16:54+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,135 +30,135 @@ msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FED.html%3A44+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fdomain.html%3A19+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A180+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheEDHindi.html%3A41+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheEDTelgu.html%3A39+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheEDhelp.html%3A37+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheMDHindi.html%3A46+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheMDTelgu.html%3A45+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheMDhelp.html%3A88+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheSDTelgu.html%3A55+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheSDhelp.html%3A10+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheSDhelp.html%3A27+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheSDhindi.html%3A55
 msgid "Domain"
-msgstr "डोमेन"
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FED.html%3A45+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FOER_TOC.html%3A100+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FdevlopementanworkHindi.html%3A25+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FdevlopementanworkTelgu.html%3A25+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fhelp.html%3A41+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Ficon_sliderHindi.html%3A38+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Ficon_sliderTelgu.html%3A33+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A176+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A202+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheEDHindi.html%3A43+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheEDTelgu.html%3A42+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheEDhelp.html%3A39
 msgid "English"
-msgstr "अंग्रेज़ी"
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FED.html%3A51+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheEDHindi.html%3A49+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheEDTelgu.html%3A48
 msgid "Design And Development-English"
-msgstr "डिजाइन और विकास प्रक्रिया"
+msgstr ""
 
-#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A213+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A217+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fmodule_cards.html%3A291+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fmodule_cards.html%3A296
+#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A213+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A217+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fmodule_cards.html%3A290+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fmodule_cards.html%3A295
 msgid "Explore module online"
-msgstr "मॉड्यूल को ऑनलाइन खोजें "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/Emodule_preview.html:261
 msgid "Student Handbook"
-msgstr "विद्यार्थी    हस्तपुस्तिकाएँ "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/Emodule_preview.html:279
 msgid "Teacher Handbook"
-msgstr "शिक्षक हस्तपुस्तिकाएँ "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/Emodule_preview.html:294
 msgid "Help Video"
-msgstr "सहायक वीडियो"
+msgstr ""
 
-#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A302+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FTheCOOL_OER.html%3A611+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FTheCOOL_OER.html%3A780+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FTheCOOL_OER.html%3A956+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcool_preview.html%3A141+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fmodule_cards.html%3A472
+#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A302+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FTheCOOL_OER.html%3A695+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FTheCOOL_OER.html%3A921+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FTheCOOL_OER.html%3A1127+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcool_preview.html%3A170+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fmodule_cards.html%3A471
 msgid "Share"
-msgstr "साझा करें "
+msgstr "ਸ਼ੇਅਰ"
 
-#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A346+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A348+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A350+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A353+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcool_preview.html%3A257+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fmodule_cards.html%3A258+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Fhorizontal_card.html%3A32
+#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A346+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A348+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A350+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A353+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcool_preview.html%3A294+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fmodule_cards.html%3A257+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Fhorizontal_card.html%3A32
 msgid "Subject"
-msgstr "विषय"
+msgstr "ਵਿਸ਼ਾ ਗਿਆਨ-ਖੇਤਰ"
 
-#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A360+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcool_preview.html%3A263+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fmodule_cards.html%3A273+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Flms_dashboard.html%3A95
+#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A360+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcool_preview.html%3A300+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fmodule_cards.html%3A272+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Flms_dashboard.html%3A95
 msgid "Grade"
-msgstr "कक्षा"
+msgstr "ਜਮਾਤ ਪੱਧਰ"
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FEmodule_preview.html%3A460+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fdevlopementanwork.html%3A38+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FdevlopementanworkHindi.html%3A54+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FdevlopementanworkTelgu.html%3A55
 msgid "Read more"
-msgstr "और पढो"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/OER_TOC.html:79
 msgid "Subjects"
-msgstr "विषय"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/OER_TOC.html:79
 msgid "Click to filter by subjects"
-msgstr "विषयवार फिल्टर को क्लिक करें "
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FOER_TOC.html%3A108+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FdevlopementanworkHindi.html%3A21+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FdevlopementanworkTelgu.html%3A21+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Ficon_sliderHindi.html%3A36+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Ficon_sliderTelgu.html%3A31+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A174+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A205
 msgid "Math"
-msgstr "गणित"
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FOER_TOC.html%3A119+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FdevlopementanworkHindi.html%3A28+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FdevlopementanworkTelgu.html%3A28+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fhelp.html%3A47+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Ficon_sliderHindi.html%3A40+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Ficon_sliderTelgu.html%3A35+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A178+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A207+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheSDTelgu.html%3A59+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheSDhelp.html%3A29+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheSDhindi.html%3A60
 msgid "Science"
-msgstr "विज्ञान"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/OER_TOC.html:132
 msgid "Digital Literacy"
-msgstr "डिजिटल साक्षरता"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/OER_TOC.html:148
 msgid "Click to see modules"
-msgstr "मॉड्यूल देखने के लिए क्लिक करें "
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FOER_TOC.html%3A150+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fdomain.html%3A38+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Fmodule.html%3A34
 msgid "Modules"
-msgstr "मॉड्यूल"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/OER_TOC.html:152
 msgid "Click to see interactives"
-msgstr "पारस्परिक-क्रियाएँ देखने के लिए क्लिक करें "
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FOER_TOC.html%3A152+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Ffile.html%3A131
 msgid "Interactives"
-msgstr "पारस्परिक-क्रियाएँ"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/OER_TOC.html:156
 msgid "Click to see teacher and student handbooks"
-msgstr "शिक्षक और विद्यार्थी हस्तपुस्तकों को देखने के लिए क्लिक करें "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/OER_TOC.html:156
 msgid "Handbooks"
-msgstr "हस्तपुस्तिकाएँ"
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FOer_teacher_courses.html%3A25+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FOer_teacher_coursesHindi.html%3A29+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FOer_teacher_coursesTelgu.html%3A29
 msgid "Explore teacher courses on TiSSx website"
-msgstr "टिसएक्स वेबसाइट पर शिक्षक पाठ्यक्रम खोजें "
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FOer_teacher_courses.html%3A25+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FOer_teacher_coursesHindi.html%3A29+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FOer_teacher_coursesTelgu.html%3A29+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Ficon_slider.html%3A56+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Ficon_sliderHindi.html%3A67+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Ficon_sliderTelgu.html%3A59
 msgid "Explore more"
-msgstr "और ज्यादा खोजें"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/TheCOOL.html:102
 msgid "TISS_COOL"
 msgstr ""
 
-#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FTheCOOL_OER.html%3A182+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcool_preview.html%3A92+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A151
+#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FTheCOOL_OER.html%3A231+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcool_preview.html%3A107+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A151
 msgid "TISS-COOL"
-msgstr "टीस-कूल"
+msgstr ""
 
-#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FTheCOOL_OER.html%3A184+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcool_preview.html%3A94+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A163
+#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FTheCOOL_OER.html%3A233+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcool_preview.html%3A109+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A163
 msgid "COOL-OER"
-msgstr "कूल-ओइर"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/about.html:11
 msgid "CLix OER - About"
-msgstr "क्लिक्स ओईआर के बारे में"
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fabout.html%3A32+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fabout.html%3A49+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Ffooter.html%3A100+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A216+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FpanelHindi.html%3A50+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Fevent_base.html%3A89+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Ffooter.html%3A30+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Fgroup_dashboard.html%3A99+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Fheader.html%3A459+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Fquiz_details.html%3A43
 msgid "About"
-msgstr "के बारे में"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/about.html:71
 msgid "Integrate CLIxOER in your classroom"
-msgstr "कक्षाकक्ष में क्लिक्स"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/about.html:79
 msgid "Research"
-msgstr "अनुसंधान"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/about.html:84
 msgid "CLIx In  Action"
-msgstr "क्लिक्स का क्रिया"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/about.html:87
 msgid "Our Collaborators"
-msgstr "हमारे सहयोगी "
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcmspage.html%3A163+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcmspagec.html%3A53+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Fwidget_node_form.html%3A63
 msgid "Choose"
@@ -170,107 +170,107 @@ msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/contactForm.html:5
 msgid "Contact Us"
-msgstr "हमसे संपर्क करें"
+msgstr ""
 
-#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:130
+#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:159
 msgid "Explore Online"
-msgstr "मॉड्यूल को ऑनलाइन खोजें "
+msgstr "ਆਨਲਾਈਨ ਪੜਚੋਲ ਕਰੋ"
 
-#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:166
+#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:195
 msgid "Help Material"
-msgstr "सहायक सामग्री खोजें "
+msgstr "ਸਹਾਇਤਾ ਸਮੱਗਰੀ"
 
-#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:242
+#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:279
 msgid "MetaData"
-msgstr ""
+msgstr "ਮੈਟਾਡੇਟਾ"
 
-#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:244
+#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:281
 msgid "Website"
-msgstr "वेबसाइट लिंक"
+msgstr "ਵੈਬਸਾਈਟ ਲਿੰਕ"
 
-#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:268
+#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:305
 msgid "Curriculum"
-msgstr "पाठ्यक्रम संरेखण"
+msgstr "ਪਾਠਕ੍ਰਮ ਦੀ ਇਕਸਾਰਤਾ"
 
-#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:274
+#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:311
 msgid "Language Support"
-msgstr "भाषाई समर्थन"
+msgstr "ਭਾਸ਼ਾ ਸਮਰਥਨ"
 
-#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:280
+#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:317
 msgid "Device Compatibility"
-msgstr "यन्त्र संगतता"
+msgstr "ਜੰਤਰ ਅਨੁਕੂਲਤਾ"
 
-#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:285
+#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:322
 msgid "Offline Access"
-msgstr "ऑफलाइन पहुँच"
+msgstr "ਆਫਲਾਈਨ ਪਹੁੰਚ"
 
-#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:291
+#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:328
 msgid "OS Compatibility"
-msgstr "ऑपरेटिंग सिस्टम संगतता"
+msgstr "OS ਅਨੁਕੂਲਤਾ"
 
-#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:295
+#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:332
 msgid "Accessibility"
-msgstr "अभिगम्यता"
+msgstr "ਪਹੁੰਚਯੋਗਤਾ "
 
-#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:303
+#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:340
 msgid "License"
-msgstr "अनुज्ञप्ति"
+msgstr "ਲਾਇਸੈਂਸ"
 
-#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcool_preview.html%3A310+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Fterm.html%3A11
+#: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fcool_preview.html%3A347+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Fterm.html%3A11
 msgid "Topics"
-msgstr "विषय टैग"
+msgstr "ਵਿਸ਼ਾ"
 
-#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:320
+#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:357
 msgid "Curator"
-msgstr ""
+msgstr "ਕਿਊਰੇਟਰ"
 
-#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:326
+#: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:363
 msgid "Date of curation"
-msgstr "क्यूरेशन की तिथि"
+msgstr "ਕਿਊਰੇਸ਼ਨ ਦੀ ਮਿਤੀ"
 
 #: gnowsys_ndf/ndf/templates/ndf/domain.html:38
 msgid "Click to see all modules"
-msgstr "मॉड्यूल देखने के लिए क्लिक करें "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/domain.html:39
 msgid "Testimonials of student and teachers"
-msgstr "क्षेत्र से आती आवाज़ें"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/domain.html:40
 msgid "Voices From The Field"
-msgstr "क्षेत्र से आती आवाज़ें "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/domain.html:41
 msgid "Support material to integrate CLIx OERs in the classroom"
-msgstr "कक्षा में क्लिक्स ओईआर को एकीकृत करने के लिए समर्थन सामग्री"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/domain.html:44
 msgid "CLIx in the Classroom"
-msgstr "कक्षाकक्ष में क्लिक्स "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/domain.html:46
 msgid "Know about the design and development details of CLIx OERs"
-msgstr "क्लिक्स ओईआर के डिजाइन और विकास प्रक्रिया बारे में जानें"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/domain.html:49
 msgid "Design and Development Process"
-msgstr "डिजाइन और विकास प्रक्रिया"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/domain.html:55
 msgid "Know our team"
-msgstr "टीम का विवरण"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/domain.html:56
 msgid "Team Details"
-msgstr "टीम का विवरण"
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fdomain.html%3A58+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Ffooter.html%3A104+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Ffooter.html%3A121
 msgid "Contact us"
-msgstr "हमसे संपर्क करें"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/domain.html:71
 msgid " Voices from the Field "
-msgstr "क्षेत्र से आती आवाज़ें "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/footer.html:74
 msgid "Led By"
@@ -278,15 +278,15 @@ msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/footer.html:101
 msgid "Credits"
-msgstr "श्रेय"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/footer.html:102
 msgid "Terms of service"
-msgstr "सेवा शर्तें"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/footer.html:103
 msgid "Privacy policy"
-msgstr "निजता नीति"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/footer.html:113
 msgid ""
@@ -296,43 +296,43 @@ msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/footer.html:119
 msgid "Visit our site"
-msgstr "निजता नीति"
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fhelp.html%3A44+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheMDHindi.html%3A50+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheMDTelgu.html%3A50+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheMDhelp.html%3A89+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheSDhelp.html%3A11
 msgid "Mathematics"
-msgstr "गणित"
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fhelp.html%3A66+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheEDhelp.html%3A50
 msgid "Help Videos - English"
-msgstr "सहायक वीडियो - अँग्रेजी "
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fhelp.html%3A142+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheMDhelp.html%3A106
 msgid "Help Videos - Mathematics"
-msgstr "सहायक वीडियो - गणित"
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fhelp.html%3A224+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheSDhelp.html%3A43
 msgid "Coming Soon!"
 msgstr ""
 
-#: gnowsys_ndf/ndf/templates/ndf/module_cards.html:307
+#: gnowsys_ndf/ndf/templates/ndf/module_cards.html:306
 msgid "Download offline version"
-msgstr "सभी मॉड्यूलों का ऑफलाइन संस्करण डाउनलोड करें "
+msgstr ""
 
-#: gnowsys_ndf/ndf/templates/ndf/module_cards.html:465
+#: gnowsys_ndf/ndf/templates/ndf/module_cards.html:464
 msgid "Help videos"
-msgstr "सहायक वीडियो"
+msgstr ""
 
-#: gnowsys_ndf/ndf/templates/ndf/module_cards.html:512
+#: gnowsys_ndf/ndf/templates/ndf/module_cards.html:511
 msgid "Preview the module content"
-msgstr "मॉड्यूल की विषयवस्तु का पूर्वदर्शन करें "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/navbar.html:129
 msgid "E-library for open educational resources"
-msgstr "मुक्त शैक्षिक संसाधनों का ई-पुस्तकालय"
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A129+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Foer_breadcrumbs.html%3A9
 msgid "E-library"
-msgstr "ई-पुस्तकालय"
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A149+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A151
 msgid "Connected Open Online Learning - A TISS response to COVID-19"
@@ -340,67 +340,67 @@ msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A156+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A158
 msgid "Open Education Resources"
-msgstr "मुक्त शैक्षिक संसाधनों का ई-पुस्तकालय"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/navbar.html:171
 msgid "Select a subject domain"
-msgstr "एक विषय कार्यक्षेत्र चुने "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/navbar.html:214
 msgid "Know about CLIx OERs"
-msgstr "क्लिक्स ओईआर के बारे में जाने "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/navbar.html:219
 msgid "Explore help material"
-msgstr "सहायक सामग्री खोजें "
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fnavbar.html%3A220+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Faction_panel.html%3A311+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2Fbase_templates%2Fnode_edit_base.html%3A129
 msgid "Help"
-msgstr "सहायक सामग्री"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/navbar.html:252
 msgid "Choose the Language"
-msgstr "भाषा का चयन करें"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/oer_breadcrumbs.html:15
 msgid "Download offline version of all modules"
-msgstr "सभी मॉड्यूलों का ऑफलाइन संस्करण डाउनलोड करें "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/oer_breadcrumbs.html:15
 msgid "Download All"
-msgstr "सभी मॉड्यूल डाउनलोड करें "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/panelTelgu.html:83
 msgid "CLIx OER"
-msgstr "क्लिक्स ओईआर "
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/theEDhelp.html:40
 msgid "Help Videos -English"
-msgstr "सहायक वीडियो -अँग्रेजी"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/theLearningpage.html:286
 msgid "Learn more"
-msgstr "और अधिक जानें"
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheMDHindi.html%3A56+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheMDTelgu.html%3A56
 msgid "Design And Development- Mathemactics"
-msgstr "डिजाइन और विकास प्रक्रिया गणित "
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheMDhelp.html%3A91+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheSDhelp.html%3A13
 msgid "Help Videos - Mathemactics"
-msgstr "सहायक वीडियो - गणित"
+msgstr ""
 
 #: gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheSDTelgu.html%3A64+gnowsys_ndf%2Fndf%2Ftemplates%2Fndf%2FtheSDhindi.html%3A65
 msgid "Design And Development-Science"
-msgstr "डिजाइन और विकास प्रक्रिया विज्ञान"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/theSDhelp.html:34
 msgid " Help Videos -Science"
-msgstr " सहायक वीडियो - विज्ञान"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/thehelpmodal.html:26
 msgid "Help Videos"
-msgstr "सहायक वीडियो"
+msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/base_templates/Captcha.html:44
 msgid "invalid captcha Try Again"
@@ -5800,6 +5800,3 @@ msgid ""
 "        </p>\n"
 "        "
 msgstr ""
-
-msgid "Download Offline Version"
-msgstr "इंस्टाल करने के लिए ऑफलाइन संस्करण डाउनलोड करें "

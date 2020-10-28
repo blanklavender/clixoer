@@ -29,18 +29,16 @@
 <meta property="twitter:image:height" content="320" />
 
 
-{% if title == 'COOL-OER' %}
 
 <meta property="og:image" content="https://clixoer.tiss.edu/static/ndf/images/COOLLOGO.png" />
-{% endif %}
 <input type="hidden" name="csrf_token" class="csrf_token" value="{{csrf_token}}">
 
           <link rel="shortcut icon" href="/static/ndf/images/favicon/clix-favicon.png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    <link rel="stylesheet" href="/static/ndf/css/oer.css">
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="/static/ndf/css/eclipse.css">
-   
+<!--    <link rel="stylesheet" href="/static/ndf/css/eclipse.css" >
+  -->  
 <!--     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>   --> 
  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
@@ -56,8 +54,9 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.js"> </script>
      <script src="/static/ndf/js/jquery.rotateSlider.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+ <!--
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
-
+-->
 <!--      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
     -->  <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js"></script>
 
@@ -200,7 +199,7 @@ left: 48%;
      </style>
 </head>
 
-<body data-spy="scroll" data-target="#verticalScrollspy" data-offset="89"  >
+<body data-spy="scroll" data-target="#verticalScrollspy" data-offset="89"   >
 <!--CSS Spinner
 <div class="spinner-wrapper">
 <div class="spinner"></div>
@@ -275,7 +274,10 @@ left: 48%;
         </button>
       </div>
       <div class="modal-body">
+<!--
         Something went Wrong ... developers have been informed, Thank You!
+-->
+  Hi, Help Videos for this modules are not available contact us for more details! 
       </div>
 
      
@@ -409,13 +411,14 @@ hidePreloader();
 $('#verticalScrollspy').scrollspy();
 
 
-
+/*
 
 (function(){
     new Clipboard('#copy');
 })();
 
-
+*/
+localStorage.clear();
 </script>
 
 

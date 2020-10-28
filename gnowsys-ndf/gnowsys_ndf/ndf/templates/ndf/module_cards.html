@@ -1,5 +1,3 @@
-
-
 {% load i18n %}
 {% load ndf_tags %}
 {% load get_dict_from_list_of_dicts from simple_filters %}
@@ -47,8 +45,6 @@
   visibility: visible;
   opacity: 1;
 }
-
-
 
 /* This is for spinner */
   #overlay{
@@ -732,12 +728,15 @@ function getPageList(totalPages, page, maxLength) {
               .text(item || "...")
           )
           .insertBefore("#next-page");
-      });
-      return true;
+      });  $("#previous-page").toggleClass("disabled", currentPage === 1);
+        $("#next-page").toggleClass("disabled", currentPage === totalPages);
+     ///   return true;
 
-  
+                   
+   
+     return true;
+}
 
-    }
     // Include the prev/next buttons:
     $(".pagination").append(
       $("<li>")
@@ -764,8 +763,7 @@ function getPageList(totalPages, page, maxLength) {
             .text("Next")
         )
     );
-
-    // Show the page links
+ // Show the page links
     $("#jar").show();
     showPage(1);
     // Use event delegation, as these items are recreated later
@@ -777,8 +775,7 @@ function getPageList(totalPages, page, maxLength) {
       }
     );
     $("#next-page").on("click", function() {
-      return showPage(currentPage + 1);
-    });
+      return showPage(currentPage + 1  ) });
     $("#previous-page").on("click", function() {
       return showPage(currentPage - 1);
     });
@@ -987,6 +984,8 @@ twitterShare.onclick = function(e) {
     return false;
   }
 */
+
+/*
 var facebookShare = document.querySelector('[data-js="facebook-share"]');
 
 facebookShare.onclick = function(e) {
@@ -995,6 +994,10 @@ facebookShare.onclick = function(e) {
   if(facebookWindow.focus) { facebookWindow.focus(); }
     return false;
 }
+
+*/
+
+
 
 function _handleClick(event) {
   event.preventDefault();

@@ -1,4 +1,6 @@
 
+
+
 {% extends "ndf/base.html" %}
 {% load ndf_tags %}
 {% load i18n %}
@@ -17,7 +19,7 @@ position:relative;
 .icon-badge i{
  position: absolute;
   top: 25px;
-  right: -5%;
+  right: 15%;
   font-size:100%; 
 }
 p,tr {
@@ -58,8 +60,8 @@ text-decoration: none;
 }
 
 .ribbon-2 {
-  width: 37%;
-  height: 25px;
+  width: 27%;
+  height: 24px;
   background: #21749a;
   left: -8px;
  margin-top: 10px;
@@ -82,6 +84,21 @@ text-decoration: none;
 
 
 </style>
+<script>
+
+function openWin()
+  {
+    myWindow=window.open('','','width=200,height=100');
+    myWindow.document.write("<p>This is 'myWindow'</p>");
+
+
+    myWindow.document.close(); //missing code
+
+
+    myWindow.focus();
+    myWindow.print(); 
+  }
+</script>
 <div class="container " style="padding-left:10%;overflow:hidden;  padding-right:10%;">
 <nav aria-label="breadcrumb ">
           <ol class="breadcrumb ml-n5 mt-3">
@@ -108,7 +125,10 @@ le="color:#fff;"> {% trans 'TISS-COOL' %}</a>  </li>
  <div class="col-12 col-sm-12 col-md-6 col-lg-6 ">
 
 <div class="ribbon-2" data-toggle="tooltip" title="Resource Type">
-<span class="m-2 text-white" > <img src="/static/ndf/noun_atom_954768.png" style="width:13%" class="img-fluid">  {{nd.attribute_set | get_key:'resource_type'}} </span>
+<span class="m-2 text-white" > {% with rsrc_type=nd.attribute_set|get_key:'resource_type' %}
+     {% get_resource_img rsrc_type as img %}
+ <img src="/static/ndf/{{img}}" style="width:14%" class="img-fluid">  {% trans rsrc_type %}  </span>
+ {% endwith %} </span>
 </div>
 
 <div class="text-center">
@@ -123,11 +143,22 @@ le="color:#fff;"> {% trans 'TISS-COOL' %}</a>  </li>
 
   {% endif %}
 </div>
-<div class="col-12 ">
+
+<div class="col-12 py-2">
+<h2>                                                                                                                                         
+
+
+{{nd.altnames}}                                                                                                                              
+
+
+</h2>
+</div>
+
+<div class="col-12">
 
     {% with name=nd.name %}
                                 {% with json_data=coolresourcedata|get_item:name %}    
-         <span  class=""  data-toggle="tooltip"  title="Explore Online">  <a href="{{json_data.oer_url}}" class="btn btn-primary" target="_blank">  <i class="fas fa-rocket fa-lg"></i>    Explore Online  </a>  </span>
+         <span  class=""  data-toggle="tooltip"  title="Explore Online">  <a href="{{json_data.oer_url}}" class="btn btn-primary m-2" target="_blank">  <i class="fas fa-rocket fa-lg"></i>   {% trans  'Explore Online' %}  </a>  </span>
 
  {% endwith %}
  {% endwith %}
@@ -137,8 +168,8 @@ le="color:#fff;"> {% trans 'TISS-COOL' %}</a>  </li>
 
  <div class="dropdown show"  style="display:inline-block"   >
 
-<button class="btn btn-primary" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         <span   data-toggle="tooltip" title="Share"  > <i class="fas fa-share-alt fa-lg"  ></i>  Share </span>
+<button class="btn btn-primary m-2" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         <span   data-toggle="tooltip" title="Share"  > <i class="fas fa-share-alt fa-lg"  ></i>  {% trans  'Share'  %}  </span>
         </button>
 <div class="dropdown-menu font-share" href="" aria-labelledby="dropdownMenuLink">
 
@@ -149,6 +180,8 @@ le="color:#fff;"> {% trans 'TISS-COOL' %}</a>  </li>
 <i class="fas fa-copy"> </i>Copy </a>
 <a class="dropdown-item target"  data-score="1" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'facebook-share-dialog', 'height=350,width=600'); return false;"> <i class="fab fa-facebook"> </i>
 Share on Facebook </a>
+
+<!--
 <a class="dropdown-item target" data-score="2"  href="http://twitter.com/intent/tweet?url=https://clixoer.tiss.edu/home/e-library/" onclick="\
 \                                                                                                                                             
 window.open(this.href, 'twitterwindow','left=20,top=20,width=600,height=300,toolbar=0,resizable=1'), '_blank'; data-url="document.URL"return \
@@ -156,80 +189,90 @@ window.open(this.href, 'twitterwindow','left=20,top=20,width=600,height=300,tool
 false;"      target="_blank" >
 <i class="fab fa-twitter"> </i>
 Tweet this</a>
-
+-->
+<a class="dropdown-item target" href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" target="_blank"><i class="fab fa-twitter"> </i>
+ Tweet this</a>
 <a class="dropdown-item target" data-score="3"  href="javascript:void(window.open('https://t.me/share/url?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent(document.title), '_blank'))">
     <i class="fab fa-telegram"></i>
     Telegram link </a>
                         </div>
                       </div>
-<button   class="btn btn-primary" data-toggle="modal" data-target="#helpmodalc">
-          <span  data-toggle="tooltip" title="Help Material"  target="#Help_C">   <i class="fas fa-info-circle fa-lg"></i>  Help Material  </button>
+<button   class="btn btn-primary m-2" data-toggle="modal" data-target="#helpmodalc">
+          <span  data-toggle="tooltip" title="Help Material"  target="#Help_C">   <i class="fas fa-info-circle fa-lg"></i> {% trans  'Help Material' %}  </button>
+
 
 
     </span>
 
-</div>
+ <button class="btn btn-primary m-2"  onclick="window.print();">  <i class="fas fa-print"> </i>  Print </button>
+ 
+ </div>
+
 <!--
 <div class="col-12">
  <h5> Affordances: </h5>
 </div> 
 
 -->
+<!--
 <div class="col-12 py-2">
 <h2>                                                                                                                                          
 {{nd.altnames}}                                                                                                                               
 </h2>
 </div>
-
+-->
 
 <div class="col-12 py-5">
   <h5> Affordances: </h5>
-<span class="icon-badge"> 
+<div class="container-fluid">
+<div class="row">
+<span class="col-12 col-sm-6 col-md-4 col-lg-3  icon-badge"> 
 {% with actvindi=nd.attribute_set|get_key:'active_knowledge_making_indicator'|lower %}
    {% if actvindi == 'true' %}
-<img src="/static/ndf/ACTIVE-KNOWLEDGE.svg" class="img-fluid" style="width:15%; height: ;" />   <i class="fas fa-info-circle"  title="1. Active Knowledge Making:"  data-toggle="popover" data-content="If the resource allows engagement and interactivity features/controls for learners so that the learner does not become a passive receiver rather be able to actively manipulate and work with the resource exercising the learner agency.
+<img src="/static/ndf/ACTIVE-KNOWLEDGE.svg" class="img-fluid" style="width:75%; height: ;" />   <i class="fas fa-info-circle"  title="1. Active Knowledge Making:"  data-toggle="popover" data-content="If the resource allows engagement and interactivity features/controls for learners so that the learner does not become a passive receiver rather be able to actively manipulate and work with the resource exercising the learner agency.
 "  data-placement="bottom"> </i> 
    {% endif %}
 {% endwith %}
 </span>
-<span class="icon-badge">
+<span class="col-12 col-sm-6 col-md-4 col-lg-3 icon-badge">
 
 {% with multiindi=nd.attribute_set|get_key:'multimodal_meaning_indicator'|lower %}
     {% if multiindi == 'true' %}
-<img src="/static/ndf/MULTIMODAL.svg" class="img-fluid" style="width: 15% ; height: ;" /> <i class="fas fa-info-circle" title="2. Multimodal Meaning:" data-toggle="popover" data-content="If the resource offers knowledge representation in multiple ways such as audio-visual, multi-dimensional, multiple-formats." data-placement="bottom"> </i>
+<img src="/static/ndf/MULTIMODAL.svg" class="img-fluid" style="width: 75% ; height: ;" /> <i class="fas fa-info-circle" title="2. Multimodal Meaning:" data-toggle="popover" data-content="If the resource offers knowledge representation in multiple ways such as audio-visual, multi-dimensional, multiple-formats." data-placement="bottom"> </i>
     {% endif %}
 {% endwith %}
 </span>
-<span class="icon-badge">
+<span class="col-12 col-sm-6 col-md-4 col-lg-3 icon-badge">
 
 {% with collabindi=nd.attribute_set|get_key:'collaboration_indicator'|lower %}
      {% if collabindi == 'true' %}
-<img src="/static/ndf/COLLABORATION.svg" class="img-fluid" style="width: 15% ; height: ;" /> <i class="fas fa-info-circle"  title="3. Collaboration:" data-toggle="popover" 
+<img src="/static/ndf/COLLABORATION.svg" class="img-fluid" style="width: 75% ; height: ;" /> <i class="fas fa-info-circle"  title="3. Collaboration:" data-toggle="popover" 
 data-content="  If the resource expressly fosters or has features for collaboration, sharing and co-construction of knowledge.
 " data-placement="bottom"> </i>
      {% endif %}
 {% endwith %}
 </span>
-<span class="icon-badge">
+<span class="col-12 col-sm-6 col-md-4 col-lg-3 icon-badge">
 
 {% with accessindi=nd.attribute_set|get_key:'accessibility_indicator'|lower %}
       {% if accessindi == 'true' %}
-<img src="/static/ndf/ACCESSIBILITY.svg" class="img-fluid" style="width: 15% ; height: ;" />  <i class="fas fa-info-circle"
+<img src="/static/ndf/ACCESSIBILITY.svg" class="img-fluid" style="width: 75% ; height: ;" />  <i class="fas fa-info-circle"
   title="4. Accessibility:"   data-toggle="popover"
  data-content="If the resource is inclusive and offers accessibility features such as screen reader, keyboard-only input etectera to help people with learning disability." data-placement="bottom"> </i>
       {% endif %}
 {% endwith %}
 </span>
-<span class="icon-badge">
+<span class="col-12 col-sm-6 col-md-4 col-lg-3 icon-badge">
 
 {% with adapindi=nd.attribute_set|get_key:'adaptability_indicator'|lower %}
      {% if adapindi == 'true' %}
-<img src="/static/ndf/ADAPTABILITY.svg" class="img-fluid" style="width:15%; height:;"> <i class="fas fa-info-circle"  title="5. Adaptability:"   data-toggle="popover" data-content="  If the resource lends itself to be easily remixed and adapted so that it can be used in a different context setting; which also depends on the modularity (ability of a resource to be broken in smaller activities and repurposed)." data-placement="bottom"> </i>
+<img src="/static/ndf/ADAPTABILITY.svg" class="img-fluid" style="width:75%; height:;"> <i class="fas fa-info-circle"  title="5. Adaptability:"   data-toggle="popover" data-content="  If the resource lends itself to be easily remixed and adapted so that it can be used in a different context setting; which also depends on the modularity (ability of a resource to be broken in smaller activities and repurposed)." data-placement="bottom"> </i>
      {% endif %}
 {% endwith %}
 </span>
 </div>
-
+</div>
+</div>
     </div>
 <div class="col-12 col-sm-12 col-md-6 col-lg-6  fake">
 
@@ -239,9 +282,9 @@ data-content="  If the resource expressly fosters or has features for collaborat
   </thead>
   <tbody>
     <tr>
-<p class="meta-data">     MetaData- </p >
+<p class="meta-data"> {% trans    'MetaData' %}- </p >
       <td data-toggle="tooltip" title="Website"> <img src="/static/ndf/noun_website_3237546.png                                                                                     
-" style="width:40px; height:44px;">    Website-              {% with name=nd.name %}
+" style="width:40px; height:44px;">  {% trans  'Website' %}-              {% with name=nd.name %}
                                 {% with json_data=coolresourcedata|get_item:name %}
                                       <a href="{{json_data.oer_url}}" target="_blank">{{json_data.oer_url}}</a>
                                 {% endwith %}
@@ -254,45 +297,45 @@ data-content="  If the resource expressly fosters or has features for collaborat
       <td data-toggle="tooltip" title="Subject">   
   <img src="/static/ndf/noun_open book_1548000.png" style="width:40px; height:44px;">
 
-Subject: {{nd.attribute_set | get_key:'educationalsubject'}}    </td>
+ {% trans 'Subject' %}: {{nd.attribute_set | get_key:'educationalsubject'}}    </td>
          </tr>
    <tr>
 
       <td data-toggle="tooltip" title="Grade">
   <img src="/static/ndf/noun_student_670918.png" style="width: 40px; height:44px;">
-Grade: {{nd.attribute_set | get_key:'educationallevel'}}     </td>
+ {% trans  'Grade' %}: {{nd.attribute_set | get_key:'educationallevel'}}     </td>
          </tr>
 
  <tr>
     <td data-toggle="tooltip" title="Curriculum">  <img src="/static/ndf/noun_Book collection_2238039.png                                                                              
-" style="width:40px; height:44px;">  Curriculum: {{nd.attribute_set | get_key:'curriculum'}}     </td>
+" style="width:40px; height:44px;"> {% trans  'Curriculum' %}: {{nd.attribute_set | get_key:'curriculum'}}     </td>
          </tr>
   <tr>
 
       <td data-toggle="tooltip" title="Language Support">
 <img src="/static/ndf/noun_Language_3091153.png" style="width:40px; height:44px;">
-Language Support: {{nd.attribute_set | get_key:'language_support'  }}     </td>
+  {% trans  'Language Support' %}: {{nd.attribute_set | get_key:'language_support'  }}     </td>
          </tr>
 
   <tr>
 
       <td data-toggle="tooltip" title="Device Compatibility"> <img src="/static/ndf/noun_platform_195844.png" style="width:40px; height:44px;">
-  Device Compatibility: {{nd.attribute_set | get_key:'device_compatability'}}     </td>
+ {% trans  'Device Compatibility' %}: {{nd.attribute_set | get_key:'device_compatability'}}     </td>
          </tr>
 
  <tr>
       <td data-toggle="tooltip" title="Offline Access"> <img src="/static/ndf/noun_offline_2806022.png" style="width:40px; height:44px;">
-  Offline Access: {{nd.attribute_set | get_key:'offline_access'}}     </td>
+ {% trans  'Offline Access' %}: {{nd.attribute_set | get_key:'offline_access'}}     </td>
          </tr>
 
   <tr>
 
       <td data-toggle="tooltip" title="OS Compatibility"> <img src="/static/ndf/noun_Operating System Layout_112838.png" style="width:40px; height:44px;">
-  OS Compatibility: {{nd.attribute_set | get_key:'os_compatability'}}     </td>
+   {% trans  'OS Compatibility' %}: {{nd.attribute_set | get_key:'os_compatability'}}     </td>
          </tr>  <tr>
 
       <td data-toggle="tooltip" title="Accessibility"> <img src="/static/ndf/noun_Accessibility_975764.svg" style="width:40px; height:44px;">
-  Accessibility: {{nd.attribute_set | get_key:'accessibility'}}     </td>
+  {% trans   'Accessibility' %}: {{nd.attribute_set | get_key:'accessibility'}}     </td>
          </tr> 
   <tr>
 
@@ -300,14 +343,14 @@ Language Support: {{nd.attribute_set | get_key:'language_support'  }}     </td>
 <img src="/static/ndf/noun_copyright_62294.png" style="width:40px; height:44px;">
 
 
-   License: {{nd.attribute_set | get_key:'license'}}    </td>
+  {% trans  'License' %}: {{nd.attribute_set | get_key:'license'}}    </td>
          </tr>  <tr>
 
       <td data-toggle="tooltip" title="Topics">
 
  <img src="/static/ndf/noun_Tag_887310.png                                                                                                    
 " style="width:40px; height:44px;">
-Topics: {% for each_attr in nd.tags %}
+  {% trans  'Topics' %}: {% for each_attr in nd.tags %}
         {{each_attr}}
         {% if not forloop.last %},
         {% endif %}
@@ -317,13 +360,13 @@ Topics: {% for each_attr in nd.tags %}
    <tr>
 
       <td data-toggle="tooltip" title="Curator"><img src="/static/ndf/noun_Work_2413136.png" style="width:40px; height:44px;">
-  Curator: {{nd.attribute_set | get_key:'curated_by'}}     </td>
+  {% trans  'Curator'  %}: {{nd.attribute_set | get_key:'curated_by'}}     </td>
          </tr>
   <tr> 
 
          <td data-toggle="tooltip" title="Updated"> 
  <i class="fas fa-calendar-alt fa-lg  m-2" >  </i>
-       Date of curation: {{ nd.last_update | get_date_format}}
+   {% trans     'Date of curation' %}: {{ nd.last_update | get_date_format}}
    </td>
  </tr> 
   <td > 
@@ -337,7 +380,52 @@ Topics: {% for each_attr in nd.tags %}
 <div class="container" style="overflow:hidden;" >
 <div class="row">
   <div class="col-12 text-justify mt-5">
- <h5  class="text-primary"> This curation is also available in : Hindi, English , Telugu , Tamil  </h5>  
+ 
+
+
+
+
+
+
+
+
+
+    <h5  class="text-primary"> This curation is also available in :
+{% if transnds.hi %}
+<a href="{% url 'cooloerpreview'  transnds.hi  %}" target="_blank">
+Hindi </a>  ,
+
+{% else %}
+
+<span> </span>
+
+{% endif %}
+
+{% if  transnds.en %}  
+<a href="{% url 'cooloerpreview'   transnds.en %}" target="_blank"> English </a> ,
+{% else %}
+<span> <span>
+{% endif %}
+
+{% if  transnds.te %} 
+<a href="{% url 'cooloerpreview'   transnds.te  %}" target="_blank"> Telegu </a> ,
+{% else %}
+<span>  </span>
+{% endif %}
+{% if transnds.ta %}
+<a href="{% url 'cooloerpreview'   transnds.ta  %}" target="_blank"> Tamil </a> ,
+ {% else %}
+ <span> </span>
+{% endif %}
+
+
+{% if transndu.pu %}
+<a href="{% url 'cooloerpreview'   transnds.pu  %}" target="_blank"> Punjabi </a> 
+{% else %}
+ <span> </span>
+{% endif %}
+ </h5>
+
 <p  class="text-justify">
   {% autoescape off %}
     {{nd.content }}
@@ -516,16 +604,26 @@ Topics  - {% for each_attr in nd.tags %}
           </a>
         </div>
         {% endfor %}
-       {% endwith %}
       {% endwith %}
-      {% endwith %}
+<hr/>
+<div class="col-12">
+        <hr>
+ <ul>
 
+    <li>   <a href="{{json_data.oer_website}}" target="_blank">  {{json_data.oer_website}}</a>
+
+ </li>
+</ul>
+</div>
+      {% endwith %}
+      {% endwith %}
+{% comment %}
 <hr>
 
 <div class="col-12 col-sm-12 col-md-12">
 <a href="{{oer_website}}" target="_blank">{{oer_website}}</a>
 </div>
-
+{% endcomment %}
 
 
 

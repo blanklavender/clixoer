@@ -1,4 +1,4 @@
-
+{% load ndf_tags %}
 <div  id="filter-sidebar" class="col-12 col-sm-12 col-md-2   d-md-block d-lg-block  collapse  sliding-sidebar" 
  id="filter-sidebar" >
   <button class="btn btn-default navbar-btn  d-block d-sm-block d-md-none mr-auto" data-toggle="collapse" data-target="#filter-sidebar">
@@ -38,7 +38,7 @@
                 title=""
                 href="#section2"
               >
-                Knowledge Deepening {{koers_count}}
+                Knowledge Deepening({{koers_count}})
               </a>
             </li>
             <li class="nav-item">
@@ -88,30 +88,30 @@
 <hr>
 </div> <div class="collaspe show" id="domain3">
   <div class="checkbox">
-      <label  class="b-contain" ><input type="checkbox" name="Language_support[]"  class="coolfilter"  value="en" id="eng"   autocomplete="off">English (cnt)
+      <label  class="b-contain" ><input type="checkbox" name="Language_support[]"  class="coolfilter"  value="en" id="eng"   autocomplete="off">English ({{lang|get_item:'en'}})
 <div class="b-input"> </div>
   </label>          </div>      <div class="checkbox">      <label   class="b-contain" ><input type="checkbox" class="coolfilter" 
-name="Language_support[]" value="hi" id="hindi"   autocomplete="off">Hindi (cnt)                                                            
+name="Language_support[]" value="hi" id="hindi"   autocomplete="off">Hindi {{lang|get_item:'hi'}}                                                            
 <div class="b-input"> </div>
  </label>
     </div>
     <div class="checkbox">
-      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Language_support[]" value="ma" id="marathi" autocomplete="of" >Marathi (cnt)          <div class="b-input"> </div>
+      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Language_support[]" value="ma" id="marathi" autocomplete="of" >Marathi ({{lang|get_item:'ma'}})          <div class="b-input"> </div>
          </label>              </div>                                                                                                        
                              <div class="checkbox">
 
-      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Language_support[]"  value="te" id="telugu" autocomplete="of">Telugu   (cnt)
+      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Language_support[]"  value="te" id="telugu" autocomplete="of">Telugu   ({{lang|get_item:'te'}})
 <div class="b-input"> </div>
 </label> </div> <div class="checkbox">
 
 
 
       <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Language_support[]" value="ta" id="tamil"
- autocomplete="off">Tamil  (cnt)
+ autocomplete="off">Tamil  ({{lang|get_item:'ta'}})
 <div class="b-input"> </div></label> </div>
 
 
- <div class="checkbox"><label  class="b-contain" ><input type="checkbox"  class="coolfilter" name="Language_support[]"  value="pu" id="Punjabi" autocomplete="off">Punjabi<div class="b-input"> </div> <label/>
+ <div class="checkbox"><label  class="b-contain" ><input type="checkbox"  class="coolfilter" name="Language_support[]"  value="pu" id="Punjabi" autocomplete="off">Punjabi ({{lang|get_item:'pu'}})<div class="b-input"> </div> <label/>
 </div>
  </div>
 </li>
@@ -129,26 +129,26 @@ name="Language_support[]" value="hi" id="hindi"   autocomplete="off">Hindi (cnt)
 <div class="collapase show" id="domain1">
 
   <div class=" checkbox ">
-      <label class="b-contain" > Multiple Subjects<input type="checkbox"  name="subject_domain[]" class="coolfilter"  value="Multiple Subjects" id="Multiple-subject">
+      <label class="b-contain" > Multiple Subjects ({{subjt|get_item:'MultipleSubjects'}})<input type="checkbox"  name="subject_domain[]" class="coolfilter"  value="Multiple Subjects" id="Multiple-subject">
 
 <div class="b-input"> </div>
 </label>
     </div>
     <div class="checkbox">
       <label  class="b-contain" ><input type="checkbox" class="coolfilter"  name="subject_domain[]"   value="Art" id="Art"  
- autocomplete="off">Art
+ autocomplete="off">Art ({{subjt|get_item:'art'}})
       <div class="b-input"> </div>
 </label>
     </div> 
 
     <div class="checkbox ">
-      <label   class="b-contain" ><input type="checkbox" class="coolfilter"  name="subject_domain[]"  value="Science"  id="Science"  autocomplete="off"> Science 
+      <label   class="b-contain" ><input type="checkbox" class="coolfilter"  name="subject_domain[]"  value="Science"  id="Science"  autocomplete="off"> Science ({{subjt|get_item:'Science'}})
  <div class="b-input"> </div>
   </label>
   </div>
  <div class="checkbox">
       <label  class="b-contain" ><input type="checkbox" class="coolfilter"  name="subject_domain[]"   value="Language" id="Art"
- autocomplete="off">Language
+ autocomplete="off">Language ({{subjt|get_item:'language'}})
       <div class="b-input"> </div>
 </label>
     </div>
@@ -156,7 +156,7 @@ name="Language_support[]" value="hi" id="hindi"   autocomplete="off">Hindi (cnt)
  <div class="checkbox">
       <label  class="b-contain" ><input type="checkbox" class="coolfilter"   name="subject_domain[]"  value="Mathematics" id="Mathematics"
 
- autocomplete="off">Mathematics
+ autocomplete="off">Mathematics ({{subjt|get_item:'Mathematics'}})
 <div class="b-input"> </div>
 </label>
     </div>
@@ -184,12 +184,12 @@ name="Language_support[]" value="hi" id="hindi"   autocomplete="off">Hindi (cnt)
       <label><input type="checkbox" value=""> Courses</label>   
     </div>                                                                                                                                      -->
     <div class="checkbox">                                                                                                                    
-      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Resouce_type[]" value="Hands-On" id="handson"> <img src="/static/ndf/noun_Game_694760.svg" style="width:14%" class="img-fluid"> Hands On             
+      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Resouce_type[]" value="Hands-On" id="handson"> <img src="/static/ndf/noun_Game_694760.svg" style="width:14%" class="img-fluid"> Hands On  ({{rsrc|get_item:'Hands_On'}}) 
 <div class="b-input"> </div>
 </lable>                                                                   
     </div>                                                                                                                                    
     <div class="checkbox ">                                                                                                           
-      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Resouce_type[]" value="Forum" id="forum"> <img src="/static/ndf/noun_forum_563603.png" style="width:14%" class="img-fluid">  Forum                                                                     
+      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Resouce_type[]" value="Forum" id="forum"> <img src="/static/ndf/noun_forum_563603.png" style="width:14%" class="img-fluid">  Forum  ({{rsrc|get_item:'Forum'}})                                                      
 
 <div class="b-input"> </div>
  <label/>
@@ -199,7 +199,7 @@ name="Language_support[]" value="hi" id="hindi"   autocomplete="off">Hindi (cnt)
     </div>
 -->
  <div class="checkbox">
-      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Resouce_type[]" value="Simulation" id="simu"><img src="/static/ndf/noun_atom_954768.svg" style="width:14%" class="img-fluid">   Simulation
+      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Resouce_type[]" value="Simulation" id="simu"><img src="/static/ndf/noun_atom_954768.svg" style="width:14%" class="img-fluid">   Simulation ({{rsrc|get_item:'Simulation'}})
 <div class="b-input"> </div>
   <label/>
     </div>
@@ -209,7 +209,7 @@ name="Language_support[]" value="hi" id="hindi"   autocomplete="off">Hindi (cnt)
     </div>
 -->
  <div class="checkbox">
-      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Resouce_type[]" value="Tool" id="tool"> <img src="/static/ndf/noun_Gear_2225554.svg" style="width:14%" class="img-fluid">   Tool
+      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Resouce_type[]" value="Tool" id="tool"> <img src="/static/ndf/noun_Gear_2225554.svg" style="width:14%" class="img-fluid">   Tool ({{rsrc|get_item:'Tool'}})
 <div class="b-input"> </div>
     <label/>
     </div>
@@ -255,11 +255,11 @@ name="Language_support[]" value="hi" id="hindi"   autocomplete="off">Hindi (cnt)
 
  <div class="collapse show" id="domain4">                                                             
   <div class="checkbox">                                                                                                                      
-      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Grade[]" value="K-12" id="k12" autocomplete="off">K-12                      <div class="b-input"> </div>
+      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Grade[]" value="K-12" id="k12" autocomplete="off">K-12  ({{grade|get_item:'K-12'}})        <div class="b-input"> </div>
                                               </label>
     </div>                                                                                                                                    
     <div class="checkbox">                                                                                                                    
-      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Grade[]"  value="6-12" id="upri" autocomplete="off">Uppar Primary(6-12)    <div class="b-input"> </div>
+      <label  class="b-contain" ><input type="checkbox" class="coolfilter" name="Grade[]"  value="6-12" id="upri" autocomplete="off">Uppar Primary(6-12) ({{grade|get_item:'6-12'}})   <div class="b-input"> </div>
                                                                   </label>
     </div>                                                                                                                                    <!--
     <div class="checkbox ">                                                                                                           

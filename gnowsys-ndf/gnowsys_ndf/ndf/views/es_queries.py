@@ -34,7 +34,13 @@ gfs = HashFS('/data/media/', depth=3, width=1, algorithm='sha256')
 
 banner_pics1 = ['/static/ndf/Website Banners/Landing Page/elibrary1.png','/static/ndf/Website Banners/Landing Page/elibrary2.png','/static/ndf/elibrary 6.1.png','/static/ndf/Website Banners/Landing Page/elibrary4.png','/static/ndf/Website Banners/Landing Page/elibrary5.png','/static/ndf/Website Banners/Landing Page/elibrary6.png','/static/ndf/COOL_website_Banner_Banner_1200-300.png']
 
+trans_rel_type = '5752ad572e01310a05dca50f'
+
 def cool_resourcelist(request):
+    language = {'en':0,'te':0,'ta':0,'pu':0,'ma':0,'hi':0}
+    subject = {'Science':0,'Mathematics':0,'art':0,'language':0,'MultipleSubjects':0}
+    rsrc_type = {'Hands_On':0,'Simulation':0,'Tool':0,'Forum':0}
+    level = {'K-12':0,'6-12':0}
     banner_pics1 = ['/static/ndf/OER_1200_300_Slider_1.jpg','/static/ndf/OER_1200_300_Slider_2.jpg','/static/ndf/OER_1200_300_Slider_3.jpg','/static/ndf/OER_1200_300_Slider_4.jpg','/static/ndf/OER_1200_300_Slider_5.jpg','/static/ndf/COOL_website_Banner_Banner_1200-300.png']
     print "in cool resource list"
     index = 'nodes'
@@ -63,6 +69,7 @@ def cool_resourcelist(request):
     koers.sort(key=lambda x: x.name, reverse=False)
     coers.sort(key=lambda x: x.name, reverse=False)
     toers.sort(key=lambda x: x.name, reverse=False)
+    get_all_counts(koers,coers,toers,language,subject,level,rsrc_type)
     '''q = Q('bool',must=[Q('terms',member_of=[gst_cool_resource[0].id]),Q('match',access_policy='PUBLIC'),Q('match_phrase',tags='Creativity')])
     cooloers1 = (Search(using=es,index = index,doc_type=doc_type).query(q)).sort({"last_update" : {"order" : "asc"}})
     cooloers2 = cooloers1.execute()
@@ -73,10 +80,11 @@ def cool_resourcelist(request):
     cooloers2 = OAcooloers1.execute()
     toers = cooloers1[0:cooloers1.count()]
 '''
+    print subject,level,rsrc_type
     with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/cool_resources_details.json','r') as json_file:
                         coolresourcedata = json.load(json_file)
     req_context = RequestContext(request, {
-                                    'title':'COOL-OER','coolresourcedata':coolresourcedata,'groupid':'home','group_id':'home','bannerpics':banner_pics1,'k_oers':koers,'koers_count':len(koers),'c_oers':coers,'coers_count':len(coers),'t_oers':toers,'toers_count':len(toers)})
+                                    'title':'COOL-OER','coolresourcedata':coolresourcedata,'groupid':'home','group_id':'home','bannerpics':banner_pics1,'k_oers':koers,'koers_count':len(koers),'c_oers':coers,'coers_count':len(coers),'t_oers':toers,'toers_count':len(toers),'lang':language,'subjt':subject,'grade':level,'rsrc':rsrc_type})
     return render_to_response("ndf/TheCOOL_OER.html",req_context)
 
 def get_tran_nodes(subject,rel_type,lang):
@@ -100,6 +108,78 @@ def get_tran_nodes(subject,rel_type,lang):
     print "nds count:",len(nds)
     return nds
 
+def get_all_counts(k_oers,c_oers,t_oers,language,subject,level,rsrc_type):
+    print "in get_all count",subject,level,rsrc_type
+    for each in k_oers:
+        l = list(each.attribute_set)
+        d = {k:v for element in l for k,v in element.to_dict().items()}
+        fetch_counts(each,d,language,subject,level,rsrc_type)
+        
+    for each in c_oers:
+        l = list(each.attribute_set)
+        d = {k:v for element in l for k,v in element.to_dict().items()}
+        fetch_counts(each,d,language,subject,level,rsrc_type)
+
+    for each in t_oers:
+        l = list(each.attribute_set)
+        d = {k:v for element in l for k,v in element.to_dict().items()}
+        fetch_counts(each,d,language,subject,level,rsrc_type)
+
+def fetch_counts(oer,attrb_set,language,subject,level,rsrc_type):
+    #language = {'en':0,'te':0,'ta':0,'pu':0,'ma':0,'hi':0}
+    #subject = {'Science':0,'Mathematics':0,'art':0,'language':0,'MultipleSubjects':0}
+    #rsrc_type = {'Hands_On':0,'Simulation':0,'Tool':0,'Forum':0}
+    #grade = {'K-12':0,'6-12':0}
+    if 'en' in oer.language:
+        language['en'] += 1
+    elif 'hi' in oer.language:
+        language['hi'] += 1
+    elif 'ta' in oer.language:
+        language['ta'] += 1
+    elif 'te' in oer.language:
+        language['te'] += 1
+    elif 'pu' in oer.language:
+        language['pu'] += 1
+    else:
+        language['ma'] += 1
+    
+    print level
+
+    if 'K-12' in attrb_set['educationallevel']:
+        print "in k-12"
+        level['K-12'] += 1
+    else:# '6-12' in attrb_set['educationallevel']:
+        print "in 6-12"
+        level['6-12'] += 1
+
+
+    if 'en' in oer.language:
+        q = Q('bool',must = [Q('match',subject = oer.id),Q('match',type= 'GRelation'),Q('match', relation_type= trans_rel_type)])
+        s1 = Search(using=es, index='triples',doc_type="triple").query(q)
+        res = s1.execute()
+        #t_nds = get_tran_nodes(oer.id,trans_rel_type,['en','hi','ma','te','ta',)
+        #print "in fetch count",oer.name,s1.count()
+        if 'Multiple Subjects' in  attrb_set['educationalsubject']:
+            subject['MultipleSubjects'] += (s1.count()+1)
+        if 'Mathematics' in attrb_set['educationalsubject']:
+            subject['Mathematics'] += (s1.count()+1)
+        if 'Science' in attrb_set['educationalsubject']:
+            subject['Science'] += (s1.count()+1)
+        if 'Art' in attrb_set['educationalsubject']:
+            subject['art'] += (s1.count()+1)
+         #'language' in attrb_set['educationalsubject']:
+        if 'Language' in attrb_set['educationalsubject']:
+            subject['language'] += (s1.count()+1)
+        
+        if 'Simulation' in  attrb_set['resource_type']:                                                                                                         
+            rsrc_type['Simulation'] += (s1.count()+1) 
+        if 'Tool' in attrb_set['resource_type']:                                                                                                             
+            rsrc_type['Tool'] += (s1.count()+1)                                                                                                             
+        if 'Forum' in attrb_set['resource_type']:                                                                                                                 
+            rsrc_type['Forum'] += (s1.count()+1)                                                                                                                    
+        if 'Hands-on' in attrb_set['resource_type']: #'Hands On' in attrb_set['resource_type']:                                                                        
+            rsrc_type['Hands_On'] += (s1.count()+1)  
+
 def predicate(rsrc_type, subject, grade, oer):
     #def _predicate(oer):
     print "in predicate", grade,oer['educationallevel']
@@ -117,6 +197,10 @@ def predicate(rsrc_type, subject, grade, oer):
 #my_filtered_fruit = list(filter(predicate(query_type, query_color, query_size), myfruits.items()))
 
 def cool_resourcelist_filter(request):
+    language = {'en':0,'te':0,'ta':0,'pu':0,'ma':0,'hi':0}
+    subject = {'Science':0,'Mathematics':0,'art':0,'language':0,'MultipleSubjects':0}
+    rsrc_type = {'Hands_On':0,'Simulation':0,'Tool':0,'Forum':0}
+    level = {'K-12':0,'6-12':0}
     banner_pics1 = ['/static/ndf/OER_1200_300_Slider_1.jpg','/static/ndf/OER_1200_300_Slider_2.jpg','/static/ndf/OER_1200_300_Slider_3.jpg','/static/ndf/OER_1200_300_Slider_4.jpg','/static/ndf/OER_1200_300_Slider_5.jpg','/static/ndf/COOL_website_Banner_Banner_1200-300.png']
     print "in cool resource list filter"
     index = 'nodes'
@@ -137,7 +221,7 @@ def cool_resourcelist_filter(request):
     coers=[]
     toers = []
     
-    trans_rel_type = '5752ad572e01310a05dca50f'
+   # trans_rel_type = '5752ad572e01310a05dca50f'
     if len(subj) !=0:
         subjs =','.join(subj)
         print subjs,subj
@@ -179,10 +263,13 @@ def cool_resourcelist_filter(request):
     koers.sort(key=lambda x: x.name, reverse=False)
     coers.sort(key=lambda x: x.name, reverse=False)
     toers.sort(key=lambda x: x.name, reverse=False)
+    
+    get_all_counts(koers,coers,toers,language,subject,level,rsrc_type)
+    
     with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/cool_resources_details.json','r') as json_file:
                         coolresourcedata = json.load(json_file)
     req_context = RequestContext(request, {
-                                    'title':'COOL-OER','coolresourcedata':coolresourcedata,'groupid':'home','group_id':'home','bannerpics':banner_pics1,'k_oers':koers,'koers_count':len(koers),'c_oers':coers,'coers_count':len(coers),'t_oers':toers,'toers_count':len(toers)})
+                                    'title':'COOL-OER','coolresourcedata':coolresourcedata,'groupid':'home','group_id':'home','bannerpics':banner_pics1,'k_oers':koers,'koers_count':len(koers),'c_oers':coers,'coers_count':len(coers),'t_oers':toers,'toers_count':len(toers),'lang':language,'subjt':subject,'grade':level,'rsrc':rsrc_type})
     return render_to_response("ndf/Thecooloer.html",req_context)
 
 def cool_oer_preview(request,node_id):

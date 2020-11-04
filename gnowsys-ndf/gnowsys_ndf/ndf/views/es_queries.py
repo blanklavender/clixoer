@@ -111,20 +111,23 @@ def get_tran_nodes(subject,rel_type,lang):
 def get_all_counts(k_oers,c_oers,t_oers,language,subject,level,rsrc_type):
     print "in get_all count",subject,level,rsrc_type
     for each in k_oers:
+        #if 'en' in each.language:
         l = list(each.attribute_set)
         d = {k:v for element in l for k,v in element.to_dict().items()}
         fetch_counts(each,d,language,subject,level,rsrc_type)
         
     for each in c_oers:
+        #if 'en' in each.language:
         l = list(each.attribute_set)
         d = {k:v for element in l for k,v in element.to_dict().items()}
         fetch_counts(each,d,language,subject,level,rsrc_type)
-
+        
     for each in t_oers:
+        #if 'en' in each.language:
         l = list(each.attribute_set)
         d = {k:v for element in l for k,v in element.to_dict().items()}
         fetch_counts(each,d,language,subject,level,rsrc_type)
-
+        
 def fetch_counts(oer,attrb_set,language,subject,level,rsrc_type):
     #language = {'en':0,'te':0,'ta':0,'pu':0,'ma':0,'hi':0}
     #subject = {'Science':0,'Mathematics':0,'art':0,'language':0,'MultipleSubjects':0}
@@ -154,35 +157,65 @@ def fetch_counts(oer,attrb_set,language,subject,level,rsrc_type):
 
 
     if 'en' in oer.language:
-        q = Q('bool',must = [Q('match',subject = oer.id),Q('match',type= 'GRelation'),Q('match', relation_type= trans_rel_type)])
-        s1 = Search(using=es, index='triples',doc_type="triple").query(q)
-        res = s1.execute()
+        #q = Q('bool',must = [Q('match',subject = oer.id),Q('match',type= 'GRelation'),Q('match', relation_type= trans_rel_type)])
+        #s1 = Search(using=es, index='triples',doc_type="triple").query(q)
+        #res = s1.execute()
         #t_nds = get_tran_nodes(oer.id,trans_rel_type,['en','hi','ma','te','ta',)
         #print "in fetch count",oer.name,s1.count()
         if 'Multiple Subjects' in  attrb_set['educationalsubject']:
-            subject['MultipleSubjects'] += (s1.count()+1)
+            subject['MultipleSubjects'] +=1
         if 'Mathematics' in attrb_set['educationalsubject']:
-            subject['Mathematics'] += (s1.count()+1)
+            subject['Mathematics'] +=1
         if 'Science' in attrb_set['educationalsubject']:
-            subject['Science'] += (s1.count()+1)
+            subject['Science'] +=1
         if 'Art' in attrb_set['educationalsubject']:
-            subject['art'] += (s1.count()+1)
+            subject['art'] +=1
          #'language' in attrb_set['educationalsubject']:
         if 'Language' in attrb_set['educationalsubject']:
-            subject['language'] += (s1.count()+1)
+            subject['language'] +=1
         
         if 'Simulation' in  attrb_set['resource_type']:                                                                                                         
-            rsrc_type['Simulation'] += (s1.count()+1) 
+            rsrc_type['Simulation'] +=1 
         if 'Tool' in attrb_set['resource_type']:                                                                                                             
-            rsrc_type['Tool'] += (s1.count()+1)                                                                                                             
+            rsrc_type['Tool'] +=1                                                                                                             
         if 'Forum' in attrb_set['resource_type']:                                                                                                                 
-            rsrc_type['Forum'] += (s1.count()+1)                                                                                                                    
+            rsrc_type['Forum'] +=1                                                                                                                    
         if 'Hands-on' in attrb_set['resource_type']: #'Hands On' in attrb_set['resource_type']:                                                                        
-            rsrc_type['Hands_On'] += (s1.count()+1)  
+            rsrc_type['Hands_On'] +=1
+    else:
+        q = Q('bool',must = [Q('match',type= 'GRelation'),Q('match', relation_type= trans_rel_type)])                                     
+        s1 = Search(using=es, index='triples',doc_type="triple").query(q)                                                                                             
+        res = s1.execute()
+        for each in s1[0:s1.count()]:
+            if each.right_subject == oer.id:
+                eng_id = each.subject
+                eng_nd = get_node_by_id(eng_id)
+                l = list(eng_nd.attribute_set)
+                attrb_set = {k:v for element in l for k,v in element.to_dict().items()}
+                if 'Multiple Subjects' in  attrb_set['educationalsubject']:
+                    subject['MultipleSubjects'] +=1
+                if 'Mathematics' in attrb_set['educationalsubject']:
+                    subject['Mathematics'] +=1
+                if 'Science' in attrb_set['educationalsubject']:
+                    subject['Science'] +=1
+                if 'Art' in attrb_set['educationalsubject']:
+                    subject['art'] +=1
+                    #'language' in attrb_set['educationalsubject']:                                                                                                    
+                if 'Language' in attrb_set['educationalsubject']:
+                    subject['language'] +=1
+                if 'Simulation' in  attrb_set['resource_type']:
+                    rsrc_type['Simulation'] +=1
+                if 'Tool' in attrb_set['resource_type']:
+                    rsrc_type['Tool'] +=1
+                if 'Forum' in attrb_set['resource_type']:
+                    rsrc_type['Forum'] +=1
+                if 'Hands-on' in attrb_set['resource_type']: #'Hands On' in attrb_set['resource_type']:                                                                
+                    rsrc_type['Hands_On'] +=1
+
 
 def predicate(rsrc_type, subject, grade, oer):
     #def _predicate(oer):
-    print "in predicate", grade,oer['educationallevel']
+    print "in predicate", rsrc_type,oer['resource_type']
     subjs = [x.strip() for x in str(oer['educationalsubject']).split(',')]
     print subjs
     if not len(rsrc_type) == 0 and not any(x in str(oer['resource_type']).split(',') for x in rsrc_type):

@@ -226,50 +226,66 @@ Tweet this</a>
   <h5> Affordances: </h5>
 <div class="container-fluid">
 <div class="row">
-<span class="col-12 col-sm-6 col-md-4 col-lg-3  icon-badge"> 
+<!--
+<span class="col-12 col-sm-6 col-md-4 col-lg-3  icon-badge"> -->
 {% with actvindi=nd.attribute_set|get_key:'active_knowledge_making_indicator'|lower %}
    {% if actvindi == 'true' %}
+<span class="col-12 col-sm-6 col-md-4 col-lg-3  icon-badge">
+
 <img src="/static/ndf/ACTIVE-KNOWLEDGE.svg" class="img-fluid" style="width:75%; height: ;" />   <i class="fas fa-info-circle"  title="1. Active Knowledge Making:"  data-toggle="popover" data-content="If the resource allows engagement and interactivity features/controls for learners so that the learner does not become a passive receiver rather be able to actively manipulate and work with the resource exercising the learner agency.
 "  data-placement="bottom"> </i> 
+</span>
    {% endif %}
 {% endwith %}
-</span>
+<!--
 <span class="col-12 col-sm-6 col-md-4 col-lg-3 icon-badge">
+-->
 
 {% with multiindi=nd.attribute_set|get_key:'multimodal_meaning_indicator'|lower %}
     {% if multiindi == 'true' %}
-<img src="/static/ndf/MULTIMODAL.svg" class="img-fluid" style="width: 75% ; height: ;" /> <i class="fas fa-info-circle" title="2. Multimodal Meaning:" data-toggle="popover" data-content="If the resource offers knowledge representation in multiple ways such as audio-visual, multi-dimensional, multiple-formats." data-placement="bottom"> </i>
-    {% endif %}
-{% endwith %}
-</span>
 <span class="col-12 col-sm-6 col-md-4 col-lg-3 icon-badge">
 
+<img src="/static/ndf/MULTIMODAL.svg" class="img-fluid" style="width: 75% ; height: ;" /> <i class="fas fa-info-circle" title="2. Multimodal Meaning:" data-toggle="popover" data-content="If the resource offers knowledge representation in multiple ways such as audio-visual, multi-dimensional, multiple-formats." data-placement="bottom"> </i>
+</span>
+    {% endif %}
+{% endwith %}
+<!--
+<span class="col-12 col-sm-6 col-md-4 col-lg-3 icon-badge">
+-->
 {% with collabindi=nd.attribute_set|get_key:'collaboration_indicator'|lower %}
      {% if collabindi == 'true' %}
+<span class="col-12 col-sm-6 col-md-4 col-lg-3 icon-badge">
+
 <img src="/static/ndf/COLLABORATION.svg" class="img-fluid" style="width: 75% ; height: ;" /> <i class="fas fa-info-circle"  title="3. Collaboration:" data-toggle="popover" 
 data-content="  If the resource expressly fosters or has features for collaboration, sharing and co-construction of knowledge.
 " data-placement="bottom"> </i>
+</span>
      {% endif %}
 {% endwith %}
-</span>
-<span class="col-12 col-sm-6 col-md-4 col-lg-3 icon-badge">
 
 {% with accessindi=nd.attribute_set|get_key:'accessibility_indicator'|lower %}
       {% if accessindi == 'true' %}
+
+<span class="col-12 col-sm-6 col-md-4 col-lg-3 icon-badge">
 <img src="/static/ndf/ACCESSIBILITY.svg" class="img-fluid" style="width: 75% ; height: ;" />  <i class="fas fa-info-circle"
   title="4. Accessibility:"   data-toggle="popover"
  data-content="If the resource is inclusive and offers accessibility features such as screen reader, keyboard-only input etectera to help people with learning disability." data-placement="bottom"> </i>
-      {% endif %}
-{% endwith %}
 </span>
+   {% endif %}
+{% endwith %}
+<!--
 <span class="col-12 col-sm-6 col-md-4 col-lg-3 icon-badge">
-
+-->
 {% with adapindi=nd.attribute_set|get_key:'adaptability_indicator'|lower %}
      {% if adapindi == 'true' %}
+<span class="col-12 col-sm-6 col-md-4 col-lg-3 icon-badge">
+
 <img src="/static/ndf/ADAPTABILITY.svg" class="img-fluid" style="width:75%; height:;"> <i class="fas fa-info-circle"  title="5. Adaptability:"   data-toggle="popover" data-content="  If the resource lends itself to be easily remixed and adapted so that it can be used in a different context setting; which also depends on the modularity (ability of a resource to be broken in smaller activities and repurposed)." data-placement="bottom"> </i>
+</span>
      {% endif %}
 {% endwith %}
-</span>
+<!--
+</span> -->
 </div>
 </div>
 </div>

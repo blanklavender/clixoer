@@ -42,6 +42,7 @@ border-left: 1px solid black ;
 
 
  .breadcrumb li {
+margin-top: 5px;
 background: #9693a3 !important;
 color:#fff !important;
 }
@@ -298,9 +299,9 @@ data-content="  If the resource expressly fosters or has features for collaborat
   </thead>
   <tbody>
     <tr>
-<p class="meta-data"> {% trans    'MetaData' %}- </p >
+<p class="meta-data">  {% trans    'MetaData' %}- </p >
       <td data-toggle="tooltip" title="Website"> <img src="/static/ndf/noun_website_3237546.png                                                                                     
-" style="width:40px; height:44px;">  {% trans  'Website' %}-              {% with name=nd.name %}
+" style="width:40px; height:44px;"> <strong>  {% trans  'Website' %} </strong> -              {% with name=nd.name %}
                                 {% with json_data=coolresourcedata|get_item:name %}
                                       <a href="{{json_data.oer_url}}" target="_blank">{{json_data.oer_url}}</a>
                                 {% endwith %}
@@ -312,61 +313,64 @@ data-content="  If the resource expressly fosters or has features for collaborat
 
       <td data-toggle="tooltip" title="Subject">   
   <img src="/static/ndf/noun_open book_1548000.png" style="width:40px; height:44px;">
-
- {% trans 'Subject' %}: {{nd.attribute_set | get_key:'educationalsubject'}}    </td>
+ <strong>
+ {% trans 'Subject' %} </strong>: {{nd.attribute_set | get_key:'educationalsubject'}}    </td>
          </tr>
    <tr>
 
       <td data-toggle="tooltip" title="Grade">
   <img src="/static/ndf/noun_student_670918.png" style="width: 40px; height:44px;">
- {% trans  'Grade' %}: {{nd.attribute_set | get_key:'educationallevel'}}     </td>
+  <strong>{% trans  'Grade' %} </strong>: {{nd.attribute_set | get_key:'educationallevel'}}     </td>
          </tr>
 
  <tr>
     <td data-toggle="tooltip" title="Curriculum">  <img src="/static/ndf/noun_Book collection_2238039.png                                                                              
-" style="width:40px; height:44px;"> {% trans  'Curriculum' %}: {{nd.attribute_set | get_key:'curriculum'}}     </td>
+" style="width:40px; height:44px;"> <strong>   {% trans  'Curriculum' %} </strong> : {{nd.attribute_set | get_key:'curriculum'}}     </td>
          </tr>
   <tr>
 
       <td data-toggle="tooltip" title="Language Support">
 <img src="/static/ndf/noun_Language_3091153.png" style="width:40px; height:44px;">
-  {% trans  'Language Support' %}: {{nd.attribute_set | get_key:'language_support'  }}     </td>
+ <strong> 
+  {% trans  'Language Support' %} </strong>: {{nd.attribute_set | get_key:'language_support'  }}     </td>
          </tr>
 
   <tr>
 
       <td data-toggle="tooltip" title="Device Compatibility"> <img src="/static/ndf/noun_platform_195844.png" style="width:40px; height:44px;">
- {% trans  'Device Compatibility' %}: {{nd.attribute_set | get_key:'device_compatability'}}     </td>
+ <strong> 
+ {% trans  'Device Compatibility' %} </strong>: {{nd.attribute_set | get_key:'device_compatability'}}     </td>
          </tr>
 
  <tr>
       <td data-toggle="tooltip" title="Offline Access"> <img src="/static/ndf/noun_offline_2806022.png" style="width:40px; height:44px;">
- {% trans  'Offline Access' %}: {{nd.attribute_set | get_key:'offline_access'}}     </td>
+ <strong>  {% trans  'Offline Access' %}  </strong> : {{nd.attribute_set | get_key:'offline_access'}}     </td>
          </tr>
 
   <tr>
 
       <td data-toggle="tooltip" title="OS Compatibility"> <img src="/static/ndf/noun_Operating System Layout_112838.png" style="width:40px; height:44px;">
-   {% trans  'OS Compatibility' %}: {{nd.attribute_set | get_key:'os_compatability'}}     </td>
+ <strong>
+   {% trans  'OS Compatibility' %} </strong>: {{nd.attribute_set | get_key:'os_compatability'}}     </td>
          </tr>  <tr>
 
       <td data-toggle="tooltip" title="Accessibility"> <img src="/static/ndf/noun_Accessibility_975764.svg" style="width:40px; height:44px;">
-  {% trans   'Accessibility' %}: {{nd.attribute_set | get_key:'accessibility'}}     </td>
+  <strong>   {% trans   'Accessibility' %} </strong>: {{nd.attribute_set | get_key:'accessibility'}}     </td>
          </tr> 
   <tr>
 
       <td data-toggle="tooltip" title="License">
 <img src="/static/ndf/noun_copyright_62294.png" style="width:40px; height:44px;">
 
-
-  {% trans  'License' %}: {{nd.attribute_set | get_key:'license'}}    </td>
+<strong>
+  {% trans  'License' %} </strong>: {{nd.attribute_set | get_key:'license'}}    </td>
          </tr>  <tr>
 
       <td data-toggle="tooltip" title="Topics">
 
  <img src="/static/ndf/noun_Tag_887310.png                                                                                                    
 " style="width:40px; height:44px;">
-  {% trans  'Topics' %}: {% for each_attr in nd.tags %}
+  <strong>  {% trans  'Topics' %} </strong>: {% for each_attr in nd.tags %}
         {{each_attr}}
         {% if not forloop.last %},
         {% endif %}
@@ -376,13 +380,13 @@ data-content="  If the resource expressly fosters or has features for collaborat
    <tr>
 
       <td data-toggle="tooltip" title="Curator"><img src="/static/ndf/noun_Work_2413136.png" style="width:40px; height:44px;">
-  {% trans  'Curator'  %}: {{nd.attribute_set | get_key:'curated_by'}}     </td>
+ <strong>   {% trans  'Curator'  %} </strong>: {{nd.attribute_set | get_key:'curated_by'}}     </td>
          </tr>
   <tr> 
 
          <td data-toggle="tooltip" title="Updated"> 
  <i class="fas fa-calendar-alt fa-lg  m-2" >  </i>
-   {% trans     'Date of curation' %}: {{ nd.last_update | get_date_format}}
+<strong>   {% trans     'Date of curation' %} </strong>: {{ nd.last_update | get_date_format}}
    </td>
  </tr> 
   <td > 

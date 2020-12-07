@@ -156,7 +156,7 @@ YOU CAN READ THE COMPLETE CLIxOER HONOR CODE HERE.
               <div class="row card-cool fake-cool" >
  {% for each in k_oers %}
 
-<a href="{% url 'cooloerpreview'  each.name   %}"  target="_blank" class="fake-link ">
+<a href="{% url 'cooloerpreview'  each.name|lower     %}"  target="_blank" class="fake-link ">
                  <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4  mt-5"  id="{{each.id}}">
 
 
@@ -225,7 +225,7 @@ YOU CAN READ THE COMPLETE CLIxOER HONOR CODE HERE.
                               <div class="col-4" >
                                 <span  tabindex="7" >
 
-<a  href="{% url 'cooloerpreview'  each.name  %}"  target="_blank"    data-toggle="tooltip" title="Preview"  class="stretched-link fick" >      
+<a  href="{% url 'cooloerpreview'  each.name|lower  %}"  target="_blank"    data-toggle="tooltip" title="Preview"  class="stretched-link fick" >      
 
                                   <i class="fa fa-eye fa-lg"   data-toggle="modal" data-target="#{{each.id}}"> </i> 
  {{cnt_nd.total_previewcnt}}
@@ -265,7 +265,7 @@ function share_function(clicked_element_data,notificationTag,notificationText){
 
       if(clicked_element_data){
         id = clicked_element_data
-        tid = id +  "{{each.language.0}}"
+        tid = id.toLowerCase() +  "{{each.language.0}}"
 console.log(clicked_element_data);
         var id = clicked_element_data;
         var ln ="{{each.language.0}}";
@@ -385,7 +385,7 @@ Tweet this</a>
                     <hr>
 		                      <div class="row card-cool fake-cool">
  {% for each in c_oers %}
-<a href="{% url 'cooloerpreview'  each.name  %}" target="_blank" class="fake-link">
+<a href="{% url 'cooloerpreview'  each.name|lower  %}" target="_blank" class="fake-link">
                  <div class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-4  mt-5"  id="{{each.id}}">
 
                   <div class="card shadow border-rounded " tabindex="7" style="width: 16rem; ">
@@ -450,7 +450,7 @@ Tweet this</a>
                               <div class="col-4">
                                 <span  tabindex="7">
 
-<a  href="{% url 'cooloerpreview'  each.name  %}" target="_blank"   data-toggle="tooltip" title="Preview"  class="stretched-link href">
+<a  href="{% url 'cooloerpreview'  each.name|lower  %}" target="_blank"   data-toggle="tooltip" title="Preview"  class="stretched-link href">
 
                                   <i class="fa fa-eye fa-lg"   data-toggle="modal" data-target="#{{each.id}}"> </i> 
  
@@ -487,7 +487,7 @@ function share_function(clicked_element_data){
 
       if(clicked_element_data){
 id = clicked_element_data
-tid = id
+tid = id.toLowerCase()
 console.log(clicked_element_data);
         var id = clicked_element_data;
 
@@ -504,7 +504,7 @@ console.log(clicked_element_data);
 
 </script>
                         <div class="dropdown-menu font-share " href="" aria-labelledby="dropdownMenuLink" >
-                          <a class="dropdown-item "  onclick="share_function(id)"  id="{{each.name}}"  >
+                          <a class="dropdown-item "  onclick="share_function(id)"  id="{{each.name|lower}}"  >
 
 <i class="fas fa-copy" ></i>
  Copy Link
@@ -589,7 +589,7 @@ Tweet this</a>
 		        
               <div class="row card-cool fake-cool">
  {% for each in t_oers %}
-<a href="{% url 'cooloerpreview'  each.name  %}" target="_blank" class="fake-link">
+<a href="{% url 'cooloerpreview'  each.name|lower  %}" target="_blank" class="fake-link">
                  <div class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-4  mt-5"  id="{{each.id}}">
 
                   <div class="card shadow border-rounded " tabindex="7" style="width: 16rem;">
@@ -652,7 +652,7 @@ Tweet this</a>
                               <div class="col-4" >
                                 <span  tabindex="7">
 
-<a  href="{% url 'cooloerpreview'  each.name  %}"  target="_blank"   data-toggle="tooltip" title="Preview"  class="stretched-link">
+<a  href="{% url 'cooloerpreview'  each.name|lower  %}"  target="_blank"   data-toggle="tooltip" title="Preview"  class="stretched-link">
 
                                   <i class="fa fa-eye fa-lg"   data-toggle="modal" data-target="#{{each.id}}">  </i>
   {{cnt_nd.total_previewcnt}}
@@ -690,7 +690,7 @@ function share_function(clicked_element_data){
 
       if(clicked_element_data){
         id = clicked_element_data
-        tid = id
+        tid = id.toLowerCase()
 console.log(clicked_element_data);
         var id = clicked_element_data;
 

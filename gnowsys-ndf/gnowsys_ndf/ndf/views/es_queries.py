@@ -83,20 +83,21 @@ def cool_resourcelist(request):
     q = Q('match', name = 'home')
     s1 = Search(using=es, index='nodes',doc_type="node").query(q)
     s2 = s1.execute()
-    results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name='COOL-OER')
-    if len(results) ==0:
-        obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=s2[0].id,visitednode_name='COOL-OER',preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
-        obj.save()
-        print "hit_counter object saved"
-    else:
-        obj1 = results[0]
-        #print "else:",obj1.visitednode_name,obj1.visit_count                                                                                                          
-        if obj1.visit_count == 0:
-            obj1.visit_count = 1
-            obj1.save()
+    if 'sessionid' in request.COOKIES.keys():
+        results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name='COOL-OER')
+        if len(results) ==0:
+            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=s2[0].id,visitednode_name='COOL-OER',preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
+            obj.save()
+            print "hit_counter object saved"
         else:
-            obj1.visit_count += 1
-            obj1.save()
+            obj1 = results[0]
+            #print "else:",obj1.visitednode_name,obj1.visit_count                                                                                                      
+            if obj1.visit_count == 0:
+                obj1.visit_count = 1
+                obj1.save()
+            else:
+                obj1.visit_count += 1
+                obj1.save()
 
     print subject,level,rsrc_type
     with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/cool_resources_details.json','r') as json_file:
@@ -336,17 +337,18 @@ def cool_oer_preview(request,node_id):
     
     with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/cool_resources_details.json','r') as json_file:
                         coolresourcedata = json.load(json_file)
-    results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name=nd.name)
-    if len(results) ==0:
-        obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=nd.id,visitednode_name=nd.name,preview_count=1,visit_count=0,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
-        obj.save()
-        print "hit_counter object saved"
-    else:
-        obj1 = results[0]
-        #print "else:",obj1.visitednode_name,obj1.visit_count                                                                                                          
-        if obj1.preview_count == 0:
-            obj1.preview_count = 1
-            obj1.save()
+    if 'sessionid' in request.COOKIES.keys():
+        results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name=nd.name)
+        if len(results) ==0:
+            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=nd.id,visitednode_name=nd.name,preview_count=1,visit_count=0,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
+            obj.save()
+            print "hit_counter object saved"
+        else:
+            obj1 = results[0]
+            #print "else:",obj1.visitednode_name,obj1.visit_count                                                                                                      
+            if obj1.preview_count == 0:
+                obj1.preview_count = 1
+                obj1.save()
     #request.LANGUAGE_CODE = lang
     eng_nd = ''
     if 'en' in nd.language:
@@ -390,17 +392,18 @@ def cool_incr_explorecnt(request):
     link = request.POST.get('href_link')
     print "link:",link
     nd = get_node_by_id(node_id)
-    results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name=nd.name)
-    if len(results) ==0:
-        obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=nd.id,visitednode_name=nd.name,preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
-        obj.save()
-        print "hit_counter object saved"
-    else:
-        obj1 = results[0]
-        #print "else:",obj1.visitednode_name,obj1.visit_count                                                                                                          
-        if obj1.visit_count == 0:
-            obj1.visit_count = 1
-            obj1.save()
+    if 'sessionid' in request.COOKIES.keys():
+        results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name=nd.name)
+        if len(results) ==0:
+            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=nd.id,visitednode_name=nd.name,preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
+            obj.save()
+            print "hit_counter object saved"
+        else:
+            obj1 = results[0]
+            #print "else:",obj1.visitednode_name,obj1.visit_count                                                                                                      
+            if obj1.visit_count == 0:
+                obj1.visit_count = 1
+                obj1.save()
     print ("redirecting to link:",link)
     return redirect(link)
 def site_contact(request):
@@ -684,20 +687,21 @@ def coolpage(request):
     s1 = Search(using=es, index='nodes',doc_type="node").query(q)
     s2 = s1.execute()
     banner_pics1 = ['/static/ndf/OER_1200_300_Slider_1.jpg','/static/ndf/OER_1200_300_Slider_2.jpg','/static/ndf/OER_1200_300_Slider_3.jpg','/static/ndf/OER_1200_300_Slider_4.jpg','/static/ndf/OER_1200_300_Slider_5.jpg','/static/ndf/COOL_website_Banner_Banner_1200-300.png']
-    results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name='TISS-COOL')
-    if len(results) ==0:
-        obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id = s2[0].id,visitednode_name='TISS-COOL',preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
-        obj.save()
-        print "hit_counter object saved"
-    else:
-        obj1 = results[0]
-        #print "else:",obj1.visitednode_name,obj1.visit_count                                                                                                          
-        if obj1.visit_count == 0:
-            obj1.visit_count = 1
-            obj1.save()
+    if 'sessionid' in request.COOKIES.keys():
+        results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name='TISS-COOL')
+        if len(results) ==0:
+            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id = s2[0].id,visitednode_name='TISS-COOL',preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
+            obj.save()
+            print "hit_counter object saved"
         else:
-            obj1.visit_count += 1
-            obj1.save()
+            obj1 = results[0]
+            #print "else:",obj1.visitednode_name,obj1.visit_count                                                                                                      
+            if obj1.visit_count == 0:
+                obj1.visit_count = 1
+                obj1.save()
+            else:
+                obj1.visit_count += 1
+                obj1.save()
 
     req_context = RequestContext(request, {
                                     'title':'COOL','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics1})
@@ -768,17 +772,18 @@ def explore_item(request,group_id):
     link = request.POST.get('href_link')
     print "inside explore link",node_id,link
     nd = get_node_by_id(node_id)
-    results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name=nd.name)
-    if len(results) ==0:
-        obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=nd.id,visitednode_name=nd.name,preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
-        obj.save()
-        print "hit_counter object saved"
-    else:
-        obj1 = results[0]
-        print "else:",obj1.visitednode_name,obj1.visit_count
-        if obj1.visit_count == 0:
-            obj1.visit_count = 1
-            obj1.save()
+    if 'sessionid' in request.COOKIES.keys():
+        results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name=nd.name)
+        if len(results) ==0:
+            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=nd.id,visitednode_name=nd.name,preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
+            obj.save()
+            print "hit_counter object saved"
+        else:
+            obj1 = results[0]
+            print "else:",obj1.visitednode_name,obj1.visit_count
+            if obj1.visit_count == 0:
+                obj1.visit_count = 1
+                obj1.save()
     return redirect(link)
 
 def get_file(md5_or_relurl=None):

@@ -1,3 +1,9 @@
+
+
+
+
+
+
 {% load i18n %}
 {% load ndf_tags %}
 <!-- navbar 
@@ -44,6 +50,10 @@ text-decoration: blink;
     font-size: 100%;
     color: #713558;
 }
+.old-bv {
+    font-size: 14px;
+    background-color: #212121;
+}
 #toolbar{
 width:100%;
 display:inline-block;
@@ -72,7 +82,13 @@ background-color: none;
     </div>
  </div>
 -->
-
+  <div class="collapse" id="collapseExample">
+               
+                    <span class="float-right">      <button class="btn text-white right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            X
+                          </button></span> 
+                          <span class="d-block px-3 py-2 text-center text-bold text-white old-bv">Please give feedback and help us improve. Take <a href="https://forms.gle/32RNzpNnVbvzDPXa6" target="_blank"> <strong> quick survey. </strong> </a></span>          
+            </div>
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 
   <div class="carousel-inner">
@@ -307,7 +323,7 @@ title="{% trans "Open Education Resources" %}" ></i>
 <!-- Navbar -->
 </nav> 
 <style>
-.carousel-caption {
+q.carousel-caption {
     position: absolute;
     right: 15%;
     bottom: 54% !important;
@@ -370,6 +386,17 @@ if (location.hash) shiftWindow();
 window.addEventListener("hashchange", shiftWindow);
 */
 
+$(window).on('load',function(){
+  if (!sessionStorage.getItem('hide-bar')){
+   $('#collapseExample').collapse({
+  show: true
+});
+    sessionStorage.setItem('hide-bar', 'true');
+  }
+});
+
+//$('#collapseExample').collapse({
+//  show: true })
 
 $('.navbar-nav .nav-link  .fun-name').each(function(){
     if(window.location.href.indexOf($(this).find('a:first').attr('href'))>-1)

@@ -20,7 +20,7 @@
 <meta property="twitter:url"  content="https://clixoer.tiss.edu/"/>
 <meta property="twitter:card" content="summery_large_image"/>
 
-<meta property="twitter:description" content="Connected Learning Initiative (CLIx) or clixoer is a bold and innovative intervention,               
+<meta property="twitter:description" content="Connected Learning Initiative (CLIx) or clixoer is a bold and innovative intervention,             
  with global relevance for quality teaching & learning in the public education system of India."/>
 
 
@@ -41,20 +41,22 @@
 
    {% if title = 'COOL'  %}
 <meta name="description" content="As India faces a disruptive moment in education, teachers and students have the challenge of continuing to teach and learn during the lockdown. Technology can be an enabler in this moment of crisis. We, at the Centre for Education Innovation and Action Research, bring to you a wide range of resources to help you continue teaching and learning during this time. ">
-<meta property="og:description" content="The Connected Open and Online Learning (COOL) is our response to COVID-19 through which we hope to reach out to teachers, teacher educators and students ">
+<meta property="og:description" content="The Connected Open and Online Learning (COOL) is our response to COVID-19 through which we hope to 
+reach out to teachers, teacher educators and students ">
 <meta name="google-site-verification" content="9UGqhcIWYPvS5Iv_-e88q12Mgej83bsaRiObLqwMI6k" />
 <meta property="og:site_name" content="clixoer" />
 <meta property="og:title" content="TISS-COOL"/>
 <meta property="og:image" content="https://clixoer.tiss.edu/static/ndf/OER_1200_300_Slider_2.jpg" />
 <meta porperty="og:image:width" content="720"/>
-<meta property="og:image:height" content="320" />
+<meta property="og:image:height" content="360" />
 <meta property="twitter:title" content="TISS-OER"/>
 <meta property="twitter:url"  content="https://clixoer.tiss.edu/cool"/>
 <meta property="twitter:card" content="summery_large_image"/>
-<meta property="twitter:description" content="The Connected Open and Online Learning (COOL) is our response to COVID-19 through which we hope to reach out to teachers, teacher educators and students"/>
+<meta property="twitter:description" content="The Connected Open and Online Learning (COOL) is our response to COVID-19 through which we hope
+to reach out to teachers, teacher educators and students"/>
 <meta property="twitter:image" content="https://clixoer.tiss.edu/static/ndf/OER_1200_300_Slider_2.jpg" />
 <meta porperty="twitter:image:width" content="720"/>
-<meta property="twitter:image:height" content="320" />
+<meta property="twitter:image:height" content="360" />
 <!--
 <meta property="og:image" content="https://clixoer.tiss.edu/static/ndf/images/COOLLOGO.png" />
 -->
@@ -70,15 +72,15 @@
 <meta property="og:title" content="COOL OER"/>
 <meta property="og:image" content="https://clixoer.tiss.edu/static/ndf/OER_1200_300_Slider_3.jpg" />
 <meta porperty="og:image:width" content="720"/>
-<meta property="og:image:height" content="320" />
+<meta property="og:image:height" content="360" />
 <meta property="twitter:title" content="COOL OER"/>
 <meta property="twitter:url"  content="https://clixoer.tiss.edu/cool/oer"/>
 <meta property="twitter:card" content="summery_large_image"/>
 <meta property="twitter:description" content="The Connected Open and Online Learning (COOL) is our response to COVID-19 through which we hope
- to reach out to teachers, teacher educators and students"/>
+to reach out to teachers, teacher educators and students"/>
 <meta property="twitter:image" content="https://clixoer.tiss.edu/static/ndf/OER_1200_300_Slider_3.jpg" />
 <meta porperty="twitter:image:width" content="720"/>
-<meta property="twitter:image:height" content="320" />
+<meta property="twitter:image:height" content="360" />
 <!--
 <meta property="og:image" content="https://clixoer.tiss.edu/static/ndf/images/COOLLOGO.png" />
 
@@ -191,7 +193,6 @@
     top: 5px;
 }
 
-
 body{
 height: 100% !important;
 }
@@ -250,6 +251,7 @@ position: absolute;
 top: 48%;
 left: 48%;
 }
+
 
 
 
@@ -319,7 +321,24 @@ left: 48%;
   {% else %}
      {% include "ndf/footer.html" %}
    {% endif %}
-
+<!-- Button trigger modal -->
+<!-- Modal 
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-xl  modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Thank you for your support! You Made our First Year!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       <div class="modal-body">
+ <img class="img-fluid" src="/static/ndf/CLIxOER Anniversary_SM_v3-02.jpg" >       
+<button class="btn btn-dark " > <a href="https://forms.gle/32RNzpNnVbvzDPXa6" target="_blank">  Take survey to gives us feedback </a>  </button>  
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenterErrorPage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -345,6 +364,12 @@ left: 48%;
 
 </body>
 <script>
+$(window).on('load',function(){
+  if (!sessionStorage.getItem('shown-modal')){
+    $('#Modal').modal('show');
+    sessionStorage.setItem('shown-modal', 'true');
+  }
+});
 
 
 
@@ -440,10 +465,22 @@ $(function () {
 })
 
 
-
+//$('#Modal').modal('show')
 $(function () {
   $('[data-toggle="popover"]').popover()
 })
+
+$('#Modal').on('shown.bs.modal', function (e) {
+  // do something...
+   $('html').css('overflow' , 'hidden');
+   
+});
+$('#Modal').on('hide.bs.modal', function (e) {
+  // do something...
+   $('html').css('overflow-y' , 'auto');
+
+});
+
 
 $(document).ready(function(){
 $(' .navbar-nav .nav-item').click(function(){
@@ -451,7 +488,6 @@ $(' .navbar-nav .nav-item').click(function(){
     $(this).addClass('active');
 })
 });
-
 
 
 $(document).ready(function() {

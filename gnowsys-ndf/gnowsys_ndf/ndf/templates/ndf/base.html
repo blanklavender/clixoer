@@ -364,14 +364,13 @@ left: 48%;
 
 </body>
 <script>
+
 $(window).on('load',function(){
   if (!sessionStorage.getItem('shown-modal')){
     $('#Modal').modal('show');
     sessionStorage.setItem('shown-modal', 'true');
   }
 });
-
-
 
 $(document).on('click', '[data-toggle="lightbox"]', function(event) {
 event.preventDefault();

@@ -166,7 +166,7 @@ YOU CAN READ THE COMPLETE CLIxOER HONOR CODE HERE.
 -->
 {% with rsrc_type=each.attribute_set|get_key:'resource_type' %}
      {% get_resource_img rsrc_type as img %} 
- <img src="/static/ndf/{{img}}" style="width:14%;" class="img-fluid"> {{rsrc_type}} </span>
+ <img src="/static/ndf/{{img}}" alt="{{rsrc_type}}" style="width:14%;" class="img-fluid"> {{rsrc_type}} </span>
 {% endwith %}
 </div>
 
@@ -179,7 +179,7 @@ YOU CAN READ THE COMPLETE CLIxOER HONOR CODE HERE.
                         <img
                           src="/media/{{grel_dict.grel_node.if_file.original.relurl}}"
                           class="card-img-top text-center mx-auto" alt="{{each.altnames}}"
-                         style="width:150px; height: 150px; text-align:center;"
+                          style="width:150px; height: 150px; text-align:center;"
                         />
 </div>
 		           {% endif %}
@@ -209,7 +209,7 @@ YOU CAN READ THE COMPLETE CLIxOER HONOR CODE HERE.
                           <p  tabindex="7"  data-toggle="tooltip" title="Tags">
 
               <img src="/static/ndf/noun_Tag_887310.png               
-			" style="width:20px; height:24px; " >
+			" alt="  Tags: " style="width:20px; height:24px; " >
   
 	      <span style="font-size:12px;">      Tags:  </span>
 	          {% for each_attr in each.tags %}
@@ -391,7 +391,7 @@ Tweet this</a>
 
 <span class="  m-2  text-white">  {% with rsrc_type=each.attribute_set|get_key:'resource_type' %}
      {% get_resource_img rsrc_type as img %}
- <img src="/static/ndf/{{img}}" style="width:14%" class="img-fluid">   {{rsrc_type}}
+ <img src="/static/ndf/{{img}}" alt="{{rsrc_type}}"  style="width:14%" class="img-fluid">   {{rsrc_type}}
  {% endwith %}  
 </span>
 </div>
@@ -426,14 +426,14 @@ Tweet this</a>
                             </div>
 
                           <p tabindex="7">
-                               <img src="/static/ndf/noun_Language_3091153.png" style="width:40px; height:44px;">
+                               <img src="/static/ndf/noun_Language_3091153.png" alt="Language"  style="width:40px; height:44px;">
 
                             <span class="badge badge-light"    data-toggle="tooltip" title="Languages">   Language:  {{each.language.1}} </span>
                           </p>
                           <p style="font-size:12px;"  tabindex="7" >
 
-              <img src="/static/ndf/noun_Tag_887310.png                                                                                                                 
-                        " style="width:20px; height:24px;">
+              <img src="/static/ndf/noun_Tag_887310.png                                                                                                                
+                        " alt="Tag" style="width:20px; height:24px;">
 <span style="font-size:12px"> 
  
               Tags:  </span>
@@ -594,7 +594,8 @@ Tweet this</a>
 <div class="ribbon-2"   data-toggle="tooltip" title="Resource Type" >
 <span class="  m-2  text-white"> {% with rsrc_type=each.attribute_set|get_key:'resource_type' %}
      {% get_resource_img rsrc_type as img %}
- <img src="/static/ndf/{{img}}" style="width:14%" class="img-fluid">   {{rsrc_type}}
+ <img src="/static/ndf/{{img}}" alt=" {{rsrc_type}}
+" style="width:14%" class="img-fluid">   {{rsrc_type}}
  {% endwith %}  
 </span>
 </div>

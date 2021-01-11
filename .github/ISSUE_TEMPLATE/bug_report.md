@@ -8,7 +8,14 @@ assignees: ''
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+In Order to 
+As a 
+I Want to 
+
+**Test Case**
+Given
+When 
+Then 
 
 **To Reproduce**
 Steps to reproduce the behavior:

@@ -32,7 +32,7 @@ from gnowsys_ndf.ndf.models import GSystemType
 
 gfs = HashFS('/data/media/', depth=3, width=1, algorithm='sha256')
 
-banner_pics1 = ['/static/ndf/Website Banners/Landing Page/elibrary1.png','/static/ndf/Website Banners/Landing Page/elibrary2.png','/static/ndf/elibrary 6.1.png','/static/ndf/Website Banners/Landing Page/elibrary4.png','/static/ndf/Website Banners/Landing Page/elibrary5.png','/static/ndf/Website Banners/Landing Page/elibrary6.png','/static/ndf/COOL_website_Banner_Banner_1200-300.png']
+banner_pics1 = ['/static/ndf/Website Banners/Landing Page/Revised_imgs/e-Library-1_mod.jpg','/static/ndf/Website Banners/Landing Page/elibrary2.png','/static/ndf/elibrary 6.1.png','/static/ndf/Website Banners/Landing Page/elibrary4.png','/static/ndf/Website Banners/Landing Page/Revised_imgs/e-Library-5_mod.png','/static/ndf/Website Banners/Landing Page/elibrary6.png','/static/ndf/Website Banners/COOL-website-slider/COOL_website_Banner_latest.png']
 
 trans_rel_type = '5752ad572e01310a05dca50f'
 
@@ -41,7 +41,7 @@ def cool_resourcelist(request):
     subject = {'Science':0,'Mathematics':0,'art':0,'language':0,'MultipleSubjects':0}
     rsrc_type = {'Hands_On':0,'Simulation':0,'Tool':0,'Forum':0}
     level = {'K-12':0,'6-12':0}
-    banner_pics1 = ['/static/ndf/OER_1200_300_Slider_1.jpg','/static/ndf/OER_1200_300_Slider_2.jpg','/static/ndf/OER_1200_300_Slider_3.jpg','/static/ndf/OER_1200_300_Slider_4.jpg','/static/ndf/OER_1200_300_Slider_5.jpg','/static/ndf/COOL_website_Banner_Banner_1200-300.png']
+    banner_pics1 = ['/static/ndf/OER_1200_300_Slider_1.jpg','/static/ndf/OER_1200_300_Slider_2.jpg','/static/ndf/OER_1200_300_Slider_3.jpg','/static/ndf/OER_1200_300_Slider_4.jpg','/static/ndf/OER_1200_300_Slider_5.jpg','/static/ndf/Website Banners/COOL-website-slider/COOL_website_Banner_latest.png']
     print "in cool resource list"
     index = 'nodes'
     doc_type = 'node'
@@ -848,7 +848,7 @@ def readDoc(request, group_id,file_id):
 
 
 def about(request,group_id):
-    banner_pics = ['/static/ndf/Website Banners/About/About1.png','/static/ndf/Website Banners/About/About2.png','/static/ndf/Website Banners/About/About3.png','/static/ndf/Website Banners/About/About4.png']
+    banner_pics = ['/static/ndf/Website Banners/About/about_2_mod.png','/static/ndf/Website Banners/About/About2.png','/static/ndf/Website Banners/About/About3.png','/static/ndf/Website Banners/About/About4.png']
     template = 'ndf/about.html'
     return render_to_response(template, {'group_id':group_id , 'bannerpics':banner_pics},
                                 context_instance=RequestContext(request)   )

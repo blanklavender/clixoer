@@ -1,9 +1,26 @@
-from base_imports import *
-from node import Node, node_collection
-from filehive import filehive_collection
+
+from .base_imports import *
+from .node import Node, node_collection
+from .filehive import filehive_collection
 
 
-@connection.register
+#@connection.register
+
+class imglink(EmbeddedDocument):
+    id=ObjectIdField(),
+    relurl=StringField()
+
+class legalinfo(EmbeddedDocument):
+    copyright=StringField(default = GSTUDIO_DEFAULT_COPYRIGHT),
+    license=StringField(default = GSTUDIO_DEFAULT_LICENSE)
+
+class iffile(EmbeddedDocument):
+    mime_type=StringField(),
+    original=EmbeddedDocumentField('imglink'),
+    mid=EmbeddedDocumentField('imglink'),
+    thumbnail=EmbeddedDocumentField('imglink')
+	
+
 class GSystem(Node):
     """GSystemType instance
     """
@@ -12,44 +29,25 @@ class GSystem(Node):
     image_sizes_name = ['original', 'mid', 'thumbnail']
     image_sizes = {'mid': (500, 300), 'thumbnail': (128, 128)}
     sys_gen_image_prefix = 'gstudio-'
-
-    structure = {
-        'attribute_set': [dict],    # ObjectIds of GAttributes
-        'relation_set': [dict],     # ObjectIds of GRelations
-        'module_set': [dict],       # Holds the ObjectId & SnapshotID (version_number)
-                                        # of collection elements
-                                        # along with their sub-collection elemnts too
-        'if_file': {
-                        'mime_type': basestring,
-                        'original': {'id': ObjectId, 'relurl': basestring},
-                        'mid': {'id': ObjectId, 'relurl': basestring},
-                        'thumbnail': {'id': ObjectId, 'relurl': basestring}
-                    },
-        'author_set': [int],        # List of Authors
-        'annotations': [dict],      # List of json files for annotations on the page
-        'origin': [],                # e.g:
-                                        # [
-                                        #   {"csv-import": <fn name>},
-                                        #   {"sync_source": "<system-pub-key>"}
-                                        # ]
-        # Replace field 'license': basestring with
-        # legal: dict
-        'legal': {
-                    'copyright': basestring,
-                    'license': basestring
-                    }
-    }
-
+    attribute_set=ListField(DictField(), default=dict),    # ObjectIds of GAttributes                                                                                 
+    relation_set=ListField(DictField(), default=dict),     # ObjectIds of GRelations                                                                                   
+    module_set=ListField(DictField(), default=dict),       # Holds the ObjectId & SnapshotID (version_number)                                                          
+                                        # of collection elements                                                                                                      
+                                        # along with their sub-collection elemnts too                                                                                  
+    if_file=EmbeddedDocumentField('iffile'),
+    author_set=ListField(IntField),        # List of Authors
+    annotations=ListField(DictField(), default=dict),      # List of json files for annotations on the page                                                            
+    origin=ListField(default =list),                # e.g:                                 
+                                        # [                                                                                                                            
+                                        #   {"csv-import": <fn name>},                                                                                                 
+                                        #   {"sync_source": "<system-pub-key>"}                                                                                       
+                                        # ]                                                                                                                            
+        # Replace field 'license=basestring with                                                                                                                      
+        # legal: dict                                                                                                                                                  
+    legal=EmbeddedDocumentField('legalinfo')
     use_dot_notation = True
 
-    # default_values = "CC-BY-SA 4.0 unported"
-    default_values = {
-                        'legal': {
-                            'copyright': GSTUDIO_DEFAULT_COPYRIGHT,
-                            'license': GSTUDIO_DEFAULT_LICENSE
-                        }
-                    }
-
+   
     def fill_gstystem_values(self,
                             request=None,
                             attribute_set=[],
@@ -75,11 +73,11 @@ class GSystem(Node):
                                     '_type': 'GSystem',
                                     'if_file.original.id': existing_fh_obj._id
                                 })
-            print kwargs
+            print(kwargs)
             if kwargs.has_key('unique_gs_per_file') and kwargs['unique_gs_per_file']:
 
                 if existing_file_gs:
-                    print "Returning:: "
+                    print("Returning:: ")
                     return existing_file_gs
 
         self.fill_node_values(request, **kwargs)
@@ -217,7 +215,7 @@ class GSystem(Node):
             if md5_or_relurl:
                 file_blob = gfs.open(md5_or_relurl)
         except Exception as e:
-                print "File '", md5_or_relurl, "' not found: ", e
+                print("File '", md5_or_relurl, "' not found: ", e)
 
         return file_blob
 

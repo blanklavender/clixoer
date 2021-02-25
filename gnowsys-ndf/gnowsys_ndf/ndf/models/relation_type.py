@@ -1,33 +1,25 @@
-from base_imports import *
-from node import *
+from .base_imports import *
+from .node import *
 
-@connection.register
+#@connection.register
 class RelationType(Node):
-    structure = {
-        'inverse_name': unicode,
-        'subject_type': [ObjectId],  # ObjectId's of Any Class
-        'object_type': [OR(ObjectId, list)],  # ObjectId's of Any Class
-        'subject_scope': list,
-        'object_scope': list,
-        'relation_type_scope': list,
-        'subject_cardinality': int,
-        'object_cardinality': int,
-        'subject_applicable_nodetype': basestring,  # NODE_TYPE_CHOICES [default (GST)]
-        'object_applicable_nodetype': basestring,
-        'slug': basestring,
-        'is_symmetric': bool,
-        'is_reflexive': bool,
-        'is_transitive': bool
-    }
-
-    required_fields = ['inverse_name', 'subject_type', 'object_type']
+    inverse_name=StringField(Required = True)
+    subject_type=ListField(ObjectIdField, Required = True, default = list)  # ObjectId's of Any Class                                                                 
+    object_type=ListField(ObjectIdField, Required = True, default = list)  # ObjectId's of Any Class                                                                  
+    subject_scope=ListField()
+    object_scope=ListField()
+    relation_type_scope=ListField()
+    subject_cardinality=IntField()
+    object_cardinality=IntField()
+    subject_applicable_nodetype=StringField()  # NODE_TYPE_CHOICES [default (GST)]                                                                                 
+    object_applicable_nodetype=StringField()
+    slug=StringField()
+    is_symmetric=BooleanField()
+    is_reflexive=BooleanField()
+    is_transitive=BooleanField()
     use_dot_notation = True
-    default_values = {
-                        'subject_scope': [],
-                        'object_scope': [],
-                        'relation_type_scope': [],
-                    }
 
+    use_dot_notation = True
     # User-Defined Functions ##########
     @staticmethod
     def append_relation(
@@ -69,7 +61,7 @@ class RelationType(Node):
             if ObjectId.is_valid(rel_type_node):
                 rel_type_node = node_collection.one({'_type': 'RelationType', '_id': ObjectId(rel_type_node)})
             else:
-                print "\n Invalid ObjectId: ", rel_type_node, " is not a valid ObjectId!!!\n"
+                print("\n Invalid ObjectId: ", rel_type_node, " is not a valid ObjectId!!!\n")
                 # Throw indicating the same
 
         left_or_right_subject_node = None

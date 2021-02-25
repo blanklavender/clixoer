@@ -1,43 +1,34 @@
-from base_imports import *
-from history_manager import HistoryManager
+from .base_imports import *
+from .history_manager import HistoryManager
 
-@connection.register
-class Filehive(DjangoDocument):
+#@connection.register
+class Filehive(Document):
     """
     Filehive class to hold any resource in file system.
     """
 
     objects = models.Manager()
     collection_name = 'Filehives'
-
-    structure = {
-        '_type': unicode,
-        'md5': basestring,
-        'relurl': basestring,
-        'mime_type': basestring,             # Holds the type of file
-        'length': float,
-        'filename': unicode,
-        'first_uploader': int,
-        'first_parent': ObjectId,
-        'uploaded_at': datetime.datetime,
-        'if_image_size_name': basestring,
-        'if_image_dimensions': basestring,
-        }
-
-    indexes = [
-        {
-            # 12: Single index
-            'fields': [
-                ('mime_type', INDEX_ASCENDING)
-            ]
-        }
-    ]
-
+    _type=StringField()
+    md5=StringField(Required = True)
+    relurl=StringField()
+    mime_type=StringField(Required = True)             # Holds the type of file                                                                                       
+    length=FloatField()
+    filename=StringField()
+    first_uploader=IntField()
+    first_parent=ObjectIdField()
+    uploaded_at=DateTimeField(default = datetime.datetime.now)
+    if_image_size_name=StringField()
+    if_image_dimensions=StringField()
+    meta = { 'collection' : 'filehives',
+       'indexes' : [
+            {
+             # 12: Single index                                                                                                                                        
+                'fields' : ['mime_type'],
+           }
+        ]
+     }
     use_dot_notation = True
-    required_fields = ['md5', 'mime_type']
-    default_values = {
-                        'uploaded_at': datetime.datetime.now
-                    }
 
 
     def __unicode__(self):
@@ -120,7 +111,7 @@ class Filehive(DjangoDocument):
 
             filehive_obj.md5                 = str(md5)
             filehive_obj.relurl              = str(addr_obj.relpath)
-            print "relurl",filehive_obj.relurl
+            print("relurl",filehive_obj.relurl)
             filehive_obj.mime_type           = str(file_metadata_dict['file_mime_type'])
             filehive_obj.length              = float(file_metadata_dict['file_size'])
             filehive_obj.filename            = unicode(file_metadata_dict['file_name'])
@@ -154,15 +145,15 @@ class Filehive(DjangoDocument):
             file_md5        = str(filehive_obj.md5)
             filehive_obj_id = str(filehive_obj._id)
 
-            print "\nDeleted filehive object having '_id': ", filehive_obj_id," from Filehive collection."
+            print("\nDeleted filehive object having '_id': ", filehive_obj_id," from Filehive collection.")
             filehive_obj.delete()
 
             if gfs.delete(file_md5):
-                print "\nDeleted physical file having 'md5': ", file_md5
+                print("\nDeleted physical file having 'md5': ", file_md5)
                 return True
 
         if gfs.delete(filehive_relurl):
-            print "\nDeleted physical file having 'relurl': ", filehive_relurl
+            print("\nDeleted physical file having 'relurl': ", filehive_relurl)
             return True
 
         return False
@@ -206,7 +197,7 @@ class Filehive(DjangoDocument):
                 file_size = file_blob.tell()
                 file_blob.seek(0)
         except Exception as e:
-            print "Exception in calculating file_size: ", e
+            print("Exception in calculating file_size: ", e)
             file_size = 0
 
         file_metadata_dict['file_size'] = file_size
@@ -220,7 +211,7 @@ class Filehive(DjangoDocument):
             try:
                 image_dimension_tuple = get_image_dimensions(file_blob)
             except Exception as e:
-                print "Exception in calculating file dimensions: ", e
+                print("Exception in calculating file dimensions: ", e)
                 pass
 
         if image_dimension_tuple:
@@ -308,7 +299,7 @@ class Filehive(DjangoDocument):
             try:
                 img = Image.open(StringIO(files.read()))
             except Exception as e:
-                print "Exception in opening file with PIL.Image.Open(): ", e
+                print("Exception in opening file with PIL.Image.Open(): ", e)
                 return None, None
 
             size_to_comp = size[0]
@@ -345,7 +336,7 @@ class Filehive(DjangoDocument):
             return mid_size_img, img_size
 
         except Exception as e:
-            print "Exception in converting image to mid size: ", e
+            print("Exception in converting image to mid size: ", e)
             return None
 
     def save(self, *args, **kwargs):
@@ -384,7 +375,7 @@ class Filehive(DjangoDocument):
                         rcs_obj.checkin(fp, 1, message.encode('utf-8'), "-i")
 
                 except Exception as err:
-                    print "\n DocumentError: This document (", self._id, ":", str(self.md5), ") can't be re-created!!!\n"
+                    print("\n DocumentError: This document (", self._id, ":", str(self.md5), ") can't be re-created!!!\n")
                     node_collection.collection.remove({'_id': self._id})
                     raise RuntimeError(err)
 
@@ -394,7 +385,7 @@ class Filehive(DjangoDocument):
                     rcs_obj.checkin(fp, 1, message.encode('utf-8'))
 
             except Exception as err:
-                print "\n DocumentError: This document (", self._id, ":", str(self.md5), ") can't be updated!!!\n"
+                print("\n DocumentError: This document (", self._id, ":", str(self.md5), ") can't be updated!!!\n")
                 raise RuntimeError(err)
 
         # --- END of storing Filehive JSON in RSC system ---

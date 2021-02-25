@@ -1,6 +1,6 @@
-from base_imports import *
-from models_utils import NodeJSONEncoder
-from db_utils import get_all_collection_child_names
+from .base_imports import *
+from .models_utils import NodeJSONEncoder
+from .db_utils import get_all_collection_child_names
 
 
 class HistoryManager():
@@ -86,10 +86,10 @@ class HistoryManager():
         # here n := hash_level_num
         collection_hash_dirs = ""
         for pos in range(0, RCS_REPO_DIR_HASH_LEVEL):
-            print pos
+            print(pos)
             collection_hash_dirs += \
                 (document_object._id.__str__()[-2**pos] + "/")
-            print collection_hash_dirs
+            print (collection_hash_dirs)
 
         file_path = \
             os.path.join(collection_dir, \
@@ -152,8 +152,8 @@ class HistoryManager():
         # from Filehive import Filehive
         # from Buddy import Buddy
         # Counter
-        print "inside cerate_or replace of history_manager"
-        print "docobject:",document_object,self
+        print ("inside cerate_or replace of history_manager")
+        print ("docobject:",document_object,self)
         # collection_list = ('MetaType', 'GSystemType', 'GSystem', 'AttributeType', 'GAttribute', 'RelationType', 'GRelation', 'Filehive', 'Buddy', 'Counter')
         collection_list = get_all_collection_child_names() 
         file_res = False    # True, if no error/exception occurred
@@ -211,7 +211,7 @@ class HistoryManager():
             # TODO: Throw/raise error having following message!
             # if document_object is None or
             # !isinstance(document_object, collection_list)
-            print "else"
+            print ("else")
             msg = " Following instance is either invalid or " \
             + "not matching given instances-type list " + str(collection_list) + ":-" \
             + "\n\tObjectId: " + document_object._id.__str__() \
@@ -236,16 +236,16 @@ class HistoryManager():
             json_data = version_file.read()
 
 	# assigning None value to key, which is not present in json_data compare to Node class keys
-	null = 0
-	import json
-	json_dict = json.loads(json_data)
-	json_node_keys = document_object.keys()
-	json_dict_keys = json_dict.keys()
-	diff_keys = list(set(json_node_keys)-set(json_dict_keys))
-	if diff_keys:
-		for each in diff_keys:
-			json_dict[each]=None
-	json_data = json.dumps(json_dict)
+        null = 0
+        import json
+        json_dict = json.loads(json_data)
+        json_node_keys = document_object.keys()
+        json_dict_keys = json_dict.keys()
+        diff_keys = list(set(json_node_keys)-set(json_dict_keys))
+        if diff_keys:
+            for each in diff_keys:
+                json_dict[each]=None
+        json_data = json.dumps(json_dict)
 
         # Converts the json-formatted data into python-specific format
         doc_obj = node_collection.from_json(json_data)
@@ -278,7 +278,7 @@ class HistoryManager():
                         doc_obj[k] = oid_ObjectId_list
 
                 except Exception as e:
-                    print "\n Exception for document's ("+str(doc_obj._id)+") key ("+k+") -- ", str(e), "\n"
+                    print ("\n Exception for document's ("+str(doc_obj._id)+") key ("+k+") -- ", str(e), "\n")
 
         return doc_obj
 
@@ -292,8 +292,8 @@ class HistoryManager():
         version_file_path = json_file_path + ',v'
         try:
             os.remove(version_file_path)
-            print "\nDeleted RCS json version file : ", version_file_path
+            print ("\nDeleted RCS json version file : ", version_file_path)
             os.remove(json_file_path)
-            print "\nDeleted RCS json file : ", json_file_path
+            print ("\nDeleted RCS json file : ", json_file_path)
         except Exception as e:
-            print "\nException occured while deleting RCS file for node '", node_obj._id.__str__(), "' : ", e
+            print ("\nException occured while deleting RCS file for node '", node_obj._id.__str__(), "' : ", e)

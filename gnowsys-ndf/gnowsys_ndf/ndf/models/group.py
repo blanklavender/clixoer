@@ -1,53 +1,50 @@
-from base_imports import *
-from node import *
-from gsystem import *
+from .base_imports import *
+from .node import *
+from .gsystem import *
 
-@connection.register
+def _val_grp_type(val):
+     if val not in TYPES_OF_GROUP:
+          raise ValidationError('group_type should be one of the predefined values')
+    
+def _val_edt_plcy(val):
+     if val not in EDIT_POLICY:                                                                                                                               
+          raise ValidationError('edit_policy should be one of the predefined values')
+
+def _val_sub_plcy(val):
+     if val not in SUBSCRIPTION_POLICY:                                                                                                                               
+          raise ValidationError('subscriptn policy should be one of the predefined values')
+
+def _val_vsb_plcy(val):
+     if val not in EXISTANCE_POLICY:                                                                                                                               
+          raise ValidationError('existance policy should be one of the predefined values')
+
+def _val_disc_plcy(val):
+     if val not in LIST_MEMBER_POLICY:                                                                                                                               
+          raise ValidationError('disclosure policy should be one of the predefined values')
+
+def _val_encrpt_plcy(val):
+     if val not in  ENCRYPTION_POLICY:                                                                                                                               
+          raise ValidationError('encrptn policy should be one of the predefined values')
+
+def _val_agncy_plcy(val):
+     if val not in GSTUDIO_GROUP_AGENCY_TYPES:                                                                                                                         
+          raise ValidationError('agency policy should be one of the predefined values')
+
+
+#@connection.register
 class Group(GSystem):
     """Group class to create collection (group) of members
     """
-
-    structure = {
-        'group_type': basestring,            # Types of groups - Anonymous, public or private
-        'edit_policy': basestring,           # Editing policy of the group - non editable,editable moderated or editable non-moderated
-        'subscription_policy': basestring,   # Subscription policy to this group - open, by invitation, by request
-        'visibility_policy': basestring,     # Existance of the group - announced or not announced
-        'disclosure_policy': basestring,     # Members of this group - disclosed or not
-        'encryption_policy': basestring,     # Encryption - yes or no
-        'agency_type': basestring,           # A choice field such as Pratner,Govt.Agency, NGO etc.
-        'group_admin': [int],		         # ObjectId of Author class
-        'moderation_level': int,             # range from 0 till any integer level
-        'project_config': dict
-    }
-
-    use_dot_notation = True
-
-    # required_fields = ['_type', 'name', 'created_by']
-
-    default_values = {
-                        'group_type': TYPES_OF_GROUP_DEFAULT,
-                        'edit_policy': EDIT_POLICY_DEFAULT,
-                        'subscription_policy': SUBSCRIPTION_POLICY_DEFAULT,
-                        'visibility_policy': EXISTANCE_POLICY_DEFAULT,
-                        'disclosure_policy': LIST_MEMBER_POLICY_DEFAULT,
-                        'encryption_policy': ENCRYPTION_POLICY_DEFAULT,
-                        'agency_type': GSTUDIO_GROUP_AGENCY_TYPES_DEFAULT,
-                        'group_admin': [],
-                        'moderation_level': -1
-                    }
-
-    validators = {
-        'group_type': lambda x: x in TYPES_OF_GROUP,
-        'edit_policy': lambda x: x in EDIT_POLICY,
-        'subscription_policy': lambda x: x in SUBSCRIPTION_POLICY,
-        'visibility_policy': lambda x: x in EXISTANCE_POLICY,
-        'disclosure_policy': lambda x: x in LIST_MEMBER_POLICY,
-        'encryption_policy': lambda x: x in ENCRYPTION_POLICY,
-        'agency_type': lambda x: x in GSTUDIO_GROUP_AGENCY_TYPES,
-        # 'name': lambda x: x not in \
-        # [ group_obj['name'] for group_obj in \
-        # node_collection.find({'_type': 'Group'}, {'name': 1, '_id': 0})]
-    }
+    group_type=StringField(default = TYPES_OF_GROUP_DEFAULT,validation = _val_grp_type)        # Types of groups - Anonymous, public or private                        
+    edit_policy=StringField(default = EDIT_POLICY_DEFAULT,validation = _val_edt_plcy)      # Editing policy of the group - non editable,editable moderated or editablenon-moderated
+    subscription_policy=StringField(default = SUBSCRIPTION_POLICY_DEFAULT,validation = _val_sub_plcy)   # Subscription policy to this group - open, by invitation, by request                                                      
+    visibility_policy=StringField(default = EXISTANCE_POLICY_DEFAULT,validation = _val_vsb_plcy)    # Existance of the group - announced or not announced             
+    disclosure_policy=StringField(default = LIST_MEMBER_POLICY_DEFAULT,validation = _val_disc_plcy)     # Members of this group - disclosed or not                    
+    encryption_policy=StringField(default = ENCRYPTION_POLICY_DEFAULT,validation = _val_encrpt_plcy)     # Encryption - yes or no                                      
+    agency_type=StringField(default = GSTUDIO_GROUP_AGENCY_TYPES_DEFAULT,validation = _val_agncy_plcy)      # A choice field such as Pratner,Govt.Agency, NGO etc.    
+    group_admin=ListField(StringField(), default = list)                # ObjectId of Author class                                                                    
+    moderation_level=IntField(default = -1)            # range from 0 till any integer level                                                                           
+    project_config=DictField()
 
     @staticmethod
     def get_group_name_id(group_name_or_id, get_obj=False):
@@ -150,12 +147,12 @@ class Group(GSystem):
         """
 
         if (user.is_superuser) or (user.id == self.created_by) or (user.id in self.group_admin):
-            print "superuser:"
+            print ("superuser:")
             return True
         else:
             auth_obj = node_collection.one({'_type': 'Author', 'created_by': user.id})
             if auth_obj and auth_obj.agency_type == 'Teacher':
-                print "with auth_obj"
+                print ("with auth_obj")
                 return True
         return False
 
@@ -281,40 +278,40 @@ class Group(GSystem):
         only_group_nodes_cnt = all_nodes_under_gr.clone().where("this.group_set.length == 1").count()
         multi_group_nodes_cnt = all_nodes_under_gr.clone().where("this.group_set.length > 1").count()
 
-        print "Group:", group_obj.name, "(", group_obj.altnames, ") contains:\n",\
+        print ("Group:", group_obj.name, "(", group_obj.altnames, ") contains:\n",\
             "\t- unique (belongs to this group only) : ", only_group_nodes_cnt, \
             "\n\t- shared (belongs to other groups too): ", multi_group_nodes_cnt, \
             "\n\t============================================", \
-            "\n\t- total: ", all_nodes_under_gr.count()
+            "\n\t- total: ", all_nodes_under_gr.count())
 
         if not proceed:
-            print "\nDo you want to purge group and all unique nodes(belongs to this group only) under it?"
-            print 'Enter Y/y to proceed else N/n to reject group deletion:'
+            print ("\nDo you want to purge group and all unique nodes(belongs to this group only) under it?")
+            print ('Enter Y/y to proceed else N/n to reject group deletion:')
             to_proceed = raw_input()
             proceed = True if (to_proceed in ['y', 'Y']) else False
 
         if proceed:
-            print "\nProceeding further for purging of group and unique resources/nodes under it..."
+            print ("\nProceeding further for purging of group and unique resources/nodes under it...")
             from gnowsys_ndf.ndf.views.methods import delete_node
 
             grp_res = node_collection.find({ '$and': [ {'group_set':{'$size':1}}, {'group_set': {'$all': [ObjectId(group_id)]}} ] })
-            print "\n Total (unique) resources to be purge: ", grp_res.count()
+            print ("\n Total (unique) resources to be purge: ", grp_res.count())
 
             for each in grp_res:
                 del_status, del_status_msg = delete_node(node_id=each._id, deletion_type=1 )
                 # print del_status, del_status_msg
                 if not del_status:
-                    print "*"*80
-                    print "\n Error node: _id: ", each._id, " , name: ", each.name, " type: ", each.member_of_names_list
-                    print "*"*80
+                    print ("*"*80)
+                    print ("\n Error node: _id: ", each._id, " , name: ", each.name, " type: ", each.member_of_names_list)
+                    print ("*"*80)
 
-            print "\n Purging group: "
+            print ("\n Purging group: ")
             del_status, del_status_msg = delete_node(node_id=group_id, deletion_type=1)
-            print del_status, del_status_msg
+            print (del_status, del_status_msg)
 
             # poping group_id from each of shared nodes under group
             all_nodes_under_gr.rewind()
-            print "\n Total (shared) resources to be free from this group: ", all_nodes_under_gr.count()
+            print ("\n Total (shared) resources to be free from this group: ", all_nodes_under_gr.count())
             for each_shared_node in all_nodes_under_gr:
                 if group_id in each_shared_node.group_set:
                     each_shared_node.group_set.remove(group_id)
@@ -322,5 +319,5 @@ class Group(GSystem):
 
             return True
 
-        print "\nAborting group deletion."
+        print ("\nAborting group deletion.")
         return True

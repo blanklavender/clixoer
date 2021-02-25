@@ -1,24 +1,20 @@
-from base_imports import *
+from .base_imports import *
 
-@connection.register
-class Analytics(DjangoDocument):
+#@connection.register
+class Analytics(Document):
 
   objects = models.Manager()
 
   collection_name = 'analytics_collection'
 
-  structure = {
-    'timestamp': datetime.datetime,
-    'action' : dict,
-    'user' : dict,
-    'obj' : dict,
-    'group_id' : basestring,
-    'session_key' : basestring
-  }
+  timestamp=DateTimeField(Required = True)
+  action=DictField() 
+  user=DictField()
+  obj=DictField()
+  group_id=StringField()
+  session_key=StringField()
 
-  required_fields = ['timestamp']
-  use_dot_notation = True
-
+  
   def __unicode__(self):
     return self._id
 

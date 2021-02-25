@@ -26,7 +26,7 @@ class esearch:
             request_body = json.load(req_body)
 
         if not os.path.exists(GLITE_RCS_REPO_DIRNAME):
-			os.makedirs(GLITE_RCS_REPO_DIRNAME)
+            os.makedirs(GLITE_RCS_REPO_DIRNAME)
 		
         #fp = history_manager.get_file_path(self)
 
@@ -156,13 +156,13 @@ class esearch:
             with open("/home/docker/code/gstudio/gnowsys-ndf/gnowsys_ndf/gstudio_configs/benchmarks.json") as benchmarks_body:
                 benchmarks_body = json.load(benchmarks_body)
             doc = json.dumps(django_document,cls=NodeJSONEncoder)
-            print "00000000000000000000000000000000000000000000000"
-            print doc
-            print "00000000000000000000000000000000000000000000000"
+            print ("00000000000000000000000000000000000000000000000")
+            print (doc)
+            print ("00000000000000000000000000000000000000000000000")
             django_document = json.loads(doc)
-            print "================================================="
-            print django_document
-            print "================================================="
+            print ("=================================================")
+            print (django_document)
+            print ("=================================================")
 
             django_document["id"] = django_document.pop("_id")
             django_document["type"] = django_document.pop("_type")
@@ -179,10 +179,10 @@ class esearch:
                         index = index.lower()
                         break
 
-            print django_document["type"]
+            print (django_document["type"])
             if django_document["type"] == "GSystem" and GSTUDIO_SITE_NAME == "CLIx":
-                print django_document["id"]
-                print "-------------------------------------------------------------"
+                print (django_document["id"])
+                print ("-------------------------------------------------------------")
                 es.index(index=index, doc_type="gsystem", id=django_document["id"], body=django_document)
                 file_name.write(document["id"] + '\n')
                 if django_document["type"]=="GSystem":
@@ -203,11 +203,11 @@ class esearch:
                 es.index(index="gsystem", doc_type=doc_type, id=django_document["id"], body=django_document)
 
             else:
-                print django_document["id"]
+                print (django_document["id"])
                 if (not es.indices.exists("benchmarks")):
                     res = es.indices.create(index="benchmarks", body=benchmarks_body)
 
                 es.index(index=index, doc_type=django_document["type"].lower(), id=django_document["id"], body=django_document)
 
         except Exception as e:
-            print "Error while saving data to ES: "+str(e)
+            print ("Error while saving data to ES: "+str(e))

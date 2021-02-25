@@ -1,4 +1,4 @@
-from registration.signals import user_registered, user_activated
+"""from registration.signals import user_registered, user_activated
 
 from django.dispatch import receiver
 from django.contrib.auth.signals import user_logged_out

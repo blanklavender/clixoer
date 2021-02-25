@@ -1,32 +1,24 @@
-from base_imports import *
-from node import *
-from db_utils import get_model_name
+from .base_imports import *
+from .node import *
+from .db_utils import get_model_name
 
 #  TRIPLE CLASS DEFINITIONS
-@connection.register
-class Triple(DjangoDocument):
+#@connection.register
+class Triple(Document):
 
   objects = models.Manager()
-
+  STATUS_CHOICES_TU = (u'DRAFT', u'HIDDEN', u'PUBLISHED', u'DELETED', u'MODERATION')
   collection_name = 'Triples'
-  structure = {
-    '_type': unicode,
-    'name': unicode,
-    'subject_scope': basestring,
-    'object_scope': basestring,
-    'subject': ObjectId,  # ObjectId's of GSystem Class
-    'language': (basestring, basestring),  # e.g: ('en', 'English') or ['en', 'English']
-    'status': STATUS_CHOICES_TU
+  _type=StringField(),                                                                                                                                                
+  name=StringField(Required = True),                                                                                                                                   
+  subject_scope=StringField(Required = True, default = None),                                                                                                         
+  object_scope=StringField(default = None),                                                                                                                            
+  subject=ObjectIdField(),  # ObjectId's of GSystem Class                                                                                                              
+  language=ListField(StringField()),  # e.g: ('en', 'English') or ['en', 'English']                                                                                
+  status= StringField(choices = STATUS_CHOICES_TU)                                                                                                                     
+  meta = { 'allow_inheritance' : True,
+           'collection' : 'triples'
   }
-
-  required_fields = ['name', 'subject']
-  use_dot_notation = True
-  use_autorefs = True
-  default_values = {
-                      'subject_scope': None,
-                      'object_scope': None
-                  }
-
   @classmethod
   def get_triples_from_sub_type(cls, subject_id, gt_or_rt_name_or_id, status=None):
         '''
@@ -132,8 +124,8 @@ class Triple(DjangoDocument):
      # print name_value
       subject_type_list = at_node.subject_type
       subject_member_of_list = subject_document.member_of
-      print "subject type list",subject_type_list
-      print "subject_member_list",subject_member_of_list
+      print("subject type list",subject_type_list)
+      print("subject_member_list",subject_member_of_list)
       intersection = set(subject_member_of_list) & set(subject_type_list)
       if intersection:
         subject_system_flag = True
@@ -166,7 +158,7 @@ class Triple(DjangoDocument):
 
         right_subject_name_list = []
         right_subject_name_list_append = right_subject_name_list.append
-        print self.right_subject,"%%%%%%%%%%%%%",type(self.right_subject)
+        print(self.right_subject,"%%%%%%%%%%%%%",type(self.right_subject))
         for each in self.right_subject:
           # Here each is an ObjectId
           right_subject_document = node_collection.one({
@@ -284,7 +276,7 @@ class Triple(DjangoDocument):
                   rcs_obj.checkin(fp, 1, message.encode('utf-8'), "-i")
 
           except Exception as err:
-              print "\n DocumentError: This document (", self._id, ":", self.name, ") can't be re-created!!!\n"
+              print("\n DocumentError: This document (", self._id, ":", self.name, ") can't be re-created!!!\n")
               node_collection.collection.remove({'_id': self._id})
               raise RuntimeError(err)
 
@@ -294,7 +286,7 @@ class Triple(DjangoDocument):
               rcs_obj.checkin(fp, 1, message.encode('utf-8'))
 
       except Exception as err:
-          print "\n DocumentError: This document (", self._id, ":", self.name, ") can't be updated!!!\n"
+          print("\n DocumentError: This document (", self._id, ":", self.name, ") can't be updated!!!\n")
           raise RuntimeError(err)
 
 

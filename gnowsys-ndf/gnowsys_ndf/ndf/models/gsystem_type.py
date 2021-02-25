@@ -1,27 +1,24 @@
-from base_imports import *
-from node import *
-from meta_type import *
-from process_type import *
-from attribute_type import *
-from meta_type import *
+from .base_imports import *
+from .node import *
+from .meta_type import *
+from .process_type import *
+from .attribute_type import *
+from .meta_type import *
 
 # user should have a list of groups attributeType added should
 # automatically be added to the attribute_type_set of GSystemType
-@connection.register
+#@connection.register
 class GSystemType(Node):
     """Class to generalize GSystems
     """
+    meta_type_set=ListField(DictField(),default=list)        # List of Metatypes                                                                                 
+    attribute_type_set=ListField(DictField(),default=list)  # Embed list of Attribute Type Class as Documents 
+    relation_type_set=ListField(DictField(),default=list)    # Holds list of Relation Types
+    process_type_set=ListField(DictField(),default=list)     # List of Process Types                                                                                 
+    property_order=ListField(default=list)                    # List of user-defined attributes in template-view order    
 
-    structure = {
-        'meta_type_set': [MetaType],            # List of Metatypes
-        'attribute_type_set': [AttributeType],  # Embed list of Attribute Type Class as Documents
-        'relation_type_set': [RelationType],    # Holds list of Relation Types
-        'process_type_set': [ProcessType],      # List of Process Types
-        'property_order': []                    # List of user-defined attributes in template-view order
-    }
-
-    use_dot_notation = True
-    use_autorefs = True                         # To support Embedding of Documents
+#    use_dot_notation = True
+#    use_autorefs = True                         # To support Embedding of Documents
 
 
     @staticmethod

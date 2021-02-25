@@ -2,17 +2,17 @@
 
 # imports from python libraries
 import os
-import djcelery
+#import djcelery
 from django.contrib.messages import constants as messages
 #imports from core django libraries
-#from django.conf import global_settings
-#from django.utils.translation import ugettext
+from django.conf import global_settings
+from django.utils.translation import ugettext
 #from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 
 #imports from third-party app(s)
 
-# from gnowsys_ndf.ndf.utils import (is_dir_exists, ensure_dir, get_current_dbs_path,
-#     move_file_or_dirctory)
+from gnowsys_ndf.ndf.utils import (is_dir_exists, ensure_dir, get_current_dbs_path,
+     move_file_or_dirctory)
 
 DEBUG = True
 ALLOWED_HOSTS = ['103.36.84.176', '127.0.0.1', 'localhost']
@@ -45,257 +45,6 @@ HEADER_LANGUAGES = (('en', 'English'), ('hi', u'\u0939\u093f\u0902\u0926\u0940')
 GSTUDIO_DEFAULT_LANGUAGE = ('en', 'English')
 GSTUDIO_WORKSPACE_INSTANCE = False
 GSTUDIO_IMPLICIT_ENROLL = False
-'''
-OTHER_COMMON_LANGUAGES = [
-    ('mr', 'Marathi'), ('mni','Manipuri'), ('ori','Oriya'),
-    ('pi','Pali'), ('raj','Rajasthani'), ('gu','Gujarati'),
-    ('ks','Kashmiri'), ('kok','Konkani'), ('kha','Khasi'),
-    ('dra','Dravidian'), ('gon','Gondi'), ('bra','Braj'),
-    ('mi','Malayalam'), ('mai','Maithili'), ('mag','Magahi'),
-    ('lus','Lushai'), ('bho','Bhojpuri'), ('kru','Kurukh'),
-    ('awa','Awadhi'), ('sa','Sanskrit'), ('sat','Santali'),
-    ('him','Himachali'), ('sd','Sindhi'), ('as','Assamese'),
-    ('ar', 'Arabic'), ('bn', 'Bengali'), ('ca', 'Catalan'),
-    ('bho','Bhojpuri'), ('da', 'Danish'), ('de', 'German'),
-    ('el', 'Greek'), ('en-gb', 'British English'), ('eo', 'Esperanto'),
-    ('es', 'Spanish'), ('es-ar', 'Argentinian Spanish'),
-    ('es-mx', 'Mexican Spanish'), ('es-ni', 'Nicaraguan Spanish'),
-    ('es-ve', 'Venezuelan Spanish'), ('et', 'Estonian'),
-    ('fa', 'Persian'), ('fi', 'Finnish'), ('fr', 'French'),
-    ('ga', 'Irish'), ('he', 'Hebrew'), ('hu', 'Hungarian'),
-    ('id', 'Indonesian'), ('is', 'Icelandic'), ('it', 'Italian'),
-    ('ja', 'Japanese'), ('ka', 'Georgian'), ('kk', 'Kazakh'),
-    ('km', 'Khmer'), ('kn', 'Kannada'), ('ko', 'Korean'),
-    ('lb', 'Luxembourgish'), ('lt', 'Lithuanian'), ('lv', 'Latvian'),
-    ('mk', 'Macedonian'), ('ml', 'Malayalam'), ('mn', 'Mongolian'),
-    ('my', 'Burmese'), ('ne', 'Nepali'), ('nl', 'Dutch'),
-    ('pa', 'Punjabi'), ('pl', 'Polish'), ('pt', 'Portuguese'),
-    ('pt-br', 'Brazilian Portuguese'), ('ro', 'Romanian'), ('ru', 'Russian'),
-    ('sk', 'Slovak'), ('sl', 'Slovenian'), ('sq', 'Albanian'), ('sr', 'Serbian'),
-    ('sr-latn', 'Serbian Latin'), ('sv', 'Swedish'), ('sw', 'Swahili'),
-    ('ta', 'Tamil'), ('te', 'Telugu'), ('th', 'Thai'), ('tr', 'Turkish'),
-    ('uk', 'Ukrainian'), ('ur', 'Urdu'), ('vi', 'Vietnamese'),
-    ('zh-cn', 'Simplified Chinese'), ('zh-tw', 'Traditional Chinese')
-]
-
-EXTRA_LANG_INFO = {
-    'mr': {
-        'bidi': True,  # right-to-left
-        'code': 'mr',
-        'name': 'Marathi',
-        'name_local': 'Marathi'
-    },
-    'mun': {
-        'bidi': True,  # right-to-left
-        'code': 'mun',
-        'name': 'Munda',
-        'name_local': 'Munda'
-    },
-
-    'mni': {
-        'bidi': True,  # right-to-left
-        'code': 'ug',
-        'name': 'Manipuri',
-        'name_local': 'Manipuri'
-    },
-    'ori': {
-        'bidi': True,  # right-to-left
-        'code': 'ori',
-        'name': 'Oriya',
-        'name_local': 'Oriya'
-    },
-    'mr': {
-        'bidi': True,  # right-to-left
-        'code': 'mr',
-        'name': 'Marathi',
-        'name_local': 'Marathi'
-    },
-    'pi': {
-        'bidi': True,  # right-to-left
-        'code': 'pi',
-        'name': 'Pali',
-        'name_local': 'Pali'
-    },
-    'raj': {
-        'bidi': True,  # right-to-left
-        'code': 'raj',
-        'name': 'Rajasthani',
-        'name_local': 'Rajasthani'
-    },
-    'sa': {
-        'bidi': True,  # right-to-left
-        'code': 'sa',
-        'name': 'Sanskrit',
-        'name_local': 'Sanskrit'
-    },
-
-    'sat': {
-        'bidi': True,  # right-to-left
-        'code': 'sat',
-        'name': 'Santali',
-        'name_local': 'Santali'
-    },
-    'sd': {
-        'bidi': True,  # right-to-left
-        'code': 'sa',
-        'name': 'Sindhi',
-        'name_local': 'Sindhi'
-    },
-    'as': {
-        'bidi': True,  # right-to-left
-        'code': 'as',
-        'name': 'Assamese',
-        'name_local': 'Assamese'
-    },
-    'awa': {
-        'bidi': True,  # right-to-left
-        'code': 'awa',
-        'name': 'Awadhi',
-        'name_local': 'Awadhi'
-    },
-    'bho': {
-        'bidi': True,  # right-to-left
-        'code': 'bho',
-        'name': 'Bhojpuri',
-        'name_local': 'Bhojpuri'
-    },
-    'bh': {
-        'bidi': True,  # right-to-left
-        'code': 'bh',
-        'name': 'Bihari',
-        'name_local': 'Bihari'
-    },
-    'bra': {
-        'bidi': True,  # right-to-left
-        'code': 'bho',
-        'name': 'Braj',
-        'name_local': 'Braj'
-    },
-    'gon': {
-        'bidi': True,  # right-to-left
-        'code': 'gon',
-        'name': 'Gondi',
-        'name_local': 'Gondi'
-    },
-    'dra': {
-        'bidi': True,  # right-to-left
-        'code': 'bho',
-        'name': 'Dravidian',
-        'name_local': 'Dravidian'
-    },
-    'gu': {
-        'bidi': True,  # right-to-left
-        'code': 'gu',
-        'name': 'Gujarati',
-        'name_local': 'Gujarati'
-    },
-    'him': {
-        'bidi': True,  # right-to-left
-        'code': 'him',
-        'name': 'Himachali',
-        'name_local': 'Himachali'
-    },
-    'ks': {
-        'bidi': True,  # right-to-left
-        'code': 'ks',
-        'name': 'Kashmiri',
-        'name_local': 'Kashmiri'
-    },
-    'kha': {
-        'bidi': True,  # right-to-left
-        'code': 'kha',
-        'name': 'Khasi',
-        'name_local': 'Khasi'
-    },
-    'kok': {
-        'bidi': True,  # right-to-left
-        'code': 'kok',
-        'name': 'Konkani',
-        'name_local': 'Konkani'
-    },
-    'kru': {
-        'bidi': True,  # right-to-left
-        'code': 'kru',
-        'name': 'Kurukh',
-        'name_local': 'Kurukh'
-    },
-    'lah': {
-        'bidi': True,  # right-to-left
-        'code': 'lah',
-        'name': 'Lahnda',
-        'name_local': 'Lahnda'
-    },
-    'lus': {
-        'bidi': True,  # right-to-left
-        'code': 'lus',
-        'name': 'Lushai',
-        'name_local': 'Lushai'
-    },
-    'mag': {
-        'bidi': True,  # right-to-left
-        'code': 'mag',
-        'name': 'Magahi',
-        'name_local': 'Magahi'
-    },
-    'mai': {
-        'bidi': True,  # right-to-left
-        'code': 'mai',
-        'name': 'Maithili',
-        'name_local': 'Maithili'
-    },
-    'mi': {
-        'bidi': True,  # right-to-left
-        'code': 'mi',
-        'name': 'Malayalam',
-        'name_local': 'Malayalam'
-    },
-}
-'''
-
-# Add custom languages not provided by Django
-'''import django.conf.locale
-LANG_INFO = dict(django.conf.locale.LANG_INFO.items() + EXTRA_LANG_INFO.items())
-django.conf.locale.LANG_INFO = LANG_INFO
-'''
-# Languages using BiDi (right-to-left) layout
-# LANGUAGES_BIDI = global_settings.LANGUAGES_BIDI + ("mni",)
-
-
-# --- mailclient app and Replication ---
-#
-# GSTUDIO_SYNC_SND=True/False
-# GSTUDIO_SYNC_RCV=True/False
-#
-# Following has to be done for using the Replication features
-# Override following variables in local_settings file:
-#
-# SMTP setting for sending mail (Using python default SMTP server)
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = '127.0.0.1'
-# EMAIL_PORT = 1025
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_HOST_USER = ''
-# EMAIL_HOST_PASSWORD = ''
-#DEFAULT_FROM_EMAIL = 'testing@example.com'
-
-# Authentication related and Error reporting emails
-# EMAIL_USE_TLS = ""
-# ACCOUNT_ACTIVATION_DAYS = 2
-# #EMAIL_HOST = 'localhost'
-# EMAIL_HOST = 'localhost'
-# #DEFAULT_FROM_EMAIL = 'webmaster@clix.ss.org'
-# DEFAULT_FROM_EMAIL = 'gdswetha@gmail.com'
-# LOGIN_REDIRECT_URL = '/'
-# EMAIL_SUBJECT_PREFIX='[clix-ss-error-reporting]'
-# SERVER_EMAIL = DEFAULT_FROM_EMAIL
-# EMAIL_PORT = ""
-# ADMINS = (
-#     "mrunal4888@gmail.com"
-# )
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-#
-# SMTP setting for sending mail (e.g: gmail SMTP server)
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -360,18 +109,25 @@ SQLITE3_DB_PATH = os.path.join(GSTUDIO_DATA_ROOT, SQLITE3_DBNAME)
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': SQLITE3_DB_PATH,
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',             # Used for postgres db                                                                         
+        'NAME': 'gstudio_psql',                                                 # Used for postgres db                                                                 
+        'USER': 'glab',                                                                 # Used for postgres db                                                         
+        'PASSWORD':'Gstudi02)1^',                                               # Used for postgres db                                                                 
+        'HOST':'localhost',                                                             # Used for postgres db                                                         
+        'PORT':'',                                                                              # Used for postgres db                                                 
+#   'ENGINE': 'django.db.backends.sqlite3',                                     # Used for sqlite3 db                                                                  
+#   'NAME': SQLITE3_DB_PATH,                                        # Used for sqlite3 db                                                                              
     },
     'mongodb': {
-        'ENGINE': 'django_mongokit.mongodb',
-        'NAME': 'gstudio-mongodb',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'mongoengine',                                    # Used for mongo db                                                                                
+        'NAME': 'gstudio-mongodb',                                                 # Used for mongo db                                                                 
+        'USER': '',                                                                         # Used for mongo db                                                        
+        'PASSWORD': '',                                                                 # Used for mongo db                                                          
+        'HOST': '',                                                                     # Used for mongo db                                                            
+        'PORT': '',                                                                         # Used for mongo db                                                        
     },
 }
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -394,9 +150,9 @@ USE_I18N = True
 # Setting system's default encoding to 'utf-8'
 # By defalut, it's 'ascii'
 # Comes handy while writing unicode text into a file
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+#import sys
+#reload(sys)
+#sys.setdefaultencoding('utf-8')
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
@@ -493,7 +249,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
-
+"""
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.i18n',
@@ -503,18 +259,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     # 'django.core.context_processors.csrf',
 )
-
-
-djcelery.setup_loader()
-#CELERY_RESULT_BACKEND = "mongodb"
-CELERY_RESULT_BACKEND = "djcelery.backends.database:DatabaseBackend"
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
-
-CELERY_TASK_SERIALIZER = "json"
-CELERY_IMPORTS = ("gnowsys_ndf.ndf.views.tasks")
-# # BROKER_URL = 'mongodb://localhost:27017/' + DATABASES['mongodb']['NAME']
-BROKER_URL = 'amqp://'
-
+"""
 INSTALLED_APPS = (
     'gnowsys_ndf.ndf',
     #'hit_count',
@@ -526,10 +271,10 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'registration',
-    'notification',
-    'pagination',
-    'captcha',
+ #   'registration',
+ #   'notification',
+ #   'pagination',
+ #   'captcha',
     # 'gnowsys_ndf.benchmarker',
     # 'django.contrib.flatpages',   #textb
     # 'django_extensions',          #textb
@@ -540,16 +285,16 @@ INSTALLED_APPS = (
     # 'online_status',              #for online_users
     # 'endless_pagination',
     # 'jsonrpc',
-    'registration_email',
-    'memcache_admin',
-    'django_mailbox',
-    'djcelery',
+ #   'registration_email',
+ #   'memcache_admin',
+ #   'django_mailbox',
+ #   'djcelery',
     #'dlkit',
     #'dlkit_runtime'
 )
 
 AUTHENTICATION_BACKENDS = (
-    'registration_email.auth.EmailBackend',
+    #'registration_email.auth.EmailBackend',
 )
 
 ACCOUNT_ACTIVATION_DAYS = 2  # Two days for activation.

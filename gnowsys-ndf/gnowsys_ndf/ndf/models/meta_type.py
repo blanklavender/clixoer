@@ -1,8 +1,8 @@
-from base_imports import *
-from attribute_type import *
-from relation_type import *
+from .base_imports import *
+from .attribute_type import *
+from .relation_type import *
 
-@connection.register
+#@connection.register
 class MetaType(Node):
     """MetaType class: Its members are any of GSystemType, AttributeType,
     RelationType, ProcessType.
@@ -13,12 +13,9 @@ class MetaType(Node):
     of a MetaType, 'GAPP'.
 
     """
-
-    structure = {
-        'description': basestring,    # Description (name)
-        'attribute_type_set': [AttributeType],  # Embed list of Attribute Type Class as Documents
-        'relation_type_set': [RelationType],    # Holds list of Relation Types
-        'parent': ObjectId                      # Foreign key to self
-    }
-    use_dot_notation = True
-
+                                                                                                                                                         
+    description=StringField()    # Description (name)                                                                                                              
+    attribute_type_set=ListField(DictField(),default=list)  # Embed list of Attribute Type Class as Documents             
+    relation_type_set=ListField(DictField(),default=list)    # Holds list of Relation Types
+    parent=ObjectIdField()                      # Foreign key to self  
+ 

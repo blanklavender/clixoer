@@ -1,9 +1,9 @@
 import bson
 
-from django_mongokit import get_database
+from mongoengine import get_db
 from gnowsys_ndf.ndf.views.utils import reverse_dict_having_listvalues, cast_to_data_type
-
-db = get_database()
+from gnowsys_ndf.ndf.models import *
+db = get_db()
 
 
 def get_collection_names():
@@ -31,10 +31,9 @@ def get_collection_hierarchy():
 def get_model_name(collection_obj):
 	return collection_obj._meta.model_name
 
-
 def get_model_structure(collection_name):
 	# collection_name: str
-	from gnowsys_ndf.ndf.models import *
+	#from gnowsys_ndf.ndf.models import *
 	collection_str = getattr(eval(collection_name), 'structure')
 	collection_str.update({'_id': bson.objectid.ObjectId})
 	return collection_str

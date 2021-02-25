@@ -1,4 +1,4 @@
-from base_imports import *
+from .base_imports import *
 
 class NodeJSONEncoder(json.JSONEncoder):
   def default(self, o):
@@ -80,50 +80,39 @@ class ActiveUsers(object):
 
         Buddy.sitewide_remove_all_buddies()
 
-
-@connection.register
-class ReducedDocs(DjangoDocument):
-	structure={
-            '_type': unicode,
-            'content':dict,  #This contains the content in the dictionary format
-            'orignal_id':ObjectId, #The object ID of the orignal document
-            'required_for':unicode,
-            'is_indexed':bool, #This will be true if the map reduced document has been indexed. If it is not then it will be false
-	}
-	use_dot_notation = True
+#@connection.register                                                                                                                                                 
+class ReducedDocs(Document):
+    _type = StringField()
+    contentdict = StringField()  #This contains the content in the dictionary format                                                                                   
+    orignal_id = ObjectIdField() #The object ID of the orignal document                                   
+    required_for = StringField()
+    is_indexed = BooleanField() #This will be true if the map reduced document has been indexed. If it is not then it will be false
+    use_dot_notation = True
 
 
-@connection.register
-class ToReduceDocs(DjangoDocument):
-	structure={
-    '_type': unicode,
-		'doc_id':ObjectId,
-		'required_for':unicode,
-	}
-	use_dot_notation = True
+#@connection.register                                                                                                                                                 
+class ToReduceDocs(Document):
+    _type = StringField()
+    doc_id = ObjectIdField()
+    required_for = StringField()
+    use_dot_notation = True
 
 
-@connection.register
-class IndexedWordList(DjangoDocument):
-	structure={
-    '_type': unicode,
-		'word_start_id':float,
-		'words':dict,
-		'required_for':unicode,
-	}
-	use_dot_notation = True
-	#word_start_id = 0 --- a ,1---b,2---c .... 25---z,26--misc.
-
+#@connection.register                                                                                                                                                 
+class IndexedWordList(Document):
+    _type = StringField()
+    word_start_id = FloatField()
+    words = DictField()
+    required_for = StringField()
+    use_dot_notation = True
+        #word_start_id = 0 --- a ,1---b
 
 # This is like a temperory holder, where you can hold any node temporarily and later permenently save in database
-@connection.register
-class node_holder(DjangoDocument):
+#@connection.register
+class node_holder(Document):
         objects = models.Manager()
-        structure={
-            '_type': unicode,
-            'details_to_hold':dict
-        }
-        required_fields = ['details_to_hold']
+        _type = StringField()
+        details_to_hold = DictField(required = True)
         use_dot_notation = True
 
 

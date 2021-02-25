@@ -1,28 +1,22 @@
-from base_imports import *
-from group import *
+from .base_imports import *
+from .group import *
 
+def _val_agency_type(val):                                                                                                                                             
+        if val not in GSTUDIO_AUTHOR_AGENCY_TYPES:                                                                                                                     
+                raise ValidationError('agency_type values should be one of predefined')   
 
-@connection.register
+#@connection.register
 class Author(Group):
     """Author class to store django user instances
     """
-    structure = {
-        'email': unicode,
-        'password': unicode,
-        'visited_location': [],
-        'preferred_languages': dict,          # preferred languages for users like preferred lang. , fall back lang. etc.
-        'group_affiliation': basestring,
-	'language_proficiency':list,
-	'subject_proficiency':list
-    }
+    email=StringField()                                                                                                                                               
+    password=StringField()                                                                                                                                            
+    visited_location=ListField()                                                                                                                                       
+    preferred_languages=DictField()          # preferred languages for users like preferred lang. , fall back lang. etc.                                               
+    group_affiliation=StringField()                                                                                                                                
+    language_proficiency=ListField()                                                                                                                                   
+    subject_proficiency=ListField()                                                                                                                              
 
-    use_dot_notation = True
-
-    validators = {
-        'agency_type': lambda x: x in GSTUDIO_AUTHOR_AGENCY_TYPES         # agency_type inherited from Group class
-    }
-
-    required_fields = ['name']
 
     def __init__(self, *args, **kwargs):
         super(Author, self).__init__(*args, **kwargs)
@@ -93,7 +87,7 @@ class Author(Group):
             username = Author.extract_username(request, kwargs)
             return User.objects.get(username=username).id
         except Exception as e:
-            print e            
+            print(e)            
         # elif:
         #     return 0
 
@@ -153,7 +147,7 @@ class Author(Group):
 
         auth_gst = node_collection.one({'_type': u'GSystemType', 'name': u'Author'})
 
-        print "\n Creating new Author obj for user id (django): ", user_obj.id
+        print("\n Creating new Author obj for user id (django): ", user_obj.id)
         auth = node_collection.collection.Author()
         auth.name = unicode(user_obj.username)
         auth.email = unicode(user_obj.email)

@@ -79,7 +79,7 @@ class RCS:
 
         status = self._closepipe(f)
         if status:
-            raise IOError, status
+            raise IOError(status)
 
         return dict
 
@@ -252,14 +252,14 @@ class RCS:
         name, rev = self._unmangle(name_rev)
 
         if not self.isvalid(name):
-            raise os.error, '\n Error: Not an rcs file %s!!!\n' % `name`
+            raise os.error('\n Error: Not an rcs file %s!!!\n'+name)
 
         return name, rev
 
     def checkrev(self, rev):
         for c in rev:
             if c not in self.okchars:
-                raise ValueError, "Error: Bad character in revision number!!!"
+                raise ValueError("Error: Bad character in revision number!!!")
 
     # ==== Internal methods =====
 
@@ -335,7 +335,7 @@ class RCS:
         try:
             retcode = call(cmd, shell=True)
             if retcode < 0:
-                raise IOError, "command exit status %d" % retcode
+                raise IOError("command exit status %d" + retcode)
                 #print >>stderr, "\n Child was terminated by signal", -retcode
         except IOError as ise:
             print >>stderr, "\n Execution failed(ise):", ise

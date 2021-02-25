@@ -1,35 +1,22 @@
-from base_imports import *
-from models_utils import ActiveUsers
-from history_manager import *
-from author import *
+from .base_imports import *
+from .models_utils import ActiveUsers
+from .history_manager import *
+from .author import *
 
-@connection.register
-class Buddy(DjangoDocument):
+#@connection.register
+class Buddy(Document):
     """
     Enables logged in user to add buddy.
     """
 
     collection_name = 'Buddies'
 
-    structure = {
-        '_type': unicode,
-        'loggedin_userid': int,
-        'session_key': basestring,
-        'buddy_in_out': dict,
-            # e.g:
-            # buddy_in_out = {
-            #           "auth_id": [
-            #                         {"in": datetime.datetime, "out": datetime.datetime},
-            #                         {"in": datetime.datetime, "out": datetime.datetime}
-            #                    ]
-            #           }
-        'starts_at': datetime.datetime,
-        'ends_at': datetime.datetime
-    }
-
-    required_fields = ['loggedin_userid', 'session_key']
-
-    use_dot_notation = True
+    _type = StringField()
+    loggedin_userid=IntField(Required = True)
+    session_key=StringField(Required = True)
+    buddy_in_out=DictField()
+    starts_at=DateTimeField()
+    ends_at=DateTimeField()
 
     @staticmethod
     def query_buddy_obj(loggedin_userid, session_key):
@@ -131,7 +118,7 @@ class Buddy(DjangoDocument):
         active_buddy_authid_list = self.get_active_authid_list_from_single_buddy()
 
         for each_buddy_authid in active_buddy_authid_list:
-            print "- Released Buddy: ", Node.get_name_id_from_type(each_buddy_authid, u'Author')[0]
+            print("- Released Buddy: ", Node.get_name_id_from_type(each_buddy_authid, u'Author')[0])
             self.get_latest_in_out_dict(self.buddy_in_out[each_buddy_authid])['out'] = datetime.datetime.now()
 
         return self
@@ -345,7 +332,7 @@ class Buddy(DjangoDocument):
     @staticmethod
     def sitewide_remove_all_buddies():
         sitewide_all_active_buddies = Buddy.sitewide_all_active_buddies()
-        print "\nFound %d buddy/buddies container object(s)\n"%sitewide_all_active_buddies.count()
+        print("\nFound %d buddy/buddies container object(s)\n"%sitewide_all_active_buddies.count())
 
         for each_buddy in sitewide_all_active_buddies:
             each_buddy.end_buddy_session()
@@ -388,7 +375,7 @@ class Buddy(DjangoDocument):
                         rcs_obj.checkin(fp, 1, message.encode('utf-8'), "-i")
 
                 except Exception as err:
-                    print "\n DocumentError: This document (", self._id, ":", str(self.session_key), ") can't be re-created!!!\n"
+                    print("\n DocumentError: This document (", self._id, ":", str(self.session_key), ") can't be re-created!!!\n")
                     node_collection.collection.remove({'_id': self._id})
                     raise RuntimeError(err)
 
@@ -398,7 +385,7 @@ class Buddy(DjangoDocument):
                     rcs_obj.checkin(fp, 1, message.encode('utf-8'))
 
             except Exception as err:
-                print "\n DocumentError: This document (", self._id, ":", str(self.session_key), ") can't be updated!!!\n"
+                print("\n DocumentError: This document (", self._id, ":", str(self.session_key), ") can't be updated!!!\n")
                 raise RuntimeError(err)
 
 buddy_collection    = db["Buddies"].Buddy

@@ -1,3 +1,0 @@
-
-USERNAME = 'birdland'
-PASSWORD = 'maliska'

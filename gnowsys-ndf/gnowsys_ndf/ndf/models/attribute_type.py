@@ -1,60 +1,45 @@
-from base_imports import *
-from node import *
+from .base_imports import *
+from .node import *
 
-@connection.register
+#@connection.register
 class AttributeType(Node):
-    '''To define reusable properties that can be set as possible
+    """To define reusable properties that can be set as possible
     attributes to a GSystemType. A set of possible properties defines
     a GSystemType.
 
-    '''
-
-    structure = {
-    'data_type': basestring, # check required: only of the DATA_TYPE_CHOICES
-    'complex_data_type': [unicode], # can be a list or a dictionary
-    'subject_type': [ObjectId], # check required: only one of Type
-                                    # Nodes. GSystems cannot be set as
-                                    # subject_types
-    'subject_scope': list,
-    'object_scope': list,
-    'attribute_type_scope': list,
-    'applicable_node_type': [basestring],	# can be one or more
-                                                # than one of
-                                                # NODE_TYPE_CHOICES
-    'verbose_name': basestring,
-    'null': bool,
-    'blank': bool,
-    'help_text': unicode,
-    'max_digits': int, # applicable if the datatype is a number
-    'decimal_places': int, # applicable if the datatype is a float
-    'auto_now': bool,
-    'auto_now_add': bool,
-    'upload_to': unicode,
-    'path': unicode,
-    'verify_exist': bool,
-
-    #   raise issue y used
-    'min_length': int,
-    'required': bool,
-    'label': unicode,
-    'unique': bool,
-    'validators': list,
-    'default': unicode,
-    'editable': bool
-    }
-
-    required_fields = ['data_type', 'subject_type']
+    """
+    data_type=StringField(Required = True) # check required: only of the DATA_TYPE_CHOICES                                                                            
+    complex_data_type=ListField(StringField()) # can be a list or a dictionary                                                                                        
+    subject_type=ListField(ObjectIdField, Required = True, default = list) # check required: only one of Type                                                         
+                                    # Nodes. GSystems cannot be set as                                                                                                 
+                                    # subject_types                                                                                                                    
+    subject_scope=ListField(default = list)
+    object_scope=ListField(default = list)
+    attribute_type_scope=ListField(default = list)
+    applicable_node_type=ListField(StringField())       # can be one or more                                                                                          
+                                                # than one of                                                                                                          
+						# NODE_TYPE_CHOICES                                                                                                    
+    verbose_name=StringField()
+    null=BooleanField()
+    blank=BooleanField()
+    help_text=StringField()
+    max_digits=IntField() # applicable if the datatype is a number                         
+    decimal_places=IntField() # applicable if the datatype is a float                                                                                             
+    auto_now=BooleanField()
+    auto_now_add=BooleanField()
+    upload_to=StringField()
+    path=StringField()
+    verify_exist=BooleanField()
+    #   raise issue y used                                                                                                                                             
+    min_length=IntField()
+    required=BooleanField()
+    label=StringField()
+    unique=BooleanField()
+    validators=ListField()
+    default=StringField()
+    editable=BooleanField()
     use_dot_notation = True
-    default_values = {
-                        'subject_scope': [],
-                        'object_scope': [],
-                        'attribute_type_scope': [],
-                    }
 
-    # validators={
-    # 'data_type':x in DATA_TYPE_CHOICES
-    # 'data_type':lambda x: x in DATA_TYPE_CHOICES
-    # }
 
     ##########  User-Defined Functions ##########
 
@@ -73,7 +58,7 @@ class AttributeType(Node):
             if ObjectId.is_valid(attr_id_or_node):
                 attr_id_or_node = node_collection.one({'_type': 'AttributeType', '_id': ObjectId(attr_id_or_node)})
             else:
-                print "\n Invalid ObjectId: ", attr_id_or_node, " is not a valid ObjectId!!!\n"
+                print("\n Invalid ObjectId: ", attr_id_or_node, " is not a valid ObjectId!!!\n")
                 # Throw indicating the same
 
         if not attr_id_or_node.complex_data_type:

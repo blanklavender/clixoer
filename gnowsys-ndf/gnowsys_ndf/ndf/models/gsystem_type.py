@@ -16,6 +16,9 @@ class GSystemType(Node):
     relation_type_set=ListField(DictField(),default=list)    # Holds list of Relation Types
     process_type_set=ListField(DictField(),default=list)     # List of Process Types                                                                                 
     property_order=ListField(default=list)                    # List of user-defined attributes in template-view order    
+    meta = {
+	'collection' : 'Nodes',
+        }
 
 #    use_dot_notation = True
 #    use_autorefs = True                         # To support Embedding of Documents

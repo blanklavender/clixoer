@@ -18,8 +18,11 @@ class RelationType(Node):
     is_reflexive=BooleanField()
     is_transitive=BooleanField()
     use_dot_notation = True
+    meta = {
+	'collection' : 'Nodes',
+        }
 
-    use_dot_notation = True
+    #use_dot_notation = True
     # User-Defined Functions ##########
     @staticmethod
     def append_relation(

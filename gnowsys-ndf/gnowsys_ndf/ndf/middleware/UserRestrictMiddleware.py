@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.utils.deprecation import MiddlewareMixin
 
 # from django.conf import settings
 # from django.core.cache import cache, get_cache

@@ -4,9 +4,12 @@ from .db_utils import get_model_name
 
 #  TRIPLE CLASS DEFINITIONS
 #@connection.register
-class Triple(Document):
-
-  objects = models.Manager()
+class Triple(DynamicDocument):
+  meta = { 'allow_inheritance' : True,
+           'abstract' : True,
+           'collection' : 'Triples',
+  }
+  #objects = models.Manager()
   STATUS_CHOICES_TU = (u'DRAFT', u'HIDDEN', u'PUBLISHED', u'DELETED', u'MODERATION')
   collection_name = 'Triples'
   _type=StringField(),                                                                                                                                                
@@ -16,9 +19,7 @@ class Triple(Document):
   subject=ObjectIdField(),  # ObjectId's of GSystem Class                                                                                                              
   language=ListField(StringField()),  # e.g: ('en', 'English') or ['en', 'English']                                                                                
   status= StringField(choices = STATUS_CHOICES_TU)                                                                                                                     
-  meta = { 'allow_inheritance' : True,
-           'collection' : 'triples'
-  }
+  
   @classmethod
   def get_triples_from_sub_type(cls, subject_id, gt_or_rt_name_or_id, status=None):
         '''

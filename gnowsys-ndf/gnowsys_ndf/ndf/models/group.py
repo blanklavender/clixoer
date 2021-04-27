@@ -45,7 +45,9 @@ class Group(GSystem):
     group_admin=ListField(StringField(), default = list)                # ObjectId of Author class                                                                    
     moderation_level=IntField(default = -1)            # range from 0 till any integer level                                                                           
     project_config=DictField()
-
+    meta = {
+        'collection' : 'Nodes',
+        }
     @staticmethod
     def get_group_name_id(group_name_or_id, get_obj=False):
         '''
@@ -84,8 +86,7 @@ class Group(GSystem):
         # case-1: argument - "group_name_or_id" is ObjectId
         if ObjectId.is_valid(group_name_or_id):
 
-            group_obj = node_collection.one({"_id": ObjectId(group_name_or_id),
-                "_type": {"$in": ["Group", "Author"]}})
+            group_obj = Group.objects.filter(_id =  ObjectId(group_name_or_id))[0]
 
             # checking if group_obj is valid
             if group_obj:
@@ -104,9 +105,7 @@ class Group(GSystem):
 
         # case-2: argument - "group_name_or_id" is group name
         else:
-            group_obj = node_collection.one(
-                {"_type": {"$in": ["Group", "Author"]}, "name": unicode(group_name_or_id)})
-
+            group_obj =  Group.objects.filter(name = ObjectId(group_name_or_id))[0]
             # checking if group_obj is valid
             if group_obj:
                 # if (group_name_or_id == group_obj.name):
@@ -150,8 +149,8 @@ class Group(GSystem):
             print ("superuser:")
             return True
         else:
-            auth_obj = node_collection.one({'_type': 'Author', 'created_by': user.id})
-            if auth_obj and auth_obj.agency_type == 'Teacher':
+            auth_obj = node_collection.find_one({'_cls': 'Author', 'created_by': user.id})
+            if auth_obj and auth_obj['agency_type'] == 'Teacher':
                 print ("with auth_obj")
                 return True
         return False

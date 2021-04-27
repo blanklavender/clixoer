@@ -27,14 +27,14 @@ from django.core.cache import cache
 #from django_mongokit.document import DjangoDocument
 from django.core.files.images import get_image_dimensions
 
-from mongoengine import connection
-from mongoengine import document
-from mongoengine import get_db
+#from mongoengine import connection
+#from mongoengine import document
+#from mongoengine import get_db
 from mongoengine import *
 
 import pymongo
-MONGODB_HOST = 'mongodb://127.0.0.1:27017'
-connect(db='gstudio-psql', host=MONGODB_HOST, read_preference=pymongo.ReadPreference.PRIMARY_PREFERRED)
+#MONGODB_HOST = 'mongodb://127.0.0.1:27017'
+#con = connect(db='gstudio-mongodb', host=MONGODB_HOST)
 
 #from mongokit import IS, OR
 #from mongokit import INDEX_ASCENDING, INDEX_DESCENDING
@@ -56,7 +56,7 @@ from gnowsys_ndf.settings import GSTUDIO_DEFAULT_COPYRIGHT, GSTUDIO_DEFAULT_LICE
 from gnowsys_ndf.settings import META_TYPE
 from gnowsys_ndf.settings import GSTUDIO_BUDDY_LOGIN
 from gnowsys_ndf.ndf.rcslib import RCS
-from gnowsys_ndf.ndf.views.utils import add_to_list, cast_to_data_type
+#from gnowsys_ndf.ndf.views.utils import add_to_list, cast_to_data_type
 # from gnowsys_ndf.ndf.views.es_queries import *
 
 

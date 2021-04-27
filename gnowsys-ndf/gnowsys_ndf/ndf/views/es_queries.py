@@ -11,8 +11,8 @@ from sys import getsizeof, exc_info
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.http.request import HttpRequest
-from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response  # , render
+from django.urls import reverse
+from django.shortcuts import render_to_response , render
 from django.template.loader import render_to_string
 
 from django.template import RequestContext
@@ -22,6 +22,7 @@ from gnowsys_ndf.ndf.gstudio_es.paginator import Paginator ,EmptyPage, PageNotAn
 from django.core.cache import cache
 from bson import ObjectId
 from gnowsys_ndf.ndf.gstudio_es.es import *
+from elasticsearch_dsl import *
 from gnowsys_ndf.settings import GSTUDIO_SITE_LANDING_PAGE,LANGUAGES,EMAIL_HOST_USER,GSTUDIO_RESOURCES_LANGUAGES,GSTUDIO_RESOURCES_EDUCATIONAL_SUBJECT,GSTUDIO_RESOURCES_EDUCATIONAL_LEVEL
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -29,6 +30,19 @@ from gnowsys_ndf.ndf.models import GSystemType, Group, Node, GSystem, Author, hi
 from gnowsys_ndf.ndf.models import node_collection,triple_collection
 
 from gnowsys_ndf.ndf.models import GSystemType
+
+def test_session(request):
+    request.session.set_test_cookie()
+    return HttpResponse("Testing session cookie")
+
+
+def test_delete(request):
+    if request.session.test_cookie_worked():
+        request.session.delete_test_cookie()
+        response = HttpResponse("Cookie test passed")
+    else:
+        response = HttpResponse("Cookie test failed")
+    return response
 
 gfs = HashFS('/data/media/', depth=3, width=1, algorithm='sha256')
 
@@ -42,7 +56,7 @@ def cool_resourcelist(request):
     rsrc_type = {'Hands_On':0,'Simulation':0,'Tool':0,'Forum':0}
     level = {'K-12':0,'6-12':0}
     banner_pics1 = ['/static/ndf/OER_1200_300_Slider_1.jpg','/static/ndf/OER_1200_300_Slider_2.jpg','/static/ndf/OER_1200_300_Slider_3.jpg','/static/ndf/OER_1200_300_Slider_4.jpg','/static/ndf/OER_1200_300_Slider_5.jpg','/static/ndf/Website Banners/COOL-website-slider/COOL_website_Banner_latest.png']
-    print "in cool resource list"
+    print("in cool resource list")
     index = 'nodes'
     doc_type = 'node'
     q= eval("Q('bool', must=[Q('match', type = 'GSystemType'), Q('match',name='cool_resource')])")
@@ -58,7 +72,7 @@ def cool_resourcelist(request):
         #print each.attribute_set
         l = list(each.attribute_set)
         d = {k:v for element in l for k,v in element.to_dict().items()}
-        if d.has_key('knowledge_theme'):
+        if 'knowledge_theme' in d:
             if d['knowledge_theme']=='Knowledge deepening':
                 koers.append(each)
             elif d['knowledge_theme']=='Creativity and 21st century skills':
@@ -86,9 +100,9 @@ def cool_resourcelist(request):
     if 'sessionid' in request.COOKIES.keys():
         results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name='COOL-OER')
         if len(results) ==0:
-            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=s2[0].id,visitednode_name='COOL-OER',preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
+            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=s2[0].id,visitednode_name='COOL-OER',preview_count=0,visit_count=1,download_count=0,created_date=datetime.now(),last_updated=datetime.now())
             obj.save()
-            print "hit_counter object saved"
+            print("hit_counter object saved")
         else:
             obj1 = results[0]
             #print "else:",obj1.visitednode_name,obj1.visit_count                                                                                                      
@@ -99,12 +113,13 @@ def cool_resourcelist(request):
                 obj1.visit_count += 1
                 obj1.save()
 
-    print subject,level,rsrc_type
-    with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/cool_resources_details.json','r') as json_file:
+    print(subject,level,rsrc_type)
+    with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/cool_resources_details.json','r',encoding='utf-8') as json_file:
                         coolresourcedata = json.load(json_file)
-    req_context = RequestContext(request, {
-                                    'title':'COOL-OER','coolresourcedata':coolresourcedata,'groupid':'home','group_id':'home','bannerpics':banner_pics1,'k_oers':koers,'koers_count':len(koers),'c_oers':coers,'coers_count':len(coers),'t_oers':toers,'toers_count':len(toers),'lang':language,'subjt':subject,'grade':level,'rsrc':rsrc_type})
-    return render_to_response("ndf/TheCOOL_OER.html",req_context)
+  
+    return render(request,"ndf/TheCOOL_OER.html",{
+                                    'title':'COOL-OER','coolresourcedata':coolresourcedata,'groupid':'home','group_id':'home','bannerpics':banner_pics1,'k_oers':koers,'koers_count':len(koers),'c_oers':coers,'coers_count':len(coers),'t_oers':toers,'toers_count':len(toers),'lang':language,'subjt':subject,'grade':level,'rsrc':rsrc_type
+})
 
 def get_tran_nodes(subject,rel_type,lang):
     q = Q('bool',must = [Q('match',subject = subject),Q('match',type= 'GRelation'),Q('match', relation_type= rel_type)]) 
@@ -112,7 +127,7 @@ def get_tran_nodes(subject,rel_type,lang):
     res = s1.execute()
     nds = []
     for each in s1:
-        print "in trans nodes:",s1.count()
+        print("in trans nodes:",s1.count())
         nd = get_node_by_id(each.right_subject)
         if len(lang) > 0:
             if any(x in lang for x in nd.language):
@@ -121,14 +136,14 @@ def get_tran_nodes(subject,rel_type,lang):
             nds.append(nd)
     if len(lang) != 0 and not 'en' in lang:
         for each in nds:
-            print "lang:",each.language, 'en' in each.language
+            print("lang:",each.language, 'en' in each.language)
             if 'en' in each.language:
                 nds.pop(each)
-    print "nds count:",len(nds)
+    print("nds count:",len(nds))
     return nds
 
 def get_all_counts(k_oers,c_oers,t_oers,language,subject,level,rsrc_type):
-    print "in get_all count",subject,level,rsrc_type
+    print("in get_all count",subject,level,rsrc_type)
     for each in k_oers:
         #if 'en' in each.language:
         l = list(each.attribute_set)
@@ -165,13 +180,13 @@ def fetch_counts(oer,attrb_set,language,subject,level,rsrc_type):
     else:
         language['ma'] += 1
     
-    print level
+    print(level)
 
     if 'K-12' in attrb_set['educationallevel']:
-        print "in k-12"
+        print("in k-12")
         level['K-12'] += 1
     else:# '6-12' in attrb_set['educationallevel']:
-        print "in 6-12"
+        print("in 6-12")
         level['6-12'] += 1
 
 
@@ -234,9 +249,9 @@ def fetch_counts(oer,attrb_set,language,subject,level,rsrc_type):
 
 def predicate(rsrc_type, subject, grade, oer):
     #def _predicate(oer):
-    print "in predicate", rsrc_type,oer['resource_type']
+    print("in predicate", rsrc_type,oer['resource_type'])
     subjs = [x.strip() for x in str(oer['educationalsubject']).split(',')]
-    print subjs
+    print(subjs)
     if not len(rsrc_type) == 0 and not any(x in str(oer['resource_type']).split(',') for x in rsrc_type):
         return False
     if not len(subject) == 0 and not any(x in subjs for x in subject):
@@ -254,21 +269,21 @@ def cool_resourcelist_filter(request):
     rsrc_type = {'Hands_On':0,'Simulation':0,'Tool':0,'Forum':0}
     level = {'K-12':0,'6-12':0}
     banner_pics1 = ['/static/ndf/OER_1200_300_Slider_1.jpg','/static/ndf/OER_1200_300_Slider_2.jpg','/static/ndf/OER_1200_300_Slider_3.jpg','/static/ndf/OER_1200_300_Slider_4.jpg','/static/ndf/OER_1200_300_Slider_5.jpg','/static/ndf/COOL_website_Banner_Banner_1200-300.png']
-    print "in cool resource list filter"
+    print("in cool resource list filter")
     index = 'nodes'
     doc_type = 'node'
     grade = request.POST.getlist('Grade')
     subj = request.POST.getlist('subdomain')
     rsrc = request.POST.getlist('resourcetype')
     lang_support = request.POST.getlist('Language_support')
-    print "filter values",grade,subj,rsrc,lang_support
+    print("filter values",grade,subj,rsrc,lang_support)
     q= eval("Q('bool', must=[Q('match', type = 'GSystemType'), Q('match',name='cool_resource')])")
     gst_cool_resource = (Search(using=es,index = index,doc_type=doc_type).query(q)).execute()
     #dt = {u'knowledge_theme': u'Knowledge deepening'}
     q = Q('bool',must=[Q('terms',member_of=[gst_cool_resource[0].id]),Q('match',status='PUBLISHED'),Q('match',access_policy='PUBLIC'),Q('match_phrase',language='en')])
     cooloers1 = (Search(using=es,index = index,doc_type=doc_type).query(q)).sort({"last_update" : {"order" : "asc"}})
     cooloers2 = cooloers1.execute()
-    print "coers count:",cooloers1.count()
+    print("coers count:",cooloers1.count())
     koers=[]
     coers=[]
     toers = []
@@ -276,13 +291,13 @@ def cool_resourcelist_filter(request):
    # trans_rel_type = '5752ad572e01310a05dca50f'
     if len(subj) !=0:
         subjs =','.join(subj)
-        print subjs,subj
+        print(subjs,subj)
     for each in cooloers1[0:cooloers1.count()]:
         #print each.attribute_set
         l = list(each.attribute_set)
         d = {k:v for element in l for k,v in element.to_dict().items()}
         #print "dict of attributes",d
-        if d.has_key('knowledge_theme'):
+        if 'knowledge_theme' in d:
             subjt =str(d['educationalsubject']).split(',')
             if d['knowledge_theme']=='Knowledge deepening':
                 '''
@@ -311,38 +326,39 @@ def cool_resourcelist_filter(request):
         koers = [each for each in koers if 'en' not in each.language]
         coers = [each for each in coers if 'en' not in each.language]
         toers = [each for each in toers if 'en' not in each.language]
-    print "knowledge oers:", len(koers), len(coers), len(toers)
+    print("knowledge oers:", len(koers), len(coers), len(toers))
     koers.sort(key=lambda x: x.name, reverse=False)
     coers.sort(key=lambda x: x.name, reverse=False)
     toers.sort(key=lambda x: x.name, reverse=False)
     
     get_all_counts(koers,coers,toers,language,subject,level,rsrc_type)
     
-    with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/cool_resources_details.json','r') as json_file:
+    with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/cool_resources_details.json','r',encoding='utf-8') as json_file:
                         coolresourcedata = json.load(json_file)
-    req_context = RequestContext(request, {
-                                    'title':'COOL-OER','coolresourcedata':coolresourcedata,'groupid':'home','group_id':'home','bannerpics':banner_pics1,'k_oers':koers,'koers_count':len(koers),'c_oers':coers,'coers_count':len(coers),'t_oers':toers,'toers_count':len(toers),'lang':language,'subjt':subject,'grade':level,'rsrc':rsrc_type})
-    return render_to_response("ndf/Thecooloer.html",req_context)
+  
+    return render(request,"ndf/Thecooloer.html",{
+                                    'title':'COOL-OER','coolresourcedata':coolresourcedata,'groupid':'home','group_id':'home','bannerpics':banner_pics1,'k_oers':koers,'koers_count':len(koers),'c_oers':coers,'coers_count':len(coers),'t_oers':toers,'toers_count':len(toers),'lang':language,'subjt':subject,'grade':level,'rsrc':rsrc_type
+})
 
 def cool_oer_preview(request,node_id):
-    print "in cool oer preview"
+    print("in cool oer preview")
     index = 'nodes'
     doc_type = 'node'
     q = Q('bool',must = [Q('match_phrase',name = node_id)])                                                    
     s1 = Search(using=es, index='nodes',doc_type="node").query(q)
     s2 = s1.execute()
     nd = s2[0]
-    print nd.attribute_set
+    #print(nd.attribute_set)
     banner_pics1 = ['/static/ndf/OER_1200_300_Slider_1.jpg','/static/ndf/OER_1200_300_Slider_2.jpg','/static/ndf/OER_1200_300_Slider_3.jpg','/static/ndf/OER_1200_300_Slider_4.jpg','/static/ndf/OER_1200_300_Slider_5.jpg','/static/ndf/COOL_website_Banner_Banner_1200-300.png']
     
-    with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/cool_resources_details.json','r') as json_file:
+    with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/cool_resources_details.json','r',encoding='utf-8') as json_file:
                         coolresourcedata = json.load(json_file)
     if 'sessionid' in request.COOKIES.keys():
         results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name=nd.name)
         if len(results) ==0:
-            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=nd.id,visitednode_name=nd.name,preview_count=1,visit_count=0,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
+            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=nd.id,visitednode_name=nd.name,preview_count=1,visit_count=0,download_count=0,created_date=datetime.now(),last_updated=datetime.now())
             obj.save()
-            print "hit_counter object saved"
+            print("hit_counter object saved")
         else:
             obj1 = results[0]
             #print "else:",obj1.visitednode_name,obj1.visit_count                                                                                                      
@@ -366,9 +382,9 @@ def cool_oer_preview(request,node_id):
         sa1 = Search(using=es, index='triples',doc_type="triple").query(q)
         res2 = sa1.execute()
     nds = {}
-    print sa1.count()
+    #print sa1.count()
     for each in sa1[0:sa1.count()]:
-        print each
+        print(each)
         trns_nd = get_node_by_id(each.right_subject)
         nds[trns_nd.language[0]] = trns_nd.name
         #trns_nd = ''
@@ -376,28 +392,27 @@ def cool_oer_preview(request,node_id):
         nds['en'] = eng_nd
     else:
         nds['en'] = node_id
-    print nds
-    req_context = RequestContext(request, {'title':'COOL-OER','coolresourcedata':coolresourcedata,'groupid':'home','group_id':'home','bannerpics':banner_pics1,'nd':nd, 'transnds':nds})
-    print nds
+    print(nds)
+
     from django.utils.translation import activate
     activate(nd.language[0])
-    return render_to_response("ndf/cool_preview.html",req_context)
+    return render(request,"ndf/cool_preview.html",{'title':'COOL-OER','coolresourcedata':coolresourcedata,'groupid':'home','group_id':'home','bannerpics':banner_pics1,'nd':nd,'transnds':nds})
 
 def cool_incr_explorecnt(request):
-    print "in cool oer explr incr cnt"
+    #print "in cool oer explr incr cnt"
     #index = 'nodes'
     #doc_type = 'node'
     from django.shortcuts import redirect
     node_id = request.POST.get('node_id')
     link = request.POST.get('href_link')
-    print "link:",link
+    print("link:",link)
     nd = get_node_by_id(node_id)
     if 'sessionid' in request.COOKIES.keys():
         results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name=nd.name)
         if len(results) ==0:
-            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=nd.id,visitednode_name=nd.name,preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
+            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=nd.id,visitednode_name=nd.name,preview_count=0,visit_count=1,download_count=0,created_date=datetime.now(),last_updated=datetime.now())
             obj.save()
-            print "hit_counter object saved"
+            print("hit_counter object saved")
         else:
             obj1 = results[0]
             #print "else:",obj1.visitednode_name,obj1.visit_count                                                                                                      
@@ -406,28 +421,19 @@ def cool_incr_explorecnt(request):
                 obj1.save()
     print ("redirecting to link:",link)
     return redirect(link)
+
 def site_contact(request):
-    req_context = RequestContext(request, {
-                                    'title':'Contact','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics1})
-    return render_to_response("ndf/contact.html",req_context)
+    return render(request,"ndf/contact.html",{'title':'Contact','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics1})
 
 def site_termsofuse(request):         
-    return render_to_response(
-                                        "ndf/termsofservice.html",
+    return render(request,"ndf/termsofservice.html",
                                         {
                                             'title': 'Terms Of Use','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics1,
-                                        },
-                                        context_instance=RequestContext(request)
-                                    )
+                                        })
 
 def site_privacypolicy(request):                                                                                              
-    return render_to_response(
-                                        "ndf/privacypolicy.html",
-                                        {
-                                            'title': 'Privacy Policy','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics1,
-                                        },
-                                        context_instance=RequestContext(request)
-                                    )
+    return render(request,"ndf/privacypolicy.html",{'title': 'Privacy Policy','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics1,
+                                        })
 
 
 def create_lang_module(request,group_id, module_id=None, cancel_url='e-library'):
@@ -477,13 +483,12 @@ def create_lang_module(request,group_id, module_id=None, cancel_url='e-library')
             }
         }
 
-    req_context = RequestContext(request, {
+    return render(request,template,{
                                     'title': 'Module', 'node_obj': Node.get_node_by_id(module_id),
                                     'group_id': group_id, 'groupid': group_id,
                                     'additional_form_fields': additional_form_fields,
                                     'post_url': reverse(url_name, kwargs=url_kwargs)
-                                })
-    return render_to_response(template, req_context)
+                                } )
     
     '''print "Entered create_lang"
     template = 'ndf/cmspage.html'
@@ -524,14 +529,13 @@ def create_lang_unit(request,group_id, unit_id=None, cancel_url='e-library'):
             }
         }
     
-    print "additional form fields",additional_form_fields
-    req_context = RequestContext(request, {
+    print("additional form fields",additional_form_fields)
+    return render(request,template,{
                                     'title': 'Unit', 'node_obj': get_node_by_id(unit_id),
                                     'group_id': group_id, 'groupid': group_id,
                                     'additional_form_fields': additional_form_fields,
                                     'post_url': reverse(url_name, kwargs=url_kwargs)
-                                })
-    return render_to_response(template, req_context)
+                                } )
 
 
 def node_create_edit(request,
@@ -543,7 +547,7 @@ def node_create_edit(request,
     '''
     creation as well as edit of node
     '''
-    print "inside node_create_edit"
+    print("inside node_create_edit")
     # check for POST method to node update operation
     if request.method == "POST":
         '''
@@ -551,7 +555,7 @@ def node_create_edit(request,
         if node_type not in node_collection.db.connection._registered_documents.keys():
             raise ValueError('Improper node_type passed')
         '''
-        print "inside post method",request.POST
+        #print "inside post method",request.POST
         
         kwargs={}
         group_name, group_id = get_group_name_id(group_id)
@@ -569,69 +573,61 @@ def node_create_edit(request,
                     'member_of': member_of_id,
                     'created_by':1
                     }
-            node_obj = node_collection.collection[node_type]()
+            node_obj = eval('node_type()')
 
         else: # create new
             module_id = request.POST.get('module')
-            print "module_id:",module_id
+            print("module_id:",module_id)
             kwargs={
                     'group_set': [group_id,module_id],
                     'member_of': member_of_id,
                     'created_by':1
                     }
-            node_obj = node_collection.collection[node_type]()
+            node_obj = eval('node_type()')
 
         language = get_language_tuple(request.POST.get('attribute_language', None))
         
         node_obj.fill_gstystem_values(request=request,
                                     language=language,
                                             **kwargs)
-        print "bfr saving",node_obj
+        print("bfr saving",node_obj)
         node_obj.save(group_id=group_id)
-        print "node created:",node_obj
+        print("node created:",node_obj)
 
         #document = node_obj.to_json_type()
         doc = json.dumps(node_obj, cls=NodeJSONEncoder)
         document = json.loads(doc)
-        print "json document:",document
+        print("json document:",document)
         
-        with open("/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/gstudio_configs/req_body.json") as req_body:
+        with open("/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/gstudio_configs/req_body.json",'r',encoding='utf-8') as req_body:
             request_body = json.load(req_body)
-            print "request json",request_body
+            print("request json",request_body)
 
         if document.get("_id"):
             document["id"] = document.pop("_id")
-            document["type"] = document.pop("_type")
+            document["type"] = document.pop("_cls")
 
-            print "before indexing"
+            print("before indexing")
             es.index(index='nodes', doc_type='node', id=document["id"], body=document)
             if member_of == 'Module':
-                print "domain_id",domain_id
+                print("domain_id",domain_id)
                 q = Q('match',id = str(domain_id))
-
                 s1 = UpdateByQuery(using=es, index='nodes',doc_type="node").query(q).script(source="ctx._source.collection_set.add(params.val)", lang="painless",params={'val':document["id"]})
-            
                 s2 = s1.execute()
             else:
                 q = Q('match',id = str(module_id))
-
                 s1 = UpdateByQuery(using=es, index='nodes',doc_type="node").query(q).script(source="ctx._source.collection_set.add(params.val)", lang="painless",params={'val':document["id"]})
-
                 s2 = s1.execute()
-
         return HttpResponseRedirect(reverse(detail_url_name, kwargs={'group_id': group_id}))
 
 
 def node_name_content_edit(request,group_id,node_id):
-    
-    print "inside node_name_content_edit"
-    
+    print("inside node_name_content_edit")
     if request.method == "GET":
-        
-        req_context = RequestContext(request, {
+        req_context = {
                                     'title': 'Node Edit', 'node_obj': get_node_by_id(node_id),
                                     'group_id': group_id, 'groupid': group_id, 'node_id':node_id
-                                })
+                                }
 
     if request.method == "POST":
         #node_obj = get_node_by_id(node_id)
@@ -639,49 +635,43 @@ def node_name_content_edit(request,group_id,node_id):
         altnames = request.POST.get('altnames')
         content = request.POST.get('content')
         tags = request.POST.get('tags')
-        print "updated_values:",str(name).encode('utf-8'),str(content).encode('utf-8'),str(altnames).encode('utf-8')
+        print("updated_values:",str(name).encode('utf-8'),str(content).encode('utf-8'),str(altnames).encode('utf-8'))
         
         q = Q('bool',must = [Q('match',id = node_id)])
         #f1 = "relation_set." + "translation_of"
         s1 = UpdateByQuery(using=es, index='nodes',doc_type="node").query(q).script(source="ctx._source.name = params.val1;ctx._source.altnames = params.val2;ctx._source.content = params.val3;ctx._source.tags.add(params.val4)", lang="painless",params={'val1':name, 'val2':altnames, 'val3': content, 'val4': tags})
         s2 = s1.execute()
-        req_context = RequestContext(request, {
+        req_context = {
                                     'title': 'Node Edit', 'node_obj': get_node_by_id(node_id),
                                     'group_id': group_id, 'groupid': group_id, 'node_id':node_id
-                                })
+                                }
     template = 'ndf/node_edit.html'
-    return render_to_response(template, req_context)
+    return render(request,template, req_context)
         
 
 def fetch_modules_of_language(request,group_id):
-    
     member_of_name, member_of_id = get_gst_name_id('Module')
-    
     lang = request.POST.get("language")
-    
-    print "inside fetch modules of particular language:",lang
+    print("inside fetch modules of particular language:",lang)
     domain_set = ['English','Mathematics','Science']
     domain_nds = [get_group_name_id(each)[1] for each in domain_set]
     domains = get_nodes_by_ids_list(domain_nds)
     moduleids = []
     for each in domains:
         moduleids.extend(each.collection_set)
-    print "moduleids:",moduleids
+    print("moduleids:",moduleids)
     q= Q('bool', must=[Q('match', member_of = str(member_of_id)), Q('match',status='PUBLISHED'),Q('terms',id = moduleids),Q('match_phrase',language = lang)])
-    
     s1 = (Search(using=es,index = 'nodes',doc_type='node').query(q)).sort({"last_update" : {"order" : "asc"}})
-    
     s2 = s1.execute()
-
 
     modules = {}
     for each in s1[0:s1.count()]:
         modules[each.name] = each.id
-    print "Modules:",json.dumps(modules)
+    print("Modules:",json.dumps(modules))
     return HttpResponse(json.dumps(modules), content_type="application/json")
 
 def coolpage(request):
-    print "Entered coolpage"
+    print("Entered coolpage")
     #TheCOOL.html
     q = Q('match', name = 'home')
     s1 = Search(using=es, index='nodes',doc_type="node").query(q)
@@ -690,9 +680,9 @@ def coolpage(request):
     if 'sessionid' in request.COOKIES.keys():
         results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name='TISS-COOL')
         if len(results) ==0:
-            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id = s2[0].id,visitednode_name='TISS-COOL',preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
+            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id = s2[0].id,visitednode_name='TISS-COOL',preview_count=0,visit_count=1,download_count=0,created_date=datetime.now(),last_updated=datetime.now())
             obj.save()
-            print "hit_counter object saved"
+            print("hit_counter object saved")
         else:
             obj1 = results[0]
             #print "else:",obj1.visitednode_name,obj1.visit_count                                                                                                      
@@ -702,46 +692,42 @@ def coolpage(request):
             else:
                 obj1.visit_count += 1
                 obj1.save()
-
-    req_context = RequestContext(request, {
-                                    'title':'COOL','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics1})
-    return render_to_response("ndf/TheCOOL.html",req_context)
+    req_context = {'title':'COOL','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics1}
+    return render(request,"ndf/TheCOOL.html",req_context)
 
 def homepage(request, group_id):
-    print "Entered home.py"
+    print("Entered home.py")
     #print request,"\n"                                                                                                                                                
-    print request.user,"\n"
-    print request.author
-    if request.user.is_authenticated():
-        print "user name:",request.user.id
+    print(request.META,request.GET,request.POST,request.COOKIES,"\n")
+    print(request.author)
+    if request.user.is_authenticated:
+        print("user name:",request.user.id)
         q = eval("Q('bool', must=[Q('match', type = 'Author'), Q('match',created_by=int(request.user.id))])")
         # q = Q('match',name=dict(query='File',type='phrase'))                                                                                                         
         auth1 = Search(using=es, index=index,doc_type="node").query(q)
         auth2 = auth1.execute()
-        print "auth1:",auth2
+        print("auth1:",auth2[0].name)
         auth = auth2[0]
         # This will create user document in Author collection to behave user as a group.                                                                               
-        print GSTUDIO_SITE_LANDING_PAGE, request.user.id
+        print(GSTUDIO_SITE_LANDING_PAGE, request.user.id)
         if GSTUDIO_SITE_LANDING_PAGE == "home":
-            print "before reverse"
+            print("before reverse")
             return HttpResponseRedirect( reverse('e-library'), kwargs={"group_id": group_id} )
-
         else:
             return HttpResponseRedirect( reverse('dashboard', kwargs={"group_id": request.user.id}) )
-
     else:
-        print "in home:",group_id,GSTUDIO_SITE_LANDING_PAGE
+        print("in home:",group_id,GSTUDIO_SITE_LANDING_PAGE)
         if GSTUDIO_SITE_LANDING_PAGE == "home":
-            return HttpResponseRedirect(  reverse('e-library', kwargs={"group_id": group_id} ) )
-
+            print(request)
+            return HttpResponse("This is test",content_type='text/plain')
+            #return HttpResponseRedirect(  reverse('e-library', kwargs={"group_id": group_id} ) )
         else:
             return HttpResponseRedirect( reverse('groupchange', kwargs={"group_id": group_id}) )
 
 def help(request,group_id):
     banner_pics = ['/static/ndf/Website Banners/Landing Page/elibrary1.png','/static/ndf/Website Banners/Landing Page/elibrary2.png','/static/ndf/elibrary 6.1.png','/static/ndf/Website Banners/Landing Page/elibrary4.png','/static/ndf/Website Banners/Landing Page/elibrary5.png','/static/ndf/Website Banners/Landing Page/elibrary6.png']
     template = 'ndf/help.html'
-    return render_to_response(template, {'group_id':group_id,'bannerpics':banner_pics},
-                                context_instance=RequestContext(request))
+    return render(request,template, {'group_id':group_id,'bannerpics':banner_pics})
 
 def help_videos(request,group_id):
     node_id = request.POST.get('node_id')
@@ -753,49 +739,46 @@ def help_videos(request,group_id):
                 engnd_id = each['translation_of']
                 engnd = get_node_by_id(engnd_id)
                 chkname = engnd.name
-                print "chkname:",chkname
+                print("chkname:",chkname)
     else:
         #nd = get_node_by_id(node_id)
         chkname = nd.name
 
-    print 'inside help_videos',node_id
+    print('inside help_videos',node_id)
     with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/module.json','r') as fd:
         json_data = json.load(fd)
     videos = json_data[str(chkname)]
-    #print "videos:",videos
+    print("videos:",videos)
     template = 'ndf/thehelpmodal.html'
-    return render_to_response(template, {'group_id':group_id , 'videos':videos , 'module_name':nd.name })
+    return render(request,template, {'group_id':group_id , 'videos':videos , 'module_name':nd.name })
     
 def explore_item(request,group_id):
     from django.shortcuts import redirect
     node_id = request.POST.get('node_id')
     link = request.POST.get('href_link')
-    print "inside explore link",node_id,link
+    print("inside explore link",node_id,link)
     nd = get_node_by_id(node_id)
     if 'sessionid' in request.COOKIES.keys():
         results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name=nd.name)
         if len(results) ==0:
-            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=nd.id,visitednode_name=nd.name,preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
+            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=nd.id,visitednode_name=nd.name,preview_count=0,visit_count=1,download_count=0,created_date=datetime.now(),last_updated=datetime.now())
             obj.save()
-            print "hit_counter object saved"
+            print("hit_counter object saved")
         else:
             obj1 = results[0]
-            print "else:",obj1.visitednode_name,obj1.visit_count
+            print("else:",obj1.visitednode_name,obj1.visit_count)
             if obj1.visit_count == 0:
                 obj1.visit_count = 1
                 obj1.save()
     return redirect(link)
 
 def get_file(md5_or_relurl=None):
-
     file_blob = None
-    
     try:
         if md5_or_relurl:
             file_blob = gfs.open(md5_or_relurl)
     except Exception as e:
-        print "File '", md5_or_relurl, "' not found: ", e
-            
+        print("File '", md5_or_relurl, "' not found: ", e)
     return file_blob
 
 def readDoc(request, group_id,file_id):
@@ -806,23 +789,23 @@ def readDoc(request, group_id,file_id):
     except:
         group_name, group_id = get_group_name_id(group_id)
 
-    print "in readDoc"
+    print("in readDoc")
     file_node = get_node_by_id(file_id)
     groupnd = get_node_by_id(group_id)
-    print "Session:",request.COOKIES['sessionid']
-    print "tags:",file_node.tags
+    print("Session:",request.COOKIES['sessionid'])
+    print("tags:",file_node.tags)
     if file_node.tags[0].find('unplatform')>=0:
         results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name=groupnd.name)
     else:
         results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name=file_node.name)
     if len(results) ==0:
         if file_node.tags[0].find('unplatform')>=0:
-            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=file_node.id,visitednode_name=groupnd.name,preview_count=0,visit_count=0,download_count=1,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
-            print "post if creation of unplatfom"
+            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=file_node.id,visitednode_name=groupnd.name,preview_count=0,visit_count=0,download_count=1,created_date=datetime.now(),last_updated=datetime.now())
+            print("post if creation of unplatfom")
         else:
-            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=file_node.id,visitednode_name=file_node.name,preview_count=0,visit_count=0,download_count=1,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
+            obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=file_node.id,visitednode_name=file_node.name,preview_count=0,visit_count=0,download_count=1,created_date=datetime.now(),last_updated=datetime.now())
         obj.save()
-        print "object saved successfully"
+        print("object saved successfully")
     else:                                                                                                                                                          
         #cnt = results[0].download_count                                                                                                                          
         obj1 = results[0]
@@ -838,7 +821,6 @@ def readDoc(request, group_id,file_id):
                 obj1.save()
         
     if file_node is not None:
-
         if file_node.if_file.original.relurl:
             # print "md5_or_relurl : ", file_node.if_file.original
             return HttpResponse(get_file(file_node.if_file.original.relurl),
@@ -850,8 +832,7 @@ def readDoc(request, group_id,file_id):
 def about(request,group_id):
     banner_pics = ['/static/ndf/Website Banners/About/about_2_mod.png','/static/ndf/Website Banners/About/About2.png','/static/ndf/Website Banners/About/About3.png','/static/ndf/Website Banners/About/About4.png']
     template = 'ndf/about.html'
-    return render_to_response(template, {'group_id':group_id , 'bannerpics':banner_pics},
-                                context_instance=RequestContext(request)   )
+    return render(request,template, {'group_id':group_id , 'bannerpics':banner_pics})
 
 
 def send_message(request,group_id):
@@ -859,9 +840,8 @@ def send_message(request,group_id):
     #return render_to_response(template, {'group_id':group_id})
     from django.core.mail import send_mail, EmailMultiAlternatives
     from django.contrib import messages
-    print "send message"
-    print request
-    print request.POST
+    print("send message")
+    print(request,request.POST)
     subject = 'Feedback message'
     domain = request.POST.get('domain','')
     if domain == '':
@@ -873,7 +853,6 @@ def send_message(request,group_id):
     recipient_list = ['contact@clix.tiss.edu']
     html_content = render_to_string('ndf/html_message.html', c)
     msg = EmailMultiAlternatives(subject, message,email_from, recipient_list)
-
     msg.attach_alternative(html_content, "text/html")
     msg.send(fail_silently=True)
     messages.success(request, 'Your feedback sent successfully!')
@@ -886,7 +865,7 @@ def send_message(request,group_id):
 
 
 def domain_help(request,group_id,domain_name):
-    print "inside domain help",domain_name
+    print("inside domain help",domain_name)
     if domain_name == 'English':
         template = 'ndf/theEDhelp.html'
         banner_pics = ['/static/ndf/Website Banners/English Domain/eng dnd.png','/static/ndf/Website Banners/English Domain/English2.png','/static/ndf/Website Banners\English Domain/English1.png']
@@ -897,12 +876,11 @@ def domain_help(request,group_id,domain_name):
     if domain_name == 'Science':
         template = 'ndf/theSDhelp.html'
         banner_pics = ['/static/ndf/Website Banners/Science Domain/sci dnd.png','/static/ndf/Website Banners/Science Domain/science1.png','/static/ndf/Website Banners/Science Domain/science2.png']
-    return render_to_response(template, {'bannerpics':banner_pics,'group_id':group_id,'domain_name':domain_name},
-                                context_instance=RequestContext(request)   )
+    return render(request,template, {'bannerpics':banner_pics,'group_id':group_id,'domain_name':domain_name})
 
 
 def loadDesignDevelopment(request,group_id,domain_name):
-    print "inside Design Development:",domain_name
+    print("inside Design Development:",domain_name)
     if domain_name == 'English':
         if request.LANGUAGE_CODE == 'en':
             template = 'ndf/ED.html'
@@ -928,33 +906,27 @@ def loadDesignDevelopment(request,group_id,domain_name):
         else:
             template = 'ndf/theSDTelgu.html'
         banner_pics = ['/static/ndf/Website Banners/Science Domain/sci dnd.png','/static/ndf/Website Banners/Science Domain/science1.png','/static/ndf/Website Banners/Science Domain/science2.png']
-    return render_to_response(template, {'bannerpics':banner_pics,'group_id':group_id,'domain_name':domain_name},
-                                context_instance=RequestContext(request)   )
+    return render(request,template, {'bannerpics':banner_pics,'group_id':group_id,'domain_name':domain_name})
 
 
 def uploadDoc(request, group_id):
-    print "inside"
-    
+    print("inside")
     group_name, group_id = get_group_name_id(group_id)
-
-    print "inside upload doc",group_name,group_id
-    
+    print("inside upload doc",group_name,group_id)
     if request.method == "GET":
         template = "ndf/Upload_docu.html"
-
-    variable = RequestContext(request, {'groupid':group_id,'group_id':group_id})
-    return render_to_response(template, variable)
+    variable = {'groupid':group_id,'group_id':group_id}
+    return render(request,template, variable)
 
 
 def upload_using_save_file(request,group_id):
-
     from gnowsys_ndf.ndf.views.file import save_file
     try:
         group_id = ObjectId(group_id)
     except:
         group_name, group_id = get_group_name_id(group_id)
 
-    group_obj = node_collection.one({'_id': ObjectId(group_id)})
+    group_obj = node_collection.find_one({'_id': ObjectId(group_id)})
     title = request.POST.get('context_name','')
     sel_topic = request.POST.get('topic_list','')
     
@@ -971,7 +943,7 @@ def upload_using_save_file(request,group_id):
     fileobj_list = write_files(request, group_id,unique_gs_per_file=False)
     # fileobj_list = write_files(request, group_id)
     fileobj_id = fileobj_list[0]['_id']
-    file_node = node_collection.one({'_id': ObjectId(fileobj_id) })
+    file_node = node_collection.find_one({'_id': ObjectId(fileobj_id) })
 
     #discussion_enable_at = node_collection.one({"_type": "AttributeType", "name": "discussion_enable"})
     for each_gs_file in fileobj_list:
@@ -980,7 +952,7 @@ def upload_using_save_file(request,group_id):
         if usrid not in each_gs_file.contributors:
             each_gs_file.contributors.append(usrid)
 
-        group_object = node_collection.one({'_id': ObjectId(group_id)})
+        group_object = node_collection.find_one({'_id': ObjectId(group_id)})
         
         each_gs_file.save()
         save_node_to_es(each_gs_file)
@@ -991,10 +963,8 @@ def upload_using_save_file(request,group_id):
     # return HttpResponseRedirect(url_name)
 
 def write_files(request, group_id, make_collection=False, unique_gs_per_file=True, **kwargs):
-    print "in write files"
-
+    print("in write files")
     group_name, group_id = get_group_name_id(str(group_id))
-
     user_id = 1
 
     # author_obj = node_collection.one({'_type': u'Author', 'created_by': int(user_id)})
@@ -1006,15 +976,12 @@ def write_files(request, group_id, make_collection=False, unique_gs_per_file=Tru
     collection_set = []
     uploaded_files = request.FILES.getlist('filehive', [])
     name           = request.POST.get('name')
-    print "files:",request.FILES.getlist('filehive', [])
+    print("files:",request.FILES.getlist('filehive', []))
     gs_obj_list    = []
     for each_file in uploaded_files:
-
-        gs_obj = node_collection.collection.GSystem()
-
+        gs_obj = GSystem()
         language = request.POST.get('language')
         language = get_language_tuple(language)
-        
         group_set = [ObjectId(group_id),ObjectId(author_obj_id)]
 
         if name and not first_obj and (name != 'untitled'):
@@ -1029,7 +996,7 @@ def write_files(request, group_id, make_collection=False, unique_gs_per_file=Tru
                                     uploaded_file=each_file,
                                     unique_gs_per_file=unique_gs_per_file,
                                     **kwargs)
-        print "existing_file_gs",existing_file_gs
+        print("existing_file_gs",existing_file_gs)
         q= eval("Q('bool', must=[Q('match', type = 'GSystemType'), Q('match',name='File')])")
         GST_FILE = (Search(using=es,index = 'nodes',doc_type='node').query(q)).execute()
         gst_file_id = GST_FILE[0].id
@@ -1053,7 +1020,7 @@ def write_files(request, group_id, make_collection=False, unique_gs_per_file=Tru
 
     if make_collection and collection_set:
         first_obj.collection_set = collection_set
-        print "first_obj:",first_obj
+        print("first_obj:",first_obj)
         first_obj.save()
         save_node_to_es(first_obj)
     return gs_obj_list
@@ -1065,7 +1032,7 @@ def write_files(request, group_id, make_collection=False, unique_gs_per_file=Tru
 
 def domain_page(request,group_id,domain_name):
     import json
-    print "es_queries domain page:",domain_name,request.session.session_key
+    print("es_queries domain page:",domain_name,request.session.session_key)
     domain_id = get_name_id_from_type(domain_name,'Group')[1]
     #print "domain id:",domain_id
     domainnd = get_node_by_id(domain_id)
@@ -1093,17 +1060,17 @@ def domain_page(request,group_id,domain_name):
 
     import os
     #print "re",files,os.getcwd()
-    with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/employees.json','r') as json_file:
+    with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/employees.json','r',encoding='utf-8') as json_file:
         employeedata = json.load(json_file)
-    with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/testimonial.json','r') as json_file:
+    with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/testimonial.json','r',encoding='utf-8') as json_file:
         testimonydata = json.load(json_file)
     results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid'],visitednode_name=domainnd.name)
     if len(results) ==0:
-        obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=domainnd.id,visitednode_name=domainnd.name,preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
+        obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=domainnd.id,visitednode_name=domainnd.name,preview_count=0,visit_count=1,download_count=0,created_date=datetime.now(),last_updated=datetime.now())
         obj.save()
-    return render_to_response(
+    return render(request,
             "ndf/domain.html",
-            {"employee":employeedata,"testimony":testimonydata,"files":files,"first_arg":domain_name,"group_id":group_id,"bannerpics":banner_pics},context_instance=RequestContext(request)) 
+            {"employee":employeedata,"testimony":testimonydata,"files":files,"first_arg":domain_name,"group_id":group_id,"bannerpics":banner_pics}) 
     
 def get_module_previewdata(request,group_id):
 
@@ -1130,17 +1097,17 @@ def get_module_previewdata(request,group_id):
     '''
     node_id = request.POST.get("node_id")
 
-    print "in es-queries: get_module_previewdata",node_id,request.session.session_key
+    print("in es-queries: get_module_previewdata",node_id,request.session.session_key)
     node_obj = get_node_by_id(node_id)
 
 
     units = get_attribute_value(node_id,'items_sort_list')
-    print "unitnds:",units
+    #print("unitnds:",units)
     if units == 'None' or len(units) == 0:
         units = get_nodes_by_ids_list(node_obj.collection_set)
     else:
         units = list(units)
-    print "units:",units
+    #print("units:",units)
     #imgsrc = get_attribute_value(node_id,'has_banner_pic')
     # unitnds = get_nodes_by_ids_list(list(node_obj.collection_set))
     module_dict = {}
@@ -1161,7 +1128,7 @@ def get_module_previewdata(request,group_id):
                 engnd_id = each['translation_of']
                 engnd = get_node_by_id(engnd_id)
                 chkname = engnd.name
-                print "chkname:",chkname
+                print("chkname:",chkname)
     else:
         chkname = module_dict['name']
 
@@ -1183,12 +1150,12 @@ def get_module_previewdata(request,group_id):
     alldocs1 = (Search(using=es,index = 'nodes',doc_type='node').query(q)).sort({"last_update" : {"order" : "desc"}})
     alldocs2 = alldocs1.execute()
 
-    print "document count:",alldocs1.count()
+    print("document count:",alldocs1.count())
     student_docs = {}
     if alldocs1.count() > 0 :
         for each in alldocs2:
             student_docs[str(each.language[1])]='/media/'+str(each.if_file.original.relurl)
-    print "docs:",student_docs
+    print("docs:",student_docs)
     
     if node_obj.language[0] != 'en':
         q = Q('bool',must=[Q('terms',member_of=[GST_FILE[0].id,GST_JSMOL[0].id,GST_PAGE[0].id]),Q('match',access_policy='PUBLIC'),Q('match_phrase',language = node_obj.language[1]),Q('match_phrase',tags = 'Handbook'),Q('match_phrase',tags = chkname.split()[0]),Q('match_phrase',tags = 'Teacher')])
@@ -1203,15 +1170,15 @@ def get_module_previewdata(request,group_id):
     if alldocs1.count() > 0 :
         for each in alldocs2:
             teacher_docs[str(each.language[1])]='/media/'+str(each.if_file.original.relurl)
-    print "docs:",teacher_docs
+    print("docs:",teacher_docs)
     q1 = []
     for each in str(chkname).split():
         q1.append(Q('match_phrase', tags = each))
-    print node_obj.language[1]
+    #print node_obj.language[1]
 
     q = Q('bool',must=[Q('terms',member_of=[GST_FILE[0].id,GST_JSMOL[0].id,GST_PAGE[0].id]),Q('match',access_policy='PUBLIC'),Q('match_phrase',language = node_obj.language[1]),Q('match_phrase',tags = 'Tool')],should = q1,minimum_should_match=1)
                 
-    print "interactives query:",q
+    print("interactives query:",q)
     allinteractives1 = (Search(using=es,index = 'nodes',doc_type='node').query(q)).sort({"last_update" : {"order" : "desc"}})
 
     allinteractives2 = allinteractives1.execute()
@@ -1220,10 +1187,10 @@ def get_module_previewdata(request,group_id):
         tooldata = json.load(json_file)
     interactives_data ={}
     for each in allinteractives1:
-        print each.name,each.tags,str(each.altnames).encode('utf-8')
+        #print(each.name,each.tags,str(each.altnames).encode('utf-8'))
         interactives_data[str(each.altnames)] = [tooldata[str(each.name)]['Interactive_href'],tooldata[str(each.name)]['Interactive_image']]
 
-    print q,allinteractives1.count(),interactives_data
+    #print(q,allinteractives1.count(),interactives_data)
 
     for each in units:
         #print "collection_set:",each.collection_set,each.id
@@ -1234,20 +1201,20 @@ def get_module_previewdata(request,group_id):
             unitdict = {}
             unitdict['name'] = each.altnames
             # print "lessnnds:",each.collection_set
-            print "lessn name:",str(lessn.name).encode('utf-8')
-            unitdict['lessname'] = str(lessn.name).encode('utf-8')
+            #print("lessn name:",(lessn.name))
+            unitdict['lessname'] = (lessn.name)
             unitdict['totalactivities'] = len(list(lessn.collection_set))
             module_dict['unitdetails'].append(unitdict) 
-    print "module details:",module_dict
+    #print("module details:",module_dict)
     
-    with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/employees.json','r') as fd:
+    with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/employees.json','r',encoding='utf-8') as fd:
         json_data = json.load(fd)
     if module_dict['subject'] == 'English':
         authorData = json_data['Team_detail_english']
     elif module_dict['subject'] == 'Mathematics':
         authorData = json_data['Team_detail_math']
     elif module_dict['subject'] == 'Digital Literacy':
-        print json_data['Team_detail_digital']
+       # print json_data['Team_detail_digital']
         authorData = json_data['Team_detail_digital']
     else:
         authorData = json_data['Team_detail_science']
@@ -1259,17 +1226,17 @@ def get_module_previewdata(request,group_id):
         #engnd_id = node_obj.relation_set[0]['translation_of']
         #print engnd_id
         if each['moduleId'] == chkname:
-            print "before assigninig user data"
+            print("before assigninig user data")
             userdata = each['userIdArray']
             leaduser = each['u']
             break
-    print "Author data of module:",userdata
+    print("Author data of module:",userdata)
     
     results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name=module_dict['name'])
     if len(results) ==0:
-        obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=module_dict['id'],visitednode_name=module_dict['name'],preview_count=1,visit_count=0,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
+        obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=module_dict['id'],visitednode_name=module_dict['name'],preview_count=1,visit_count=0,download_count=0,created_date=datetime.now(),last_updated=datetime.now())
         obj.save()
-        print "hit_counter object saved"
+        print("hit_counter object saved")
     else:
         obj1 = results[0]
         #print "else:",obj1.visitednode_name,obj1.visit_count
@@ -1277,13 +1244,11 @@ def get_module_previewdata(request,group_id):
             obj1.preview_count = 1
             obj1.save()
 
-
-    return render_to_response('ndf/Emodule_preview.html',
+    return render(request,'ndf/Emodule_preview.html',
             {
                 'group_id': group_id, 'groupid': group_id,
                 'moduledetails':module_dict, 'student_docs':student_docs,'teacher_docs':teacher_docs, 'interactivestotal':allinteractives1.count(), 'toolsdata':interactives_data, 'userdata':userdata, 'leaduser':leaduser
-            },
-            context_instance=RequestContext(request))
+            })
 
 def get_node_by_id(node_id):
     '''
@@ -1317,7 +1282,7 @@ def get_nodes_by_ids_list(node_id_list):
     if node_id_list:
         node_id_list = [str(each) for each in node_id_list]
         q = eval("Q('terms', id = node_id_list)")
-        print q
+        print(q)
         # q = Q('match',name=dict(query='File',type='phrase'))
         s1 = Search(using=es, index='nodes',doc_type="node").query(q)
         s2 = s1.execute()
@@ -1382,8 +1347,8 @@ def get_group_name_id(group_name_or_id, get_obj=False):
 
     # case-1: argument - "group_name_or_id" is ObjectId
     if ObjectId.is_valid(group_name_or_id):
-        q = eval("Q('match', id = group_name_or_id)")
-
+        q = eval("Q('match', id = str(group_name_or_id))")
+        print("befr query:",q)
         # q = Q('match',name=dict(query='File',type='phrase'))
         s1 = Search(using=es, index='nodes',doc_type="node").query(q)
         s2 = s1.execute() 
@@ -1408,7 +1373,7 @@ def get_group_name_id(group_name_or_id, get_obj=False):
     # case-2: argument - "group_name_or_id" is group name
     else:
         q = eval("Q('bool',must =[Q('match', name = group_name_or_id), Q('terms', type = ['Group', 'Author'])])")
-
+        print("query:",q)
         # q = Q('match',name=dict(query='File',type='phrase'))
         s1 = Search(using=es, index='nodes',doc_type="node").query(q)
         s2 = s1.execute() 
@@ -1441,7 +1406,7 @@ def get_group_type(group_id, user):
     
     """
 
-    print "in get_group_type function"
+    #print "in get_group_type function"
     try:
         # Splitting url-content based on backward-slashes
         split_content = group_id.strip().split("/")
@@ -1525,7 +1490,7 @@ def get_group_type(group_id, user):
 
 
 def get_attribute_value(node_id, attr_name, get_data_type=False, use_cache=True):
-    print "in get_attribute_value"
+    print("in get_attribute_value")
     cache_key = str(node_id) + 'attribute_value' + str(attr_name)
     cache_result = cache.get(cache_key)
 
@@ -1538,13 +1503,11 @@ def get_attribute_value(node_id, attr_name, get_data_type=False, use_cache=True)
     if node_id:
         # print "\n attr_name: ", attr_name
         # gattr = node_collection.one({'_type': 'AttributeType', 'name': unicode(attr_name) })
-        
         q = eval("Q('bool',must =[Q('match', type = 'AttributeType'), Q('match', name = attr_name)])")
 
         # q = Q('match',name=dict(query='File',type='phrase'))
         s1 = Search(using=es, index='nodes',doc_type="node").query(q)
         s2 = s1.execute()
-
         gattr = s2[0]
 
         if get_data_type:
@@ -1552,7 +1515,7 @@ def get_attribute_value(node_id, attr_name, get_data_type=False, use_cache=True)
         if gattr: # and node  :
 
             # node_attr = triple_collection.find_one({'_type': "GAttribute", "subject": ObjectId(node_id), 'attribute_type': gattr._id, 'status': u"PUBLISHED"})
-            print node_id,gattr.id
+            print(node_id,gattr.id)
             q = eval("Q('bool',must =[Q('match', type = 'GAttribute'), Q('match', subject = str(node_id)), Q('match',attribute_type = str(gattr.id))])")
 
             # q = Q('match',name=dict(query='File',type='phrase'))
@@ -1562,8 +1525,8 @@ def get_attribute_value(node_id, attr_name, get_data_type=False, use_cache=True)
             if s1.count() > 0:
                 node_attr = s2[0]
                 attr_val = node_attr.object_value
-                print "\n here: ", attr_name, " : ", type(attr_val), " : ", attr_val
-                print "node attr:",node_attr
+                #print("\n here: ", attr_name, " : ", type(attr_val), " : ", attr_val)
+                #print("node attr:",node_attr)
     if get_data_type:
         return {'value': attr_val, 'data_type': data_type}
     cache.set(cache_key, attr_val, 60 * 60)
@@ -1571,7 +1534,7 @@ def get_attribute_value(node_id, attr_name, get_data_type=False, use_cache=True)
 
 def get_gst_name_id(gst_name_or_id):
     # if cached result exists return it
-    print "in gst_name_or_id",gst_name_or_id
+    print("in gst_name_or_id",gst_name_or_id)
     slug = slugify(gst_name_or_id)
     cache_key = 'gst_name_id' + str(slug)
     cache_result = cache.get(cache_key)
@@ -1620,23 +1583,22 @@ def get_gst_name_id(gst_name_or_id):
 
 def save_node_to_es(django_document):
     try:
-        print "called to save_to_es method of es_queries"
+        print("called to save_to_es method of es_queries")
         # node_types = ['GSystemType','MetaType','AttributeType','RelationType','GSystem']
         with open("/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/gstudio_configs/req_body.json") as req_body:
             request_body = json.load(req_body)
         
         doc = json.dumps(django_document,cls=NodeJSONEncoder)
-        print "00000000000000000000000000000000000000000000000"
-        print doc
-        print "00000000000000000000000000000000000000000000000"
+        print("00000000000000000000000000000000000000000000000")
+        print(doc)
+        print("00000000000000000000000000000000000000000000000")
         django_document = json.loads(doc)
-        print "================================================="
-        print django_document
-        print "================================================="
+        print("=================================================")
+        print(django_document)
+        print("=================================================")
 
         django_document["id"] = django_document.pop("_id")
-        django_document["type"] = django_document.pop("_type")
-
+        django_document["type"] = django_document.pop("_cls")
         index = None
 
         for k in GSTUDIO_ELASTIC_SEARCH_INDEX:
@@ -1650,7 +1612,7 @@ def save_node_to_es(django_document):
                     index = index.lower()
                     break
 
-        print django_document["type"]
+        print(django_document["type"])
         # if django_document["type"] == "GSystem" and GSTUDIO_SITE_NAME == "CLIx":
         #     print django_document["id"]
         #     print "-------------------------------------------------------------"
@@ -1681,27 +1643,27 @@ def save_node_to_es(django_document):
         es.index(index='nodes', doc_type='node', id=django_document["id"], body=django_document)
 
     except Exception as e:
-        print "Error while saving data to ES: "+str(e)
+        print("Error while saving data to ES: "+str(e))
 
 
 def save_triple_to_es(django_document):
     try:
-        print "called to save_to_es method of es_queries"
+        print("called to save_to_es method of es_queries")
         # node_types = ['GSystemType','MetaType','AttributeType','RelationType','GSystem']
         with open("/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/gstudio_configs/triples.json") as req_body:
             request_body = json.load(req_body)
         
         doc = json.dumps(django_document,cls=NodeJSONEncoder)
-        print "00000000000000000000000000000000000000000000000"
-        print doc
-        print "00000000000000000000000000000000000000000000000"
+        print("00000000000000000000000000000000000000000000000")
+        print(doc)
+        print("00000000000000000000000000000000000000000000000")
         django_document = json.loads(doc)
-        print "================================================="
-        print django_document
-        print "================================================="
+        print("=================================================")
+        print(django_document)
+        print("=================================================")
 
         django_document["id"] = django_document.pop("_id")
-        django_document["type"] = django_document.pop("_type")
+        django_document["type"] = django_document.pop("_cls")
 
         index = None
 
@@ -1716,7 +1678,7 @@ def save_triple_to_es(django_document):
                     index = index.lower()
                     break
 
-        print django_document["type"]
+        print(django_document["type"])
         # if django_document["type"] == "GSystem" and GSTUDIO_SITE_NAME == "CLIx":
         #     print django_document["id"]
         #     print "-------------------------------------------------------------"
@@ -1747,13 +1709,13 @@ def save_triple_to_es(django_document):
         es.index(index='triples', doc_type='triple', id=django_document["id"], body=django_document)
 
     except Exception as e:
-        print "Error while saving data to ES: "+str(e)
+        print("Error while saving data to ES: "+str(e))
 
 def save_course_page(request, group_id):
     group_obj = get_group_name_id(group_id, get_obj=True)
     group_id = group_obj.id
     group_name = group_obj.name
-    print "es_queries in save page",group_id,group_name
+    print("es_queries in save page",group_id,group_name)
     tags = request.POST.get("tags",[])
     if tags:
         tags = json.loads(tags)
@@ -1776,7 +1738,7 @@ def save_course_page(request, group_id):
                     testimony_obj.altnames = unicode(alt_name)
             else:
                 # is_info_testimony = request.POST.get("testimony_type", "")
-                testimony_obj = node_collection.collection.GSystem()
+                testimony_obj = GSystem()
                 testimony_obj.fill_gstystem_values(request=request)
                 testimony_obj.member_of = [testimony_gst_id]
                 testimony_obj.altnames = unicode(alt_name)
@@ -1852,7 +1814,7 @@ def save_course_page(request, group_id):
             page_obj.content = unicode(content)
             page_obj.created_by = request.user.id
             page_obj.save(groupid=group_id)
-            print "page_object saved:",page_obj
+            print("page_object saved:",page_obj)
             save_node_to_es(page_obj)
             return HttpResponseRedirect(reverse("view_course_page",
              kwargs={'group_id': group_id, 'page_id': page_obj.id}))
@@ -1863,8 +1825,8 @@ def module_detail(request, group_id, node_id,title=""):
     detail of of selected module
     '''
     group_name, group_id = Group.get_group_name_id(group_id)
-    print "in module_detail and group id, title",group_id,title
-    print "node_id",node_id          
+    print("in module_detail and group id, title",group_id,title)
+    print("node_id",node_id)          
     module_obj = Node.get_node_by_id(ObjectId(node_id))
     context_variable = {
                         'group_id': group_id, 'groupid': group_id,
@@ -1912,7 +1874,7 @@ def module_detail(request, group_id, node_id,title=""):
         #print "from attribute:",units_sort_list
         context_variable.update({'units_sort_list': units_sort_list})
     else:
-        print "no items_sort_list"
+        print("no items_sort_list")
         context_variable.update({'units_sort_list': list(units_under_module)})
 
     template = 'ndf/module_detail.html'
@@ -1982,7 +1944,7 @@ def _get_current_and_old_display_pics(group_obj):
 
 
 def course_content(request, group_id):
-    print "es_queries : In course_content",group_id, request.LANGUAGE_CODE
+    print("es_queries : In course_content",group_id, request.LANGUAGE_CODE)
     group_obj   = get_group_name_id(group_id, get_obj=True)
     list_of_memberof_name = member_of_names_list(group_obj)
     group_id    = group_obj.id
@@ -1990,7 +1952,7 @@ def course_content(request, group_id):
     allow_to_join = get_group_join_status(group_obj)
     template = 'ndf/gcourse_event_group.html'
     unit_structure =  get_course_content_hierarchy(group_obj,request.LANGUAGE_CODE)
-    print "unit_structure:",unit_structure
+    print("unit_structure:",unit_structure)
     visited_nodes = []
     if 'BaseCourseGroup' in list_of_memberof_name:
         template = 'ndf/basecourse_group.html'
@@ -2005,7 +1967,7 @@ def course_content(request, group_id):
     #         # visited_nodes = map(str,counter_obj['visited_nodes'].keys())
     #         #print counter_obj
     #         visited_nodes = counter_obj['visited_nodes']
-    print "banner_pic_obj:",banner_pic_obj
+    print("banner_pic_obj:",banner_pic_obj)
     context_variables = RequestContext(request, {
             'group_id': group_id, 'groupid': group_id, 'group_name':group_name,
             'group_obj': group_obj,'node': group_obj, 'title': 'course content',
@@ -2014,7 +1976,7 @@ def course_content(request, group_id):
             'unit_structure': json.dumps(unit_structure,cls=NodeJSONEncoder),
             'visited_nodes': json.dumps(visited_nodes)
             })
-    print "Before rendering template",template
+    print("Before rendering template",template)
     return render_to_response(template, context_variables)
 
 def get_name_id_from_type(node_name_or_id, node_type, get_obj=False):
@@ -2093,7 +2055,7 @@ def course_pages(request, group_id, page_id=None,page_no=1):
     group_id = group_obj.id
     group_name = group_obj.name
     #template = 'ndf/gevent_base.html'
-    print "inside course_pages",group_id
+    print("inside course_pages",group_id)
     template = 'ndf/lms.html'
     context_variables = {
             'group_id': group_id, 'groupid': group_id, 'group_name':group_name,
@@ -2125,16 +2087,12 @@ def course_pages(request, group_id, page_id=None,page_no=1):
         
         # other_translations = node_collection.find({'_id': {'$in': [r.right_subject for r in other_translations_grels]} })
         q = Q('terms',id = rgtsubjects_list)
-
         # q = Q('match',name=dict(query='File',type='phrase'))
         s1 = Search(using=es, index='triples',doc_type="triple").query(q)
         other_translations = s1.execute()
         
-
-
         context_variables.update({'activity_node': node_obj, 'hide_breadcrumbs': True,'other_translations':other_translations})
         context_variables.update({'editor_view': False})
-
 
     else:
         activity_gst_name, activity_gst_id = get_gst_name_id("activity")
@@ -2160,7 +2118,7 @@ def course_pages(request, group_id, page_id=None,page_no=1):
     )
 
 def create_edit_course_page(request, group_id, page_id=None,page_type=None):
-    print "es_queries inside create_edit_activity",group_id
+    #print "es_queries inside create_edit_activity",group_id
     group_obj = get_group_name_id(group_id, get_obj=True)
     group_id = group_obj.id
     group_name = group_obj.name
@@ -2182,7 +2140,6 @@ def create_edit_course_page(request, group_id, page_id=None,page_type=None):
 
     if page_id:
         # node_obj = node_collection.one({'_id': ObjectId(page_id)})
-
         q = Q('bool',must=[Q('match', id = page_id)])
 
         # q = Q('match',name=dict(query='File',type='phrase'))
@@ -2209,8 +2166,8 @@ def get_group_join_status(group_obj):
     start_enrollment_date = get_attribute_value(group_obj.id,"start_enroll")
     last_enrollment_date = get_attribute_value(group_obj.id,"end_enroll")
     curr_date_time = datetime.datetime.now().date()
-    print "start_enroll:",start_enrollment_date
-    print "end_enroll:",last_enrollment_date
+    print("start_enroll:",start_enrollment_date)
+    print("end_enroll:",last_enrollment_date)
     if start_enrollment_date and last_enrollment_date:
       start_enrollment_date = datetime.datetime.strptime(start_enrollment_date, '%d/%m/%Y %H:%M:%S:%f')
       last_enrollment_date = datetime.datetime.strptime(last_enrollment_date, '%d/%m/%Y %H:%M:%S:%f')
@@ -2263,9 +2220,9 @@ def get_course_content_hierarchy(unit_group_obj,lang="en"):
 
         if lesson:
             trans_lesson = get_lang_node(lesson.id,lang)
-            print "lesson:",lesson.name
+            print("lesson:",lesson.name)
             if trans_lesson:
-                print "inside trans"
+                print("inside trans")
                 lesson_dict['label'] = str(trans_lesson.name).encode('utf-8')
                 lesson_dict['id'] = trans_lesson.id
             else:
@@ -2283,7 +2240,7 @@ def get_course_content_hierarchy(unit_group_obj,lang="en"):
                         if trans_act_name:
                             activity_dict['label'] =str(trans_act_name.name).encode('utf-8')
                             activity_dict['id'] = str(trans_act_name.id)
-                            print "in side activity loop", trans_act_name.id, "in language", lang
+                            print("in side activity loop", trans_act_name.id, "in language", lang)
                             #activity_dict['label'] = trans_act_name.name
                         else:
                             activity_dict['label'] = activity.name
@@ -2348,30 +2305,23 @@ def get_relation_value(node_id, grel, return_single_right_subject=False):
         result_dict = {}
         if node_id:
             # node = node_collection.one({'_id': ObjectId(node_id) })
-            
             node = get_node_by_id(node_id)
-
             # relation_type_node = node_collection.one({'_type': 'RelationType', 'name': unicode(grel) })
-            
             q = eval("Q('bool',must=[Q('match', type = 'RelationType'), Q('match', name = grel)])")
 
             # q = Q('match',name=dict(query='File',type='phrase'))
             s1 = Search(using=es, index='nodes',doc_type="node").query(q)
             s2 = s1.execute()
             relation_type_node = s2[0]
-            #print "relation_type_node.object_cardinality:",relation_type_node.id
+            print("relation_type_node.object_cardinality:",relation_type_node.id,relation_type_node.object_cardinality)
             if node and relation_type_node:
-                if relation_type_node.object_cardinality > 1:
+                if relation_type_node.object_cardinality and relation_type_node.object_cardinality > 1:
                     # node_grel = triple_collection.find({'_type': "GRelation", "subject": node._id, 'relation_type': relation_type_node._id,'status':"PUBLISHED"})
-                    
                     q = Q('bool',must=[Q('match', type = 'GRelation'), Q('match', subject = str(node.id)), Q('match', relation_type = str(relation_type_node.id))])
                     s1 = Search(using=es, index='triples',doc_type="triple").query(q)
-
                     # print "s1:",s1,q
                     s2 = s1.execute()
-
                     # print "tripl nds:",s2
-
                     node_grel = s2
 
                     if node_grel:
@@ -2421,7 +2371,6 @@ def get_relation_value(node_id, grel, return_single_right_subject=False):
                         # grel_val_node = node_collection.find_one({'_id':{'$in': grel_val}})
 
                         q = Q('match', id = grel_val)
-
                         # q = Q('match',name=dict(query='File',type='phrase'))
                         s1 = Search(using=es, index='nodes',doc_type="node").query(q)
                         s2 = s1.execute()
@@ -2429,10 +2378,10 @@ def get_relation_value(node_id, grel, return_single_right_subject=False):
                         
                         # returns right_subject of grelation and GRelation _id
                         result_dict.update({"grel_id": grel_id, "grel_node": grel_val_node, "cursor": False})
-        #print "\n\nresult_dict === ",result_dict
+        print("\n\nresult_dict === ",result_dict)
         return result_dict
     except Exception as e:
-        print e
+        print(e)
         return {}
 
 def get_unit_hierarchy(unit_group_obj,lang="en"):
@@ -2469,18 +2418,18 @@ def get_unit_hierarchy(unit_group_obj,lang="en"):
     }
     '''
     unit_structure = []
-    print "unit object and collection_set:",unit_group_obj.name,unit_group_obj.collection_set
+    print("unit object and collection_set:",unit_group_obj.name,unit_group_obj.collection_set)
     for each in unit_group_obj.collection_set:
         lesson_dict ={}
         lesson = get_node_by_id(str(each))
         if lesson:
-            print "1 lesson:",lesson.name
+            print("1 lesson:",lesson.name)
             if lang != 'en':
                 trans_lesson = get_lang_node(lesson.id,lang)
                 lesson_dict['name'] = trans_lesson.name
                 lesson_dict['id'] = str(trans_lesson.id)
                 lesson_dict['language'] = trans_lesson.language[0]
-                print "\t 2 trans lesson:",str(trans_lesson.name).encode('utf-8'),trans_lesson.id,trans_lesson.language[0]
+                print("\t 2 trans lesson:",str(trans_lesson.name).encode('utf-8'),trans_lesson.id,trans_lesson.language[0])
             else:
                 lesson_dict['name'] = lesson.name
                 lesson_dict['id'] = str(lesson.id)
@@ -2498,7 +2447,7 @@ def get_unit_hierarchy(unit_group_obj,lang="en"):
                             # activity_dict['name'] = trans_act.name
                             activity_dict['name'] = trans_act.altnames or trans_act.name
                             activity_dict['id'] = str(trans_act.id)
-                            print "\t \t 3 trans act:",str(trans_act.name).encode('utf-8'),trans_act.id
+                            print("\t \t 3 trans act:",str(trans_act.name).encode('utf-8'),trans_act.id)
                         else:
                             # activity_dict['name'] = activity.name
                             activity_dict['id'] = str(activity.id)
@@ -2507,7 +2456,6 @@ def get_unit_hierarchy(unit_group_obj,lang="en"):
                         #activity_dict['id'] = str(activity.id)
                         lesson_dict['activities'].append(activity_dict)
             unit_structure.append(lesson_dict)
-
     return unit_structure
 
 def unit_detail(request, group_id):
@@ -2515,10 +2463,8 @@ def unit_detail(request, group_id):
     detail of of selected units
     '''
     # parent_group_name, parent_group_id = Group.get_group_name_id(group_id)
-    print "es_queries : In unit-detail ",group_id
-
+    print("es_queries : In unit-detail ",group_id)
     unit_group_obj = get_group_name_id(group_id, get_obj=True)
-
     unit_structure = get_unit_hierarchy(unit_group_obj, request.LANGUAGE_CODE)
     # template = "ndf/unit_structure.html"
     # template = 'ndf/gevent_base.html'
@@ -2579,7 +2525,7 @@ def lesson_create_edit(request, group_id, unit_group_id=None):
         # check for uniqueness of name
         # unit_cs: unit collection_set
         unit_cs_list = [str(each) for each in unit_group_obj.collection_set]
-        print "unit list:",unit_cs_list
+        print("unit list:",unit_cs_list)
         unit_cs_objs_cur = get_nodes_by_ids_list(unit_cs_list)
         if unit_cs_objs_cur:
             unit_cs_names_list = [u.name for u in unit_cs_objs_cur]
@@ -2741,18 +2687,18 @@ def create_grelation(subject_id, relation_type_node, right_subject_id_or_list, *
 
         def _create_grelation_node(subject_id, relation_type_node, right_subject_id_or_list, relation_type_text, triple_scope_val=None):
             # Code for creating GRelation node
-            print "inside _create_grelation"
-            gr_node = triple_collection.collection.GRelation()
-            print "gr_node",gr_node
+            print("inside _create_grelation")
+            gr_node = GRelation()
+            print("gr_node",gr_node)
             gr_node.subject = ObjectId(subject_id)
             gr_node.relation_type = ObjectId(relation_type_node.id)
             gr_node.right_subject = ObjectId(right_subject_id_or_list)
             # gr_node.relation_type_scope = relation_type_scope
             gr_node.language = language
             gr_node.status = u"PUBLISHED"
-            print "post assiging:",gr_node
+            #print "post assiging:",gr_node
             gr_node.save()
-            print "saved"
+            #print "saved"
             save_triple_to_es(gr_node)
             # gr_node.save(triple_node=relation_type_node, triple_id=relation_type_node._id)
 
@@ -2768,7 +2714,7 @@ def create_grelation(subject_id, relation_type_node, right_subject_id_or_list, *
             #     "_id": subject_id,
             #     "relation_set." + relation_type_node_name: {"$exists": True}
             # })
-            print "post saving"
+            #print "post saving"
             q = Q('bool',must = [Q('match',id = str(subject_id)),Q('exists',field = "relation_set." + relation_type_node_name)])
             s1 = Search(using=es, index='nodes',doc_type="node").query(q)
             left_subject = s1.execute()
@@ -2787,7 +2733,7 @@ def create_grelation(subject_id, relation_type_node, right_subject_id_or_list, *
                 # },
                 #     upsert=False, multi=False
                 # )
-                print "in if of left subject"
+                #print "in if of left subject"
                 q = Q('bool',must = [Q('match',id = str(subject_id)),Q('exists',field = "relation_set." + relation_type_node_name)])
                 f1 = "relation_set." + relation_type_node_name
                 s1 = UpdateByQuery(using=es, index='nodes',doc_type="node").query(q).script(source="ctx._source.f1.add(params.val)", lang="painless",params={'val':str(right_subject_id_or_list)})
@@ -2796,7 +2742,7 @@ def create_grelation(subject_id, relation_type_node, right_subject_id_or_list, *
 
 
             else:
-                print "in else of left subject"
+                #print "in else of left subject"
                 # Add grelation as new key-value pair value in given node's
                 # relation_set field
                 # node_collection.collection.update({
@@ -2833,11 +2779,11 @@ def create_grelation(subject_id, relation_type_node, right_subject_id_or_list, *
                 # },
                 #     upsert=False, multi=False
                 # )
-                print "inside right_subject if loop inside the create_gattribute"
+                #print "inside right_subject if loop inside the create_gattribute"
                 q = Q('bool',must = [Q('match',id = str(right_subject_id_or_list)),Q('exists',field = "relation_set." + relation_type_node_inverse_name)])
                 f1 = "relation_set." + relation_type_node_inverse_name
                 s1 = UpdateByQuery(using=es, index='nodes',doc_type="node").query(q).script(source="ctx._source.f1.add(params.val)", lang="painless",params={'val':str(subject_id)})
-                print "query",q
+                #print "query",q
                 s2 = s1.execute()
 
             else:
@@ -2850,7 +2796,7 @@ def create_grelation(subject_id, relation_type_node, right_subject_id_or_list, *
                 # },
                 #     upsert=False, multi=False
                 # )
-                print "in else of right subject"
+                #print "in else of right subject"
                 q = Q('bool',must = [Q('match',id = str(right_subject_id_or_list))])
                 s1 = UpdateByQuery(using=es, index='nodes',doc_type="node").query(q).script(source="ctx._source.relation_set.add(params.val)", lang="painless",params={'val':{relation_type_node_inverse_name:str(subject_id)}})
                 s2 = s1.execute()
@@ -3058,13 +3004,13 @@ def create_grelation(subject_id, relation_type_node, right_subject_id_or_list, *
                     s2 = s1.execute()
 
             if right_subject_id_or_list:
-                print "right subject list",right_subject_id_or_list
+                #print "right subject list",right_subject_id_or_list
                 # If still ObjectId list persists, it means either they are new ones'
                 # or from deleted ones'
                 # For deleted one's, find them and modify their status to PUBLISHED
                 # For newer one's, create them as new document
                 for nid in right_subject_id_or_list:
-                    print "each from list:",nid
+                    #print "each from list:",nid
                     # gr_node = triple_collection.one({
                     #     '_type': "GRelation", 'subject': subject_id,
                     #     'relation_type': relation_type_node._id, 'right_subject': nid
@@ -3105,7 +3051,7 @@ def create_grelation(subject_id, relation_type_node, right_subject_id_or_list, *
             relation_type_node_id = relation_type_node.id
             relation_type_node_name = relation_type_node.name
             relation_type_node_inverse_name = relation_type_node.inverse_name
-            print "in final else to create node:",relation_type_node.name
+            #print "in final else to create node:",relation_type_node.name
             # gr_node_cur = triple_collection.find({
             #     "_type": "GRelation", "subject": subject_id,
             #     "relation_type": relation_type_node_id
@@ -3213,7 +3159,7 @@ def create_grelation(subject_id, relation_type_node, right_subject_id_or_list, *
 
             if gr_node is None:
                 # Code for creation
-                print "inside if",subject_id, relation_type_node, right_subject_id_or_list, "SingleGRelation", triple_scope_val
+                #print "inside if",subject_id, relation_type_node, right_subject_id_or_list, "SingleGRelation", triple_scope_val
                 gr_node = _create_grelation_node(subject_id, relation_type_node, right_subject_id_or_list, "SingleGRelation")
 
             return gr_node
@@ -3253,7 +3199,7 @@ def create_gattribute(subject_id, attribute_type_node, object_value=None, **kwar
     if s1.count() == 0:
         # Code for creation
         try:
-            ga_node = triple_collection.collection.GAttribute()
+            ga_node = GAttribute()
 
             ga_node.subject = ObjectId(subject_id)
             ga_node.attribute_type = ObjectId(attribute_type_node.id)
@@ -3269,11 +3215,10 @@ def create_gattribute(subject_id, attribute_type_node, object_value=None, **kwar
 
             ga_node.object_value = object_value
             
-            
             # ga_node.save(triple_node=attribute_type_node, triple_id=attribute_type_node._id)
             ga_node.save()
             
-            print "post saving",ga_node.reload()
+            print("post saving",ga_node.reload())
 
             if triple_scope_val:
                 ga_node = update_scope_of_triple(ga_node,attribute_type_node, triple_scope_val, is_grel=False)
@@ -3306,7 +3251,7 @@ def create_gattribute(subject_id, attribute_type_node, object_value=None, **kwar
     else:
         # Code for updating existing gattribute
         is_ga_node_changed = False
-        print "ga node changd",is_ga_node_changed
+        print("ga node changd",is_ga_node_changed)
         try:
             if (not object_value) and type(object_value) != bool:
                 # this is when value of attribute is cleared/empty
@@ -3331,15 +3276,15 @@ def create_gattribute(subject_id, attribute_type_node, object_value=None, **kwar
                 s1 = UpdateByQuery(using=es, index='nodes',doc_type="node").query(q).script(source="ctx._source.f1.add(params.val)", lang="painless",params={'val':{attribute_type_node.name: old_object_value}})
                 s2 = s1.execute()
             else:
-                print "inside else"
+                print("inside else")
                 if type(ga_node.object_value) == list:
-                    print "inside list condtn"
+                    #print "inside list condtn"
                     if type(ga_node.object_value[0]) == dict:
                         old_object_value = ga_node.object_value
 
                         if len(old_object_value) != len(object_value):
                             ga_node.object_value = object_value
-                            print "changing the ga node changed"
+                            #print "changing the ga node changed"
                             is_ga_node_changed = True
 
                         else:
@@ -3347,7 +3292,7 @@ def create_gattribute(subject_id, attribute_type_node, object_value=None, **kwar
                             pairs = zip(old_object_value, object_value)
                             #print "pairs:",pairs
                             if any(x != y for x, y in pairs):
-                                print "change ga node in else"
+                                #print "change ga node in else"
                                 ga_node.object_value = object_value
                                 is_ga_node_changed = True
 
@@ -3383,7 +3328,6 @@ def create_gattribute(subject_id, attribute_type_node, object_value=None, **kwar
                         # ga_node.save(triple_node=attribute_type_node, triple_id=attribute_type_node._id)
                         if triple_scope_val:
                             ga_node = update_scope_of_triple(ga_node,attribute_type_node, triple_scope_val, is_grel=False)
-
 
                         info_message = " GAttribute (" + ga_node.name + \
                             ") status updated from 'DELETED' to 'PUBLISHED' successfully.\n"
@@ -3446,7 +3390,7 @@ def create_gattribute(subject_id, attribute_type_node, object_value=None, **kwar
 
 
 def get_group_resources(request, group_id, res_type="Page"):
-    print "in es_queries get_group_resources"
+    #print "in es_queries get_group_resources"
     except_collection_set = []
     res_cur = None
     template = "ndf/group_pages.html"
@@ -3456,9 +3400,9 @@ def get_group_resources(request, group_id, res_type="Page"):
         # res_query = {'_type': 'GSystem', 'group_set': ObjectId(group_id)}
         # q1 = Q('bool',must = [])
         except_collection_set_of_id = request.GET.get('except_collection_set_of_id', None)
-        print "except_collection_set_of_id:",except_collection_set_of_id
+        #print "except_collection_set_of_id:",except_collection_set_of_id
         except_collection_set_of_obj = get_node_by_id(except_collection_set_of_id)
-        print "except_collection_set_of_obj:",except_collection_set_of_obj.collection_set
+        #print "except_collection_set_of_obj:",except_collection_set_of_obj.collection_set
         if except_collection_set_of_obj:
             except_collection_set = except_collection_set_of_obj.collection_set
         #     if except_collection_set:
@@ -3472,15 +3416,15 @@ def get_group_resources(request, group_id, res_type="Page"):
             # res_query.update({'member_of': gst_page_id})
 
         q = Q('bool',must = [Q('match',type = 'GSystem'),Q('match',group_set = str(group_id)),Q('match',member_of = str(gst_page_id))],must_not= [Q('terms',type_of = [str(gst_blog_type_id), str(gst_info_type_id)])])
-        print "get_group_resources:",q
+        #print "get_group_resources:",q
         s1 = Search(using=es, index='nodes',doc_type="node").query(q)
         res_cur = s1.execute()
-        print "res_cur:",res_cur
+        #print "res_cur:",res_cur
         # right_subject = s2[0]
         # res_cur = node_collection.find(res_query).sort('last_update', -1)
 
     except Exception as get_group_resources_err:
-      print "\n Error occurred. Error: {0}".format(str(get_group_resources_err))
+      print("\n Error occurred. Error: {0}".format(str(get_group_resources_err)))
       pass
 
     variable = RequestContext(request, {'cursor': res_cur, 'groupid': group_id, 'group_id': group_id, 'card_class': card_class })

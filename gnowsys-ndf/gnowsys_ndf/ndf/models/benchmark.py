@@ -1,32 +1,24 @@
 from base_imports import *
+class Benchmark(Document):
 
-@connection.register
-class Benchmark(DjangoDocument):
-
-  objects = models.Manager()
+  #objects = models.Manager()
 
   collection_name = 'Benchmarks'
-
-  structure = {
-    '_type':unicode,
-    'name': unicode,
-    'time_taken':unicode,
-    'parameters':unicode,
-    'size_of_parameters':unicode,
-    'function_output_length':unicode,
-    'calling_url':unicode,
-    'last_update': datetime.datetime,
-    'action' : basestring,
-    'user' : basestring,
-    'session_key' : basestring,
-    'group' : basestring,
-    'has_data' : dict,
-    'locale': basestring
-  }
-
-  required_fields = ['name']
-  use_dot_notation = True
-
+  _type = StringField()
+  name = StringField(Required = True)
+  time_taken = StringField()
+  parameters = StringField()
+  size_of_parameters = StringField()
+  function_output_length = StringField()
+  calling_url = StringField()
+  last_update = DateTimeField()
+  action = StringField()
+  user = StringField()
+  session_key = StringField()
+  group = StringField()
+  has_data = DictField()
+  locale = StringField()
+  
   def __unicode__(self):
     return self._id
 

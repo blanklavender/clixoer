@@ -15,7 +15,6 @@
 </div>
 {% load i18n %}
 
-
 <!--
 
 <div class="modal fade" id="exampleModalCenterLu" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
@@ -31,7 +30,7 @@
             <div class="modal-body">
     <div class="container">
       <div class="row"> 
- {% if videos.count > 0 %}
+ {% if videos|length > 0 %}
 	{% for each in videos %}
          {% for key,value in each.items %}
   

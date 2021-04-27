@@ -3,6 +3,7 @@
 # imports from python libraries
 import os
 #import djcelery
+import mongoengine
 from django.contrib.messages import constants as messages
 #imports from core django libraries
 from django.conf import global_settings
@@ -93,7 +94,18 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # i.e. common place to store all database(s)
 # Example: "/home/<user-name>/data/"
 # Don't edit this below path
-GSTUDIO_DATA_ROOT = os.path.join(os.path.expanduser("~/"), 'gstudio_data')
+#GSTUDIO_DATA_ROOT = os.path.join(os.path.expanduser("~/"), 'gstudio_data')
+MEDIA_ROOT = '/data/media/'
+GSTUDIO_DATA_ROOT = os.path.join('/data/')
+
+GSTUDIO_LOGS_DIRNAME = 'gstudio-logs'
+GSTUDIO_LOGS_DIR_PATH = os.path.join('/data/', GSTUDIO_LOGS_DIRNAME)
+
+RCS_REPO_DIRNAME = 'rcs-repo'
+RCS_REPO_DIR = os.path.join('/data/', RCS_REPO_DIRNAME)
+
+GSTUDIO_MAIL_DIRNAME = 'MailClient'
+GSTUDIO_MAIL_DIR_PATH = os.path.join('/data/', GSTUDIO_MAIL_DIRNAME)
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -107,27 +119,23 @@ MANAGERS = ADMINS
 SQLITE3_DBNAME = 'example-sqlite3.db'
 SQLITE3_DB_PATH = os.path.join(GSTUDIO_DATA_ROOT, SQLITE3_DBNAME)
 
+
+import mongoengine
+
 DATABASES = {
-    'default': {
+    'default' : {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',             # Used for postgres db                                                                         
-        'NAME': 'gstudio_psql',                                                 # Used for postgres db                                                                 
+	'NAME': 'gstudio_psql',                                                 # Used for postgres db                                                                 
         'USER': 'glab',                                                                 # Used for postgres db                                                         
         'PASSWORD':'Gstudi02)1^',                                               # Used for postgres db                                                                 
-        'HOST':'localhost',                                                             # Used for postgres db                                                         
-        'PORT':'',                                                                              # Used for postgres db                                                 
-#   'ENGINE': 'django.db.backends.sqlite3',                                     # Used for sqlite3 db                                                                  
-#   'NAME': SQLITE3_DB_PATH,                                        # Used for sqlite3 db                                                                              
-    },
-    'mongodb': {
-        'ENGINE': 'mongoengine',                                    # Used for mongo db                                                                                
-        'NAME': 'gstudio-mongodb',                                                 # Used for mongo db                                                                 
-        'USER': '',                                                                         # Used for mongo db                                                        
-        'PASSWORD': '',                                                                 # Used for mongo db                                                          
-        'HOST': '',                                                                     # Used for mongo db                                                            
-        'PORT': '',                                                                         # Used for mongo db                                                        
-    },
-}
+        'HOST':'172.27.0.4',                                                             # Used for p 
+        'PORT':'5432',
+        },
+    }
 
+
+MONGODB_HOST = 'mongodb://127.0.0.1:27017'
+con = mongoengine.connect(db='gstudio-mongodb', host=MONGODB_HOST)
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -139,20 +147,21 @@ TIME_ZONE = 'Asia/Kolkata'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'de'
-
+#LANGUAGE_COOKIE_NAME = 'language_code'
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 
 USE_I18N = True
+LANGUAGE_COOKIE_NAME = 'language_code'
 
 # Setting system's default encoding to 'utf-8'
 # By defalut, it's 'ascii'
 # Comes handy while writing unicode text into a file
-#import sys
-#reload(sys)
-#sys.setdefaultencoding('utf-8')
+import sys, importlib
+importlib.reload(sys)
+print(sys.getdefaultencoding())
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
@@ -167,7 +176,7 @@ LOCALE_PATHS = (os.path.join(os.path.dirname(__file__), '..','conf/locale/'),)
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 # MEDIA_ROOT = 'gnowsys_ndf/ndf/static/'
-MEDIA_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'ndf/static/media')
+#MEDIA_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'ndf/static/media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -209,7 +218,8 @@ TEMPLATE_LOADERS = (
     #  'django.template.loaders.eggs.Loader',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -218,7 +228,8 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.activeuser_middleware.ActiveUserMiddleware',                 #for online_users
     # 'online_status.middleware.OnlineStatusMiddleware',                              #for online_users
     'django.contrib.messages.middleware.MessageMiddleware',
-    'pagination.middleware.PaginationMiddleware',
+    #'pagination.middleware.PaginationMiddleware',
+    #'whitenoise.middleware.WhiteNoiseMiddleware',
     # 'django.middleware.cache.UpdateCacheMiddleware',
     # 'django.middleware.cache.FetchFromCacheMiddleware',
 
@@ -228,9 +239,9 @@ MIDDLEWARE_CLASSES = (
     # gstudio custom middleware(s):
     'gnowsys_ndf.ndf.middleware.SetData.UserDetails',
     'gnowsys_ndf.ndf.middleware.SetData.Author',
-    'gnowsys_ndf.ndf.middleware.SetData.AdditionalDetails',
+    #'gnowsys_ndf.ndf.middleware.SetData.AdditionalDetails',
     # 'gnowsys_ndf.ndf.middleware.Buddy.BuddySession',
-    'gnowsys_ndf.ndf.middleware.UserRestrictMiddleware.UserRestrictionMiddleware',
+    #'gnowsys_ndf.ndf.middleware.UserRestrictMiddleware.UserRestrictionMiddleware',
 
     # for profiling methods:
     # 'gnowsys_ndf.ndf.middleware.ProfileMiddleware.ProfileMiddleware',
@@ -244,22 +255,28 @@ ROOT_URLCONF = 'gnowsys_ndf.ndf.urls'
 WSGI_APPLICATION = 'gnowsys_ndf.wsgi.application'
 
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
-"""
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.request',
-    'django.core.context_processors.static',
-    'django.core.context_processors.media',
-    'django.contrib.messages.context_processors.messages',
-    # 'django.core.context_processors.csrf',
-)
-"""
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.request',
+                'django.template.context_processors.static',
+                'django.template.context_processors.media',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'libraries':{
+                'ndf_tags': 'gnowsys_ndf.ndf.templatetags.ndf_tags',
+
+            }
+        },
+    },
+]
+
 INSTALLED_APPS = (
     'gnowsys_ndf.ndf',
     #'hit_count',
@@ -291,10 +308,6 @@ INSTALLED_APPS = (
  #   'djcelery',
     #'dlkit',
     #'dlkit_runtime'
-)
-
-AUTHENTICATION_BACKENDS = (
-    #'registration_email.auth.EmailBackend',
 )
 
 ACCOUNT_ACTIVATION_DAYS = 2  # Two days for activation.
@@ -329,6 +342,7 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL = "/"
+SESSION_COOKIE_DOMAIN = ""
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
 SESSION_SAVE_EVERY_REQUEST = True
@@ -400,7 +414,7 @@ GSTUDIO_USER_GAPPS_LIST = ['Page', 'File', 'Task', 'Course', 'Event', 'Quiz']
 GSTUDIO_ORG_NAME = '''<p>
 A project of <a href="http://lab.gnowledge.org/" target="_blank">{% trans "Gnowledge Lab" %}</a> at the <a href="http://www.hbcse.tifr.res.in" target="_blank">Homi Bhabha Centre for Science Education (HBCSE)</a>, <a href="http://www.tifr.res.in" target="_blank">Tata Institute of Fundamental Research (TIFR), India</a>.
 </p>'''
-#GSTUDIO_SITE_FAVICON = "/static/ndf/images/favicon/logo.png"
+GSTUDIO_SITE_FAVICON = "/static/ndf/images/favicon/logo.png"
 GSTUDIO_SITE_LOGO = "/static/ndf/css/themes/metastudio/logo.svg"
 GSTUDIO_SITE_SECONDARY_LOGO = "/static/ndf/css/themes/metastudio/logo.svg"
 GSTUDIO_GIT_REPO = "https://github.com/gnowledge/gstudio"
@@ -817,7 +831,7 @@ GSTUDIO_ELASTIC_SEARCH_PASSWORD = ""
 GSTUDIO_DOCUMENT_MAPPING = '/data'
 GSTUDIO_ELASTIC_SEARCH = True
 GSTUDIO_ELASTIC_SEARCH_PROTOCOL = 'http' # we can use http or https protocol
-GSTUDIO_ELASTIC_SEARCH_ALIAS = '172.25.0.2'
+GSTUDIO_ELASTIC_SEARCH_ALIAS = '172.27.0.3'
 GSTUDIO_ELASTIC_SEARCH_SUPERUSER = ''
 GSTUDIO_ELASTIC_SEARCH_SUPERUSER_PASSWORD = ''
 GSTUDIO_ELASTIC_SEARCH_PORT = '9200'
@@ -866,7 +880,7 @@ GSTUDIO_ELASTIC_SEARCH_INDEX = {
 # ----------------------------------------------------------------------------
 # following has to be at last
 # just put every thing above it
-
+"""
 try:
     from local_settings import *
     # print "Local settings applied"
@@ -875,3 +889,4 @@ except:
     pass
 
 # ========= nothing to be added below this line ===========
+"""

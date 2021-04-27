@@ -10,7 +10,7 @@ import json
 import locale
 import pymongo
 import multiprocessing as mp
-import mongokit
+import mongoengine
 import json
 # import csv
 
@@ -19,7 +19,7 @@ from bson import BSON
 from bson import json_util
 # from datetime import datetime, timedelta, date
 from collections import OrderedDict
-from mongokit import paginator
+#from mongokit import paginator
 # from collections import Counter
 
 ''' -- imports from installed packages -- '''
@@ -48,11 +48,11 @@ from gnowsys_ndf.settings import LANGUAGES, GSTUDIO_BUDDY_LOGIN, DEFAULT_DISCUSS
 from gnowsys_ndf.ndf.models import *
 # from gnowsys_ndf.ndf.org2any import org2html
 # from gnowsys_ndf.mobwrite.models import TextObj
-from gnowsys_ndf.ndf.models import HistoryManager, Benchmark
-from gnowsys_ndf.notification import models as notification
+#from gnowsys_ndf.ndf.models import HistoryManager, Benchmark
+#from gnowsys_ndf.notification import models as notification
 # get pub of gpg key with which to sign syncdata attachments
 from gnowsys_ndf.settings import SYNCDATA_KEY_PUB, GSTUDIO_MAIL_DIR_PATH
-from gnowsys_ndf.ndf.views.tasks import record_in_benchmark
+#from gnowsys_ndf.ndf.views.tasks import record_in_benchmark
 from datetime import datetime, timedelta, date
 from gnowsys_ndf.ndf.views.utils import get_dict_from_list_of_dicts
 
@@ -150,7 +150,7 @@ def server_sync(func):
         #if pub is found to be invalid changes WILL NOT be captured
         searchObj = re.search( r'[^A-Za-z0-9]', SYNCDATA_KEY_PUB, re.M|re.I)
         if searchObj:
-            print "Invalid character found in SYNCDATA_KEY_PUB. Please ensure valid existing PUB has been added to local_settings.py", searchObj.group()
+            print("Invalid character found in SYNCDATA_KEY_PUB. Please ensure valid existing PUB has been added to local_settings.py", searchObj.group())
             return
 
         check_command = 'gpg --list-keys | grep -o "'+SYNCDATA_KEY_PUB+'"'
@@ -160,11 +160,11 @@ def server_sync(func):
         #std_out will have shell command return code =0 (success) 1 (failure)
         if str(std_out) == '1':
             error_obj =  "Given pub = %s is not in gpg database of your system. Failed to capture changes for syncdata" % SYNCDATA_KEY_PUB
-            print '**'*30
-            print '\n'*3
-            print error_obj
-            print '\n'*3
-            print '**'*30
+            print('**'*30)
+            print('\n'*3)
+            print(error_obj)
+            print('\n'*3)
+            print('**'*30)
             return
 
         ''' Get current date and time to timestamp json and the document being captured by this function.
@@ -186,8 +186,8 @@ def server_sync(func):
         settings_dir3 = os.path.dirname(settings_dir2)
         gen_path = os.path.abspath(os.path.dirname(settings_dir3))
 
-        print '+' * 20
-        print gen_path
+        print('+' * 20)
+        print(gen_path)
 
         file_path = ""
         file_name_filtered = ""
@@ -201,8 +201,8 @@ def server_sync(func):
         node_data_path = gen_path + '/node_data.json'
         # subject += str(node._id)
 
-        print '+' * 20
-        print node_data_path
+        print('+' * 20)
+        print(node_data_path)
 
         if 'image' in content_type or 'video' in content_type:
             # To make the fs_file_ids filed set empty
@@ -249,15 +249,15 @@ def server_sync(func):
 
         dst = str(path2) + "/MailClient/syncdata"
 
-        print '+' * 20
-        print dst
+        print('+' * 20)
+        print(dst)
 
         if not os.path.exists(dst):
             os.makedirs(dst)
         path_for_this_capture = dst + '/' + timestamp +"_"+ str(node["_id"])
 
-        print '+' * 20
-        print path_for_this_capture
+        print('+' * 20)
+        print(path_for_this_capture)
 
         if not os.path.exists(path_for_this_capture):
             os.makedirs(path_for_this_capture)
@@ -269,28 +269,28 @@ def server_sync(func):
 
             #make filename.extension --> filename_extension since finally the name should be filename_extension.gpg
             op_file_name = file_path.split(file_name_filtered)[0]+ timestamp + '_' + file_name_filtered + '_sig'
-            print ':' * 20
-            print op_file_name
-            print ':' * 20
-            print file_path
+            print(':' * 20)
+            print(op_file_name)
+            print(':' * 20)
+            print(file_path)
             command = 'gpg -u ' + SYNCDATA_KEY_PUB + ' --output ' + op_file_name + ' --sign ' + file_path
             subprocess.call([command],shell=True)
             src = op_file_name
 
-            print '+' * 20
+            print('+' * 20)
 
             shutil.move(src,path_for_this_capture)
             # mail.attach_file(file_path)
 
-        print 'JSON'
+        print('JSON')
         node_json = bson.json_util.dumps(node)
-        print "creating the file",node['_id']
+        print("creating the file",node['_id'])
         with open(node_data_path,'w') as outfile:
             json.dump(node_json, outfile)
         ''' Run command to sign the json file, rename and move to syncdata folder'''
         #add _sig otherwise django_mailbox scrambles file name
         json_op_file_name = node_data_path.split('node_data.json')[0]+ timestamp + '_' + 'node_data.json' + '_sig'
-        print os.path.exists(node_data_path)
+        print(os.path.exists(node_data_path))
         command = 'gpg --batch --yes -u ' + SYNCDATA_KEY_PUB + ' --output ' + json_op_file_name + ' --sign ' + node_data_path
         subprocess.call([command],shell=True)
         src = json_op_file_name
@@ -307,7 +307,7 @@ def server_sync(func):
             os.remove(file_path)
             # os.remove(op_file_name)
         return ret
-        print "opertation finish"
+        print("opertation finish")
     return wrap
 
 @get_execution_time
@@ -556,7 +556,7 @@ def create_task(request,group_id,task_dict,set_notif_val,attribute_list):
 
            return task_node
    except Exception as e:
-           print "Exception in create_task "+ str(e)
+           print("Exception in create_task "+ str(e))
 
 def create_task_for_activity(request,group_id,activity_dict,get_assignee_list,set_notif_val):
     """Creates a task for an activity and notify assignee.
@@ -606,7 +606,7 @@ def create_task_for_activity(request,group_id,activity_dict,get_assignee_list,se
                                 op = collection.update({'_id': ObjectId(main_task._id)}, {'$set': {'collection_set': task_collection_list}})
         return
     except Exception as e:
-        print "Exception in create_task_for_activity "+str(e)
+        print("Exception in create_task_for_activity "+str(e))
 
 
 def get_all_subscribed_users(group_id):
@@ -651,10 +651,10 @@ def check_delete(main):
                 attrbts = node.get_possible_attributes(node.member_of)
                 return main(*args, **kwargs)
             else:
-                print "Not a valid id"
+                print("Not a valid id")
         return check
     except Exception as e:
-        print "Error in check_delete " + str(e)
+        print("Error in check_delete " + str(e))
 
 
 @get_execution_time
@@ -759,7 +759,7 @@ def forum_notification_status(group_id, user_id):
                     return True
         return True
     except Exception as e:
-        print "Exception in forum notification status check " + str(e)
+        print("Exception in forum notification status check " + str(e))
 
 
 @get_execution_time
@@ -2641,11 +2641,11 @@ def create_gattribute(subject_id, attribute_type_node, object_value=None, **kwar
     old_object_value = None
     triple_scope_val = kwargs.get('triple_scope', None)
     try:
-        print attribute_type_node,AttributeType
+        print(attribute_type_node,AttributeType)
         attribute_type_node = Node.get_node_obj_from_id_or_obj(attribute_type_node, AttributeType)
     except Exception:
         attribute_type_node = Node.get_name_id_from_type(attribute_type_node, 'AttributeType', get_obj=True)
-    print "\nattribute_type_node: ", attribute_type_node.name
+    print("\nattribute_type_node: ", attribute_type_node.name)
     ga_node = triple_collection.one(
         {'_type': "GAttribute", 'subject': subject_id, 'attribute_type': attribute_type_node._id})
 
@@ -2677,7 +2677,7 @@ def create_gattribute(subject_id, attribute_type_node, object_value=None, **kwar
                 ga_node.status = u"PUBLISHED"
 
             ga_node.object_value = object_value
-            print ga_node
+            print(ga_node)
             
             # ga_node.save(triple_node=attribute_type_node, triple_id=attribute_type_node._id)
             ga_node.save()
@@ -2708,7 +2708,7 @@ def create_gattribute(subject_id, attribute_type_node, object_value=None, **kwar
     else:
         # Code for updating existing gattribute
         is_ga_node_changed = False
-        print "ga node changd",is_ga_node_changed
+        print("ga node changd",is_ga_node_changed)
         try:
             if (not object_value) and type(object_value) != bool:
                 # this is when value of attribute is cleared/empty
@@ -2729,15 +2729,15 @@ def create_gattribute(subject_id, attribute_type_node, object_value=None, **kwar
                 node_collection.collection.update({'_id': subject_id, 'attribute_set.' + attribute_type_node.name: old_object_value}, {'$pull': {'attribute_set': {attribute_type_node.name: old_object_value}}}, upsert=False, multi=False)
 
             else:
-                print "inside else"
+                print("inside else")
                 if type(ga_node.object_value) == list:
-                    print "inside list condtn"
+                    #print "inside list condtn"
                     if type(ga_node.object_value[0]) == dict:
                         old_object_value = ga_node.object_value
 
                         if len(old_object_value) != len(object_value):
                             ga_node.object_value = object_value
-                            print "changing the ga node changed"
+                            #print "changing the ga node changed"
                             is_ga_node_changed = True
 
                         else:
@@ -2745,7 +2745,7 @@ def create_gattribute(subject_id, attribute_type_node, object_value=None, **kwar
                             pairs = zip(old_object_value, object_value)
                             #print "pairs:",pairs
                             if any(x != y for x, y in pairs):
-                                print "change ga node in else"
+                                #print "change ga node in else"
                                 ga_node.object_value = object_value
                                 is_ga_node_changed = True
 
@@ -2831,7 +2831,7 @@ def create_gattribute(subject_id, attribute_type_node, object_value=None, **kwar
             error_message = "\n GAttributeUpdateError: " + str(e) + "\n"
             raise Exception(error_message)
 
-    print "\n\t is_ga_node_changed: ", is_ga_node_changed,'\t',attribute_type_node.name,'\t',subject_id,'\t',object_value
+    print("\n\t is_ga_node_changed: ", is_ga_node_changed,'\t',attribute_type_node.name,'\t',subject_id,'\t',object_value)
     if is_ga_node_changed:
         from cache import invalidate_set_cache
         cache_key = str(subject_id) + 'attribute_value' + str(attribute_type_node.name)
@@ -4068,16 +4068,16 @@ def parse_data(doc):
              doc[i] = str(doc[i])
           if i in user_idlist:
              if type(doc[i]) == list :
-                      temp =   ""
-                      for userid in doc[i]:
-                      		  if User.objects.filter(id = userid).exists():
-	                              user = User.objects.get(id = userid)
-	                              if user:
-	                                if temp:
-	                                        temp =temp  + "," + (str(user.get_username()) )
-	                                else:
-	                                        temp = str(user.get_username())
-	              doc[i] = temp
+                  temp =   ""
+                  for userid in doc[i]:
+                      if User.objects.filter(id = userid).exists():
+                          user = User.objects.get(id = userid)
+                          if user:
+                              if temp:
+                                  temp =temp  + "," + (str(user.get_username()) )
+                              else:
+                                  temp = str(user.get_username())
+                  doc[i] = temp
              else:
 
                       		  if User.objects.filter(id = doc[i]).exists():
@@ -4136,13 +4136,13 @@ def parse_data(doc):
                   userid = k['user_id']
                   score = k['score']
                   if User.objects.filter(id = userid).exists():
-	                                user = User.objects.get(id = userid)
-	                                if user:
-	                                   new_str = new_str + "User" +":" + str(user.get_username()) + "  " + "Score" + str (score) + "\n"
-	     if not doc[i]:
-	              doc[i] = ""
-	     else:
-	              doc[i] = new_str
+                      user = User.objects.get(id = userid)
+                      if user:
+                          new_str = new_str + "User" +":" + str(user.get_username()) + "  " + "Score" + str (score) + "\n"
+             if not doc[i]:
+                 doc[i] = ""
+             else:
+                 doc[i] = new_str
           elif i == "location":
               coordinates = []
               parsed_string = ""
@@ -4391,7 +4391,7 @@ def delete_gattribute(subject_id=None, deletion_type=0, **kwargs):
                     + ", ".join(gattribute_updated_id)
 
         # Return output of the function
-        print "\n 9 >> ", delete_status_message
+        print("\n 9 >> ", delete_status_message)
         return (True, delete_status_message)
     except Exception as e:
         delete_status_message = "DeleteGAttributeError: " + str(e)
@@ -4766,11 +4766,11 @@ def delete_node(
     """
 
     try:
-        print "\n 1 >> Entered in delete_node() function..."
+        print("\n 1 >> Entered in delete_node() function...")
 
         # Convert into string format if value of some other data-type is passed
         collection_name = collection_name.__str__()
-        print node_collection.collection_name,collection_name
+        print(node_collection.collection_name,collection_name)
         # Check from which collection you need to delete node from
         if collection_name == node_collection.collection_name:
             # Perform deletion operation on Nodes collection
@@ -4782,19 +4782,19 @@ def delete_node(
             str_deletion_type = "deleted"
             delete_status_message = ""
 
-            print "\n 2 >> Nodes collection..."
+            print("\n 2 >> Nodes collection...")
             if deletion_type not in [0, 1]:
                 delete_status_message = "Must pass \"deletion_type\" agrument's " \
                     + "value as either 0 (Normal delete) or 1 (Purge) !!!"
                 raise Exception(delete_status_message)
 
-            print "\t 3 >> found node_id..."
+            print("\t 3 >> found node_id...")
             if not node_id:
                 delete_status_message = "No value found for node_id" \
                     + "... [Expected value in ObjectId format] !!!"
                 raise Exception(delete_status_message)
 
-            print "\t 3a >> convert node_id...",node_id
+            print("\t 3a >> convert node_id...",node_id)
             # Typecast node_id from string into ObjectId,
             # if found in string format
             if type(node_id) == ObjectId:
@@ -4815,7 +4815,7 @@ def delete_node(
 
             # Forming query to delete a specific node from Nodes collection
             query = {"_id": node_id}
-            print "\t 3d >> query... ", query
+            print("\t 3d >> query... ", query)
 
             # Fetch the deleting-node from given node_id
             node_to_be_deleted = node_collection.find_one(query)
@@ -4834,7 +4834,7 @@ def delete_node(
                     + "\n\nIf required, you can still purge this node !"
                 return (True, delete_status_message)
 
-            print "\n 4 >> node to be deleted fetched successfully... ",str(node_to_be_deleted.name).encode('utf-8')
+            print("\n 4 >> node to be deleted fetched successfully... ",str(node_to_be_deleted.name).encode('utf-8'))
             if ((node_to_be_deleted.status == u"DELETED" and
                  deletion_type == 1) or
                     (node_to_be_deleted.status != u"DELETED")):
@@ -4884,7 +4884,7 @@ def delete_node(
                 },
                     upsert=False, multi=True
                 )
-                print "\n 7 >> collection_set : \n", res
+                print("\n 7 >> collection_set : \n", res)
 
                 # Search deleting-node's ObjectId in prior_node field and
                 # remove from it, if found any
@@ -4895,7 +4895,7 @@ def delete_node(
                 },
                     upsert=False, multi=True
                 )
-                print "\n 8 >> prior_node : \n", res
+                print("\n 8 >> prior_node : \n", res)
 
                 # Search deleting-node's ObjectId in post_node field and
                 # remove from it, if found any
@@ -4906,7 +4906,7 @@ def delete_node(
                 },
                     upsert=False, multi=True
                 )
-                print "\n 9 >> post_node : \n", res
+                print("\n 9 >> post_node : \n", res)
 
                 # Perform normal delete on deleting-node
                 # Only changes the status of given node to DELETED
@@ -4936,11 +4936,11 @@ def delete_node(
                         fh_original_id = node_to_be_deleted.if_file.original.id
                         if node_collection.find({'_type': 'GSystem', 'if_file.original.id': ObjectId(fh_original_id) }).count() == 1:
                             for each_file in ['original', 'mid', 'thumbnail']:
-                                print "inside each_file"
+                                #print "inside each_file"
                                 fh_id = node_to_be_deleted.if_file[each_file]['id']
                                 fh_relurl = node_to_be_deleted.if_file[each_file]['relurl']
                                 if fh_id or fh_relurl:
-                                    print "before call of delete_file_from_filehive"
+                                    #print "before call of delete_file_from_filehive"
                                     Filehive.delete_file_from_filehive(fh_id, fh_relurl)
 
                 # deleting related RCS file
@@ -5174,7 +5174,7 @@ def create_thread(group_id, node, user_id, release_response_val, interaction_typ
         create_gattribute(thread_node._id, 'start_time', start_time)
         create_gattribute(thread_node._id, 'end_time', end_time)
     thread_node.reload()
-    print "\n\n thread_obj", thread_node.attribute_set, "\n---\n"
+    print("\n\n thread_obj", thread_node.attribute_set, "\n---\n")
     return thread_node
 
 
@@ -5202,7 +5202,7 @@ def create_thread_for_node(request, group_id, node):
             thread_node = create_thread(group_id, node, node.created_by, release_response_val, interaction_type_val, start_time, end_time)
             return thread_node
     except Exception as e:
-        print "Something went wrong while creating thread node. ",e
+        print("Something went wrong while creating thread node. ",e)
 
 def node_thread_access(group_id, node):
     """
@@ -5414,8 +5414,8 @@ def create_clone(user_id, node, group_id, mem_of_node_id=None):
         return cloned_obj
 
     except Exception as re_clone_err:
-        print re_clone_err
-        print "Failed cloning resource"
+        print(re_clone_err)
+        print("Failed cloning resource")
         return None
 
 @get_execution_time
@@ -5499,8 +5499,8 @@ def replicate_resource(request, node, group_id, mem_of_node_id=None):
                 thread_obj = create_thread_for_node(request,group_id, new_gsystem)
         return new_gsystem
     except Exception as replicate_resource_err:
-        print replicate_resource_err
-        print "Failed replicating resource"
+        print(replicate_resource_err)
+        print("Failed replicating resource")
         return None
 
 @get_execution_time
@@ -5765,8 +5765,8 @@ def get_all_iframes_of_unit(group_obj, domain):
                     if bank_offered_id not in result_set:
                         result_set.append(bank_offered_id)
                 except Exception as iframe_update_err:
-                    print "\nError Occurred in calling parse_assessment_url() {0}".format(
-                        iframe_update_err)
+                    print("\nError Occurred in calling parse_assessment_url() {0}".format(
+                        iframe_update_err))
                     pass
         '''
         AT: "assessment_list" will hold `result_set = [[a,b], [x,y]]`
@@ -5780,8 +5780,8 @@ def get_all_iframes_of_unit(group_obj, domain):
             update_total_assessment_items(group_id, result_set, domain)
             group_obj.reload()
     except Exception as get_all_iframes_of_unit_err:
-        print "\nError Occurred in get_all_iframes_of_unit() {0}".format(
-            get_all_iframes_of_unit_err)
+        print("\nError Occurred in get_all_iframes_of_unit() {0}".format(
+            get_all_iframes_of_unit_err))
         pass
 
     return group_obj
@@ -5800,8 +5800,8 @@ def parse_assessment_url(url_as_str):
                 bank_offered_id[1] = param[1]
         return bank_offered_id
     except Exception as iframe_update_err:
-        print "\nError Occurred in parse_assessment_url() {0}".format(
-            iframe_update_err)
+        print("\nError Occurred in parse_assessment_url() {0}".format(
+            iframe_update_err))
         return bank_offered_id
 
 def update_total_assessment_items(group_id, assessment_list, domain):
@@ -5812,19 +5812,19 @@ def update_total_assessment_items(group_id, assessment_list, domain):
         for each_assessment_list in assessment_list:
             items_count = items_count_from_asessment_offered(domain,each_assessment_list[0],each_assessment_list[1])
             questionCount_val = questionCount_val + items_count
-            print "\nquestionCount_val: ", questionCount_val
+            print("\nquestionCount_val: ", questionCount_val)
 
         '''
         AT: "total_assessment_items" will hold `questionCount_val = x`
             where 'x' represent count of questions
         '''
 
-        print "\nAC: ", questionCount_val
+        print("\nAC: ", questionCount_val)
         create_gattribute(group_id, "total_assessment_items", questionCount_val)
         return questionCount_val
     except Exception as update_total_assessment_items_err:
-        print "\nError Occurred in update_total_assessment_items() {0}".format(
-            update_total_assessment_items_err)
+        print("\nError Occurred in update_total_assessment_items() {0}".format(
+            update_total_assessment_items_err))
         return questionCount_val
 
 @get_execution_time

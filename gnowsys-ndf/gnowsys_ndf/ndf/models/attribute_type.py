@@ -40,6 +40,9 @@ class AttributeType(Node):
     editable=BooleanField()
     use_dot_notation = True
 
+    meta = {
+        'collection' : 'Nodes',
+        }
 
     ##########  User-Defined Functions ##########
 

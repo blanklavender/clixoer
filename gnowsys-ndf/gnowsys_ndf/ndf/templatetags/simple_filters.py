@@ -4,9 +4,9 @@ from django.template.loader_tags import do_extends
 from django.template.defaultfilters import stringfilter
 
 import tokenize
-import StringIO
+from io import StringIO
 
-from gnowsys_ndf.ndf.views.methods import get_execution_time
+#from gnowsys_ndf.ndf.views.methods import get_execution_time
 
 register = template.Library()
 
@@ -51,7 +51,7 @@ def do_xextends(parser, token):
                     kwargs[str(a)] = parser.compile_filter(b)
                 else: raise ValueError
             except ValueError:
-                raise template.TemplateSyntaxError, "Argument syntax wrong: should be key=value"
+                raise template.TemplateSyntaxError("Argument syntax wrong: should be key=value")
         # before we are done, remove the argument part from the token contents,
         # or django's extends tag won't be able to handle it.
         # TODO: find a better solution that preserves the orginal token including whitespace etc.
@@ -69,8 +69,8 @@ register.tag('xextends', do_xextends)
 '''
 
 
-@get_execution_time
-@register.assignment_tag
+#@get_execution_time
+@register.simple_tag
 def get_dict_from_list_of_dicts(list_of_dicts,convert_objid_to_str=False):
     #print "list of dicts:",list_of_dicts,convert_objid_to_str
     req_dict = {}
@@ -88,12 +88,12 @@ def get_dict_from_list_of_dicts(list_of_dicts,convert_objid_to_str=False):
     return req_dict
 
 
-@get_execution_time
+#@get_execution_time
 @register.filter
 def split(str, delimiter):
     return str.split(delimiter)
 
-@get_execution_time
+#@get_execution_time
 @register.filter
 def apply_eval(arg):
     import ast
@@ -115,8 +115,8 @@ def re_format(value):
             l.append(re.sub(r'[\r]', '', e))
     return l
 
-@get_execution_time
-@register.assignment_tag
+#@get_execution_time
+@register.simple_tag
 def get_latest_git_hash():
 	"""
 	Template tag that returns latest git hash no.
@@ -133,8 +133,8 @@ def get_latest_git_hash():
 	git_commit_hash = os.popen("git rev-parse --short HEAD").read().strip()
 	return git_commit_hash
 
-@get_execution_time
-@register.assignment_tag
+#@get_execution_time
+@register.simple_tag
 def get_active_branch_name():
     """
     Template tag that returns current active git branch.
@@ -147,12 +147,12 @@ def get_active_branch_name():
     git_branch_name = os.popen("git rev-parse --abbrev-ref HEAD").read().strip()
     return git_branch_name
 
-@get_execution_time
+#@get_execution_time
 @register.filter
 def get_type(value):
     return type(value)
 
-@get_execution_time
+#@get_execution_time
 @register.filter
 def multiply(value,multiply_factor):
 	"""
@@ -177,13 +177,13 @@ def get_dict_value_from_key(dict_obj, key):
         return ''
 
 
-@register.assignment_tag
+@register.simple_tag
 def datetime_now():
 	import datetime
 	return datetime.datetime.now()
 
 
-@get_execution_time
+#@get_execution_time
 @register.filter
 # filter added to remove underscore from string
 def replace(str_to_process, to_be_replace, replace_by):

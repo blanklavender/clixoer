@@ -44,9 +44,12 @@ class GSystem(Node):
                                         # ]                                                                                                                            
         # Replace field 'license=basestring with                                                                                                                      
         # legal: dict                                                                                                                                                  
-    legal=EmbeddedDocumentField('legalinfo')
+    legal=DictField()
     use_dot_notation = True
-
+    meta = {
+        'allow_inheritance' : True,
+        'abstract' : True,
+        }
    
     def fill_gstystem_values(self,
                             request=None,

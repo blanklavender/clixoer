@@ -9,6 +9,9 @@ class ProcessType(Node):
     """
     changing_attributetype_set = ListField(DictField(),default=list)  # List of Attribute Types
     changing_relationtype_set = ListField(DictField(),default=list)    # List of Relation Types
-    
+    meta = {
+	'collection' : 'Nodes',
+        }
+
 
 

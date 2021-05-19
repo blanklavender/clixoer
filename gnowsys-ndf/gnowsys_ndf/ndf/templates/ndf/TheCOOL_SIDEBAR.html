@@ -302,7 +302,7 @@ console.log(resourcetype);
 
 {
             $.ajax({
-type: "POST",
+                type: "POST",
                 url: "{% url 'cool_oer_filter' %}",
                 datatype:"html",
                 traditional: true,
@@ -313,7 +313,10 @@ type: "POST",
                  subdomain: subdomain,
                  resourcetype : resourcetype,
                  Grade:Grade,
-
+                 lang: '{{ lang }}',
+                 subjt: '{{ subjt }}',
+                 rsrc: '{{ rsrc }}',
+                 grde: '{{ grade }}',
                 },
                 beforeSend: function() {
                  $("#waitforme").show();
@@ -340,7 +343,6 @@ type: "POST",
 
 
       //};
-
 }});
 
 

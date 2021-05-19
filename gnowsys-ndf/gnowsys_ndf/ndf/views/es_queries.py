@@ -49,7 +49,7 @@ gfs = HashFS('/data/media/', depth=3, width=1, algorithm='sha256')
 banner_pics1 = ['/static/ndf/Website Banners/Landing Page/Revised_imgs/e-Library-1_mod.jpg','/static/ndf/Website Banners/Landing Page/elibrary2.png','/static/ndf/elibrary 6.1.png','/static/ndf/Website Banners/Landing Page/elibrary4.png','/static/ndf/Website Banners/Landing Page/Revised_imgs/e-Library-5_mod.png','/static/ndf/Website Banners/Landing Page/elibrary6.png','/static/ndf/Website Banners/COOL-website-slider/COOL_website_Banner_latest.png']
 
 trans_rel_type = '5752ad572e01310a05dca50f'
-
+#language = {'en':0,'te':0,'ta':0,'pu':0,'ma':0,'hi':0}
 def cool_resourcelist(request):
     language = {'en':0,'te':0,'ta':0,'pu':0,'ma':0,'hi':0}
     subject = {'Science':0,'Mathematics':0,'art':0,'language':0,'MultipleSubjects':0}
@@ -276,7 +276,21 @@ def cool_resourcelist_filter(request):
     subj = request.POST.getlist('subdomain')
     rsrc = request.POST.getlist('resourcetype')
     lang_support = request.POST.getlist('Language_support')
-    print("filter values",grade,subj,rsrc,lang_support)
+    l = request.POST.get('lang')
+    import ast
+    l = l.replace(" ","").replace("&#39;"," ").replace(" ","'")
+    #print("l",l)
+    l1 = ast.literal_eval(l)
+    s = request.POST.get('subjt')
+    s = s.replace(" ","").replace("&#39;"," ").replace(" ","'")
+    s1 = ast.literal_eval(s)
+    r = request.POST.get('rsrc')
+    r = r.replace(" ","").replace("&#39;"," ").replace(" ","'")
+    r1 = ast.literal_eval(r)
+    g = request.POST.get('grde')
+    g = g.replace(" ","").replace("&#39;"," ").replace(" ","'")
+    g1 = ast.literal_eval(g)
+    print("filter values",l,s,r,g)
     q= eval("Q('bool', must=[Q('match', type = 'GSystemType'), Q('match',name='cool_resource')])")
     gst_cool_resource = (Search(using=es,index = index,doc_type=doc_type).query(q)).execute()
     #dt = {u'knowledge_theme': u'Knowledge deepening'}
@@ -335,7 +349,15 @@ def cool_resourcelist_filter(request):
     
     with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/cool_resources_details.json','r',encoding='utf-8') as json_file:
                         coolresourcedata = json.load(json_file)
-  
+    if len(lang_support) != 0:
+        print("inlang",l1)
+        language = l1
+    if len(subj) != 0:
+        subject = s1
+    if len(rsrc) != 0:
+        rsrc_type = r1
+    if len(grade) != 0:
+        level = g1
     return render(request,"ndf/Thecooloer.html",{
                                     'title':'COOL-OER','coolresourcedata':coolresourcedata,'groupid':'home','group_id':'home','bannerpics':banner_pics1,'k_oers':koers,'koers_count':len(koers),'c_oers':coers,'coers_count':len(coers),'t_oers':toers,'toers_count':len(toers),'lang':language,'subjt':subject,'grade':level,'rsrc':rsrc_type
 })
@@ -719,8 +741,8 @@ def homepage(request, group_id):
         print("in home:",group_id,GSTUDIO_SITE_LANDING_PAGE)
         if GSTUDIO_SITE_LANDING_PAGE == "home":
             print(request)
-            return HttpResponse("This is test",content_type='text/plain')
-            #return HttpResponseRedirect(  reverse('e-library', kwargs={"group_id": group_id} ) )
+            #return HttpResponse("This is test",content_type='text/plain')
+            return HttpResponseRedirect(  reverse('e-library', kwargs={"group_id": group_id} ) )
         else:
             return HttpResponseRedirect( reverse('groupchange', kwargs={"group_id": group_id}) )
 

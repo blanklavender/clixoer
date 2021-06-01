@@ -44,9 +44,7 @@ urlpatterns += [
                         url(r'^status/cache/$', cache_status),
                         # gstudio admin url's              
                         url(r'^admin/', include('gnowsys_ndf.ndf.urls.gstudio_admin')),
-                        url(r'^$', homepage, {"group_id": "home"}, name="homepage")
-                ]
-"""
+                        url(r'^$', homepage, {"group_id": "home"}, name="homepage"),
                         url(r'^cool/?$',coolpage,name='coolpage'),                                                                                                  
                         url(r'^cool/oer/?$',cool_resourcelist,name='cooloers'),                                                                                        
                         url(r'^cool/oer/ajax/filter/?$', cool_resourcelist_filter, name='cool_oer_filter'),                                                            
@@ -86,5 +84,5 @@ urlpatterns += [
                         url(r'^contact.html/',site_contact,name='site_contact'),                                                                                    
                         url(r'^termsofservice.html/',site_termsofuse,name='site_termsofuse'),                                                                          
                         url(r'^privacypolicy.html/',site_privacypolicy,name='site_privacypolicy')
-                      ]"""
+                      ]
 

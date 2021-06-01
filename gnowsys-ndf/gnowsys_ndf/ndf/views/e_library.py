@@ -189,7 +189,7 @@ def elib_paged_file_objs(request, group_id, filetype, page_no):
         print("in elib_paged_file_objs",request.is_ajax(),request.method)
         domain_name = request.POST.getlist("domain_name")
         domain_selected = request.POST.getlist("domain_selected")
-        lang = request.COOKIES['language_code']
+        lang = request.LANGUAGE_CODE
         if request.is_ajax() and request.method == "POST":
                 if len(domain_selected) == 0:
                         group_name, group_id = get_group_name_id(group_id)               
@@ -316,7 +316,7 @@ def resource_list_domainwise(request,group_id, app_id=None, page_no=1):
         * Renders a list of all 'Resources' available within the database (except eBooks).
         """
         #print "home group id:",group_id
-        lang = request.COOKIES['language_code']
+        lang = request.LANGUAGE_CODE
         domain_name = request.POST.getlist("domain_name")
         #print "inside resource_list_domainwise of e-library ",domain_name
         try:

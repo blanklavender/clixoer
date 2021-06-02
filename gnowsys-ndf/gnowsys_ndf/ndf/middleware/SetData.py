@@ -15,12 +15,9 @@ class UserDetails(MiddlewareMixin):
         try:
             # if not request.COOKIES.get('user_id'):
             print("inside UserDetails process_request")
-            print(request)
             print(request.COOKIES)
-            request.COOKIES['user_id'] = request.user.id
-            request.COOKIES['buddy_ids'] = request.session['buddies_userid_list']
-            request.session['foo'] = 'bar'
-            request.session['name'] = 'durga'
+            print(request.LANGUAGE_CODE)
+            request.session.set_test_cookie()
             # Not using following cookie as we are not using cookie in views
             # 'user_and_buddy_ids'
         except Exception as e:
@@ -30,24 +27,13 @@ class UserDetails(MiddlewareMixin):
     def process_response(self, request, response):
         try:
             print("inside UserDetails process_response")
+            #request.session.delete_test_cookie()
             #from django.contrib.sessions.backends.db.models import Session
             print("Length:",str(len(request.session)))
             s = Session.objects.get(pk = request.COOKIES['sessionid'])
             #print("sadasddsdf")
             for each, val in s.get_decoded():
                 print(each,":",val)
-            #print("Lengthgvnvnbvnbvn"+str(len(request.session)))
-            user_id = (request.user.id or 0)
-            response.set_cookie('user_id', str(user_id))
-            # keeping this as redundant entry to have this in every response's cookie irrespective of buddies existance.
-            response.set_cookie('user_and_buddy_ids', str(user_id))
-            # initializing
-            response.set_cookie('buddy_ids', '')
-            buddies_userid_str = '&'.join([str(i) for i in request.session['buddies_userid_list']])
-            if buddies_userid_str:
-                # using [1:] to truncate starting '&'
-                response.set_cookie('buddy_ids', buddies_userid_str)
-                response.set_cookie('user_and_buddy_ids', (str(user_id) + '&' + buddies_userid_str))
         except Exception as e:
             pass
         return response

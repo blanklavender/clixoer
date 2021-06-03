@@ -16,7 +16,7 @@ from gnowsys_ndf.ndf.utils import (is_dir_exists, ensure_dir, get_current_dbs_pa
      move_file_or_dirctory)
 
 DEBUG = True
-ALLOWED_HOSTS = ['103.36.84.176', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['staging-clixoer.tiss.edu', '103.36.84.195', '127.0.0.1', 'localhost']
 
 TEMPLATE_DEBUG = DEBUG
 DEBUG_PROPAGATE_EXCEPTIONS = DEBUG
@@ -128,7 +128,7 @@ DATABASES = {
 	'NAME': 'gstudio_psql',                                                 # Used for postgres db                                                                 
         'USER': 'glab',                                                                 # Used for postgres db                                                         
         'PASSWORD':'Gstudi02)1^',                                               # Used for postgres db                                                                 
-        'HOST':'172.27.0.4',                                                             # Used for p 
+        'HOST':'172.22.0.5',                                                             # Used for p 
         'PORT':'5432',
         },
     }
@@ -414,7 +414,7 @@ GSTUDIO_USER_GAPPS_LIST = ['Page', 'File', 'Task', 'Course', 'Event', 'Quiz']
 GSTUDIO_ORG_NAME = '''<p>
 A project of <a href="http://lab.gnowledge.org/" target="_blank">{% trans "Gnowledge Lab" %}</a> at the <a href="http://www.hbcse.tifr.res.in" target="_blank">Homi Bhabha Centre for Science Education (HBCSE)</a>, <a href="http://www.tifr.res.in" target="_blank">Tata Institute of Fundamental Research (TIFR), India</a>.
 </p>'''
-GSTUDIO_SITE_FAVICON = "/static/ndf/images/favicon/logo.png"
+GSTUDIO_SITE_FAVICON = "/static/ndf/images/favicon/favicon.ico"
 GSTUDIO_SITE_LOGO = "/static/ndf/css/themes/metastudio/logo.svg"
 GSTUDIO_SITE_SECONDARY_LOGO = "/static/ndf/css/themes/metastudio/logo.svg"
 GSTUDIO_GIT_REPO = "https://github.com/gnowledge/gstudio"
@@ -831,7 +831,7 @@ GSTUDIO_ELASTIC_SEARCH_PASSWORD = ""
 GSTUDIO_DOCUMENT_MAPPING = '/data'
 GSTUDIO_ELASTIC_SEARCH = True
 GSTUDIO_ELASTIC_SEARCH_PROTOCOL = 'http' # we can use http or https protocol
-GSTUDIO_ELASTIC_SEARCH_ALIAS = '172.27.0.3'
+GSTUDIO_ELASTIC_SEARCH_ALIAS = '172.22.0.4'
 GSTUDIO_ELASTIC_SEARCH_SUPERUSER = ''
 GSTUDIO_ELASTIC_SEARCH_SUPERUSER_PASSWORD = ''
 GSTUDIO_ELASTIC_SEARCH_PORT = '9200'

@@ -36,13 +36,16 @@ if settings.DEBUG:
 ]
       
 from gnowsys_ndf.ndf.views.es_queries import *
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.views.generic.base import RedirectView
 urlpatterns += [
                         #url(r'^$', homepage, {"group_id": "home"}, name="homepage"),
                         #url(r'^test-delete/$', test_delete, name='test_delete'),
                         #url(r'^test-session/$', test_session, name='test_session'),
                         url(r'^i18n/', include('django.conf.urls.i18n')),
                         url(r'^status/cache/$', cache_status),
-                        # gstudio admin url's              
+                        # gstudio admin url's
+                        url('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('ndf/images/favicon/favicon.ico'))),
                         url(r'^admin/', include('gnowsys_ndf.ndf.urls.gstudio_admin')),
                         url(r'^$', homepage, {"group_id": "home"}, name="homepage"),
                         url(r'^cool/?$',coolpage,name='coolpage'),                                                                                                  

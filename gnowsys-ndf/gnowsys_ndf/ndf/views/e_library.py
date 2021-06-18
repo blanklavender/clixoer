@@ -211,7 +211,7 @@ def elib_paged_file_objs(request, group_id, filetype, page_no):
                                 else:
                                         q = Q('bool',must=[Q('terms',member_of=[GST_FILE[0].id,GST_JSMOL[0].id,GST_PAGE[0].id]),Q('match',group_set=str(group_id)),Q('match',access_policy='PUBLIC'),Q('match_phrase',if_file__mime_type = filetype),Q('match_phrase',language = lang)])
                         else:
-                                domain_set = ['English','Mathematics','Science']
+                                domain_set = ['English','Mathematics','Science','Digital Literacy']
                                 domain_nds = [get_group_name_id(each)[1] for each in domain_set]
                                 domains = get_nodes_by_ids_list(domain_nds)
                                 moduleids = []
@@ -220,13 +220,13 @@ def elib_paged_file_objs(request, group_id, filetype, page_no):
                                         if each.name == 'English':
                                                 english_mod_ids.extend(each.collection_set)
                                         moduleids.extend(each.collection_set)
-                                        #print "moduleids:",moduleids,english_mod_ids
+                                        #print "moduleids:", moduleids,english_mod_ids
                                 q1= Q('bool', must=[Q('match', member_of = gst_module[0].id), Q('match',status='PUBLISHED'),Q('terms',id = moduleids),Q('match_phrase',language = lang)])
                                 q2 = Q('bool',must=[Q('terms',id = english_mod_ids)])
                                 q = Q('bool',should=[q1,q2])
                         allfiletypes1 = (Search(using=es,index = index,doc_type=doc_type).query(q)).sort({"last_update" : {"order" : "asc"}})
                         allfiletypes2 = allfiletypes1.execute()
-                
+                       
                 else:
                         group_name, group_id = get_group_name_id(group_id)
                         no_of_objs_pp = 5

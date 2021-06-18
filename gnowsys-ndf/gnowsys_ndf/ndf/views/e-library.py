@@ -266,7 +266,7 @@ def elib_paged_file_objs(request, group_id, filetype, page_no):
                                 else:
                                         q = Q('bool',must=[Q('terms',member_of=[GST_FILE[0].id,GST_JSMOL[0].id,GST_PAGE[0].id]),Q('match',group_set=str(group_id)),Q('match',access_policy='PUBLIC'),Q('match_phrase',if_file__mime_type = filetype),Q('match_phrase',language = lang)])
                         else:
-                                domain_set = ['English','Mathematics','Science']
+                                domain_set = ['English','Mathematics','Science','Digital Literacy']
                                 domain_nds = [get_group_name_id(each)[1] for each in domain_set]
                                 domains = get_nodes_by_ids_list(domain_nds)
                                 moduleids = []

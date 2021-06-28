@@ -3,9 +3,9 @@
 {% block content %}
 {% load i18n %}
 {% load ndf_tags %}
-{% get_group_name groupid as group_name_tag %}
-{% check_is_gstaff groupid request.user as is_gstaff %}
-{% get_node groupid as group_obj %}
+{% get_group_name group_id as group_name_tag %}
+{% check_is_gstaff group_id request.user as is_gstaff %}
+{% get_node group_id as group_obj %}
 
 <style>
 </style>
@@ -14,16 +14,28 @@
   <div class="modal-lg  modal-dialog  modal-dialog-centered ">
     <div class="modal-content">
       <div class="modal-header">
-	<h5 class="modal-title w-100 text-center " style="color: #713;" id="exampleModalLabel">Thank you for your support!  We are Celebrating our  First Year!</h5>
+ <!-- for header text change the tex inside -->
+	<h5 class="modal-title w-100 text-center " style="color: #713;" id="exampleModalLabel">SCHOOL SYNERGY WORKSHOP SERIES 2021</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-       <div class="modal-body">
+      <div class="modal-body">
+	<!--
 <span> <img class="img-fluid mx-auto " src="/static/ndf/CLIxOERAnniversary_800x500-04.jpg" style="display:block; " alt="CLIx Anniversary_SM_v3-02.jpg"  >
 </span>
-<div class="text-center">
-<button class="btn btn-dark " > <a class="nav-link text-white" href="https://forms.gle/32RNzpNnVbvzDPXa6" target="_blank">  Take our survey to give us feedback </a>  </button>
+-->
+	<span> <img class="img-fluid mx-auto 
+" src="https://clixplatform.tiss.edu/softwares/clixoer_event_popup/event_popup.jpg" style="display:block; " alt="CLIx Anniversary_SM_v3-02.jpg"  >      
+	</span>
+
+	   
+	<div class="text-center">
+
+	  <!-- for registration link change href   -->
+  <button class="btn btn-dark " > <a class="nav-link text-white"
+   
+				     href="http://bit.ly/SSWS-28" target="_blank">  Take our survey to give us feedback </a>  </button>
 </div> 
       </div>
     </div>

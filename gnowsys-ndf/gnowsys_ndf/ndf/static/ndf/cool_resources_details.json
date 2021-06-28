@@ -54,23 +54,23 @@
 	},
     "GeoGebra": {
 	"oer_url": "https://www.geogebra.org",
-	"oer_href": {"https://www.youtube.com/embed/whpCnzWECAI" :  "/static/ndf/noun_Video_1559825.svg" ,
-		     "https://www.youtube.com/embed/Yoo2qhQ1FAw" :  "/static/ndf/noun_Video_1559825.svg"}
+	"oer_href": {"https://www.youtube.com/embed/whpCnzWECAI" :  "/static/ndf/noun_Video_2157092.png" ,
+		     "https://www.youtube.com/embed/Yoo2qhQ1FAw" :  "/static/ndf/noun_Video_2157092.png"}
 	},
     "GeoGebra-Hindi": {
 	"oer_url": "https://www.geogebra.org",
-	"oer_href": {"https://www.youtube.com/embed/whpCnzWECAI" :  "/static/ndf/noun_Video_1559825.svg" ,
-		     "https://www.youtube.com/embed/Yoo2qhQ1FAw" :  "/static/ndf/noun_Video_1559825.svg"} 
+	"oer_href": {"https://www.youtube.com/embed/whpCnzWECAI" :  "/static/ndf/noun_Video_2157092.png" ,
+		     "https://www.youtube.com/embed/Yoo2qhQ1FAw" :  "/static/ndf/noun_Video_2157092.png"} 
 	},
     "GeoGebra-Tamil": {
 	"oer_url": "https://www.geogebra.org",
-	"oer_href": {"https://www.youtube.com/embed/whpCnzWECAI" :  "/static/ndf/noun_Video_1559825.svg" ,
-		     "https://www.youtube.com/embed/Yoo2qhQ1FAw" :  "/static/ndf/noun_Video_1559825.svg"} 
+	"oer_href": {"https://www.youtube.com/embed/whpCnzWECAI" :  "/static/ndf/noun_Video_2157092.png" ,
+		     "https://www.youtube.com/embed/Yoo2qhQ1FAw" :  "/static/ndf/noun_Video_2157092.png"} 
 	},
     "GeoGebra-Telugu": {
 	"oer_url": "https://www.geogebra.org",
-	"oer_href": {"https://www.youtube.com/embed/whpCnzWECAI" :  "/static/ndf/noun_Video_1559825.svg" ,
-		     "https://www.youtube.com/embed/Yoo2qhQ1FAw" :  "/static/ndf/noun_Video_1559825.svg"} 
+	"oer_href": {"https://www.youtube.com/embed/whpCnzWECAI" :  "/static/ndf/noun_Video_2157092.png" ,
+		     "https://www.youtube.com/embed/Yoo2qhQ1FAw" :  "/static/ndf/noun_Video_2157092.png"} 
 	},
     "Dept of School Education-Tamilnadu": {
 	"oer_url": "http://tnschools.gov.in/textbooks",
@@ -192,7 +192,7 @@
             "https://www.youtube.com/embed/UY8EIfI3qXE": "https://img.youtube.com/vi/UY8EIfI3qXE/0.jpg"
             ,
 
-            "https://www.youtube.com/embed/o3513gpzIMw": "/static/ndf/noun_Video_1559825.svg"
+            "https://www.youtube.com/embed/o3513gpzIMw": "/static/ndf/noun_Video_2157092.png"
             ,
 
             "hhttps://www.youtube.com/embed/bzDyQ9oquQ": "https://img.youtube.com/vi/bzDyQ9oquQ/0.jpg"

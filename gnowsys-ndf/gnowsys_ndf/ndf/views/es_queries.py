@@ -734,7 +734,7 @@ def homepage(request, group_id):
         print(GSTUDIO_SITE_LANDING_PAGE, request.user.id)
         if GSTUDIO_SITE_LANDING_PAGE == "home":
             print("before reverse")
-            return HttpResponseRedirect( reverse('e-library'), kwargs={"group_id": group_id} )
+            return HttpResponseRedirect( reverse('e-library'), kwargs={"groupid": group_id} )
         else:
             return HttpResponseRedirect( reverse('dashboard', kwargs={"group_id": request.user.id}) )
     else:
@@ -742,14 +742,14 @@ def homepage(request, group_id):
         if GSTUDIO_SITE_LANDING_PAGE == "home":
             print(request)
             #return HttpResponse("This is test",content_type='text/plain')
-            return HttpResponseRedirect(  reverse('e-library', kwargs={"group_id": group_id} ) )
+            return HttpResponseRedirect(  reverse('e-library', kwargs={"groupid": group_id} ) )
         else:
             return HttpResponseRedirect( reverse('groupchange', kwargs={"group_id": group_id}) )
 
 def help(request,group_id):
     banner_pics = ['/static/ndf/Website Banners/Landing Page/elibrary1.png','/static/ndf/Website Banners/Landing Page/elibrary2.png','/static/ndf/elibrary 6.1.png','/static/ndf/Website Banners/Landing Page/elibrary4.png','/static/ndf/Website Banners/Landing Page/elibrary5.png','/static/ndf/Website Banners/Landing Page/elibrary6.png']
     template = 'ndf/help.html'
-    return render(request,template, {'group_id':group_id,'bannerpics':banner_pics})
+    return render(request,template, {'groupid':'home','group_id':group_id,'bannerpics':banner_pics})
 
 def help_videos(request,group_id):
     node_id = request.POST.get('node_id')
@@ -854,7 +854,7 @@ def readDoc(request, group_id,file_id):
 def about(request,group_id):
     banner_pics = ['/static/ndf/Website Banners/About/about_2_mod.png','/static/ndf/Website Banners/About/About2.png','/static/ndf/Website Banners/About/About3.png','/static/ndf/Website Banners/About/About4.png']
     template = 'ndf/about.html'
-    return render(request,template, {'group_id':group_id , 'bannerpics':banner_pics})
+    return render(request,template, {'groupid':'home','group_id':group_id , 'bannerpics':banner_pics})
 
 
 def send_message(request,group_id):
@@ -898,7 +898,7 @@ def domain_help(request,group_id,domain_name):
     if domain_name == 'Science':
         template = 'ndf/theSDhelp.html'
         banner_pics = ['/static/ndf/Website Banners/Science Domain/sci dnd.png','/static/ndf/Website Banners/Science Domain/science1.png','/static/ndf/Website Banners/Science Domain/science2.png']
-    return render(request,template, {'bannerpics':banner_pics,'group_id':group_id,'domain_name':domain_name})
+    return render(request,template, {'bannerpics':banner_pics,'groupid':'home','group_id':group_id,'domain_name':domain_name})
 
 
 def loadDesignDevelopment(request,group_id,domain_name):
@@ -928,7 +928,7 @@ def loadDesignDevelopment(request,group_id,domain_name):
         else:
             template = 'ndf/theSDTelgu.html'
         banner_pics = ['/static/ndf/Website Banners/Science Domain/sci dnd.png','/static/ndf/Website Banners/Science Domain/science1.png','/static/ndf/Website Banners/Science Domain/science2.png']
-    return render(request,template, {'bannerpics':banner_pics,'group_id':group_id,'domain_name':domain_name})
+    return render(request,template, {'bannerpics':banner_pics,'groupid':'home','group_id':group_id,'domain_name':domain_name})
 
 
 def uploadDoc(request, group_id):
@@ -1092,7 +1092,7 @@ def domain_page(request,group_id,domain_name):
         obj.save()
     return render(request,
             "ndf/domain.html",
-            {"employee":employeedata,"testimony":testimonydata,"files":files,"first_arg":domain_name,"group_id":group_id,"bannerpics":banner_pics}) 
+            {"employee":employeedata,"testimony":testimonydata,"files":files,"first_arg":domain_name,'groupid':'home',"group_id":group_id,"bannerpics":banner_pics}) 
     
 def get_module_previewdata(request,group_id):
 
@@ -1856,7 +1856,7 @@ def module_detail(request, group_id, node_id,title=""):
                         'card': 'ndf/event_card.html', 'card_url_name': 'groupchange'
                     }
 
-    gstaff_access = check_is_gstaff(group_id,request.user)
+    #gstaff_access = check_is_gstaff(group_id,request.user)
     primary_lang_tuple = get_language_tuple(GSTUDIO_PRIMARY_COURSE_LANGUAGE)
     if title == "courses":
 

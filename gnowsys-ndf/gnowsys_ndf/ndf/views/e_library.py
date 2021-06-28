@@ -76,16 +76,16 @@ banner_pics = ['/static/ndf/Website Banners/Landing Page/Revised-eLibrary/e-Libr
 ##############################################################################
 
 
-def resource_list(request, group_id, app_id=None, page_no=1):
-        print("inside resource_list of e-library ",group_id)
+def resource_list(request, groupid, app_id=None, page_no=1):
+        print("inside resource_list of e-library ",groupid)
         is_video = request.GET.get('is_video', "")
         lang = request.LANGUAGE_CODE
         print("request:",request.session.get_expiry_age(),request.session.get_expire_at_browser_close())
         print("language data from request:",lang,request.session)
         try:
-                group_id = ObjectId(group_id)
+                group_id = ObjectId(groupid)
         except:
-                group_name, group_id = get_group_name_id(group_id)
+                group_name, group_id = get_group_name_id(groupid)
 
         print("group name and id", group_id)
         if app_id is None:
@@ -180,19 +180,19 @@ def resource_list(request, group_id, app_id=None, page_no=1):
                         allpckgs['Mathematics-'+each.language[0]] = each.if_file.original.relurl
                 else:
                         allpckgs['Science-'+each.language[0]] = each.if_file.original.relurl
-        print("pckg urls:",allpckgs)
-        return render(request,"ndf/Elibrary.html", {'title': title, 'app':e_library_GST[0],'appId':app[0].id, "app_gst": app[0],'files': files_new,'detail_urlname': "file_detail",'ebook_pages': educationaluse_stats.get("eBooks", 0),'file_pages':all_modules.count(),'interactive_pages':allinteractives1.count(),'image_pages': allimages1.count(),'educationaluse_stats': json.dumps(educationaluse_stats),'doc_pages': alldocs1.count(),'video_pages': allvideos1.count(),'audio_pages': allaudios1.count(),'groupid': group_id, 'group_id':group_id,"datavisual":datavisual, 'bannerpics': banner_pics,'allpckgs':allpckgs,'lang':request.LANGUAGE_CODE})
+        print("pckg urls:",allpckgs,groupid,group_id)
+        return render(request,"ndf/Elibrary.html", {'title': title, 'app':e_library_GST[0],'appId':app[0].id, "app_gst": app[0],'files': files_new,'detail_urlname': "file_detail",'ebook_pages': educationaluse_stats.get("eBooks", 0),'file_pages':all_modules.count(),'interactive_pages':allinteractives1.count(),'image_pages': allimages1.count(),'educationaluse_stats': json.dumps(educationaluse_stats),'doc_pages': alldocs1.count(),'video_pages': allvideos1.count(),'audio_pages': allaudios1.count(),'groupid': groupid, 'group_id':group_id,"datavisual":datavisual, 'bannerpics': banner_pics,'allpckgs':allpckgs,'lang':request.LANGUAGE_CODE})
 
 
 #@get_execution_time
-def elib_paged_file_objs(request, group_id, filetype, page_no):
+def elib_paged_file_objs(request, groupid, filetype, page_no):
         print("in elib_paged_file_objs",request.is_ajax(),request.method)
         domain_name = request.POST.getlist("domain_name")
         domain_selected = request.POST.getlist("domain_selected")
         lang = request.LANGUAGE_CODE
         if request.is_ajax() and request.method == "POST":
                 if len(domain_selected) == 0:
-                        group_name, group_id = get_group_name_id(group_id)               
+                        group_name, group_id = get_group_name_id(groupid)               
                         no_of_objs_pp = 5
                         result_pages = None
                         filetype = filetype.lower()
@@ -228,7 +228,7 @@ def elib_paged_file_objs(request, group_id, filetype, page_no):
                         allfiletypes2 = allfiletypes1.execute()
                        
                 else:
-                        group_name, group_id = get_group_name_id(group_id)
+                        group_name, group_id = get_group_name_id(groupid)
                         no_of_objs_pp = 5
                         result_pages = None
                         filetype = filetype.lower()
@@ -311,7 +311,7 @@ def elib_paged_file_objs(request, group_id, filetype, page_no):
 			})
 
 
-def resource_list_domainwise(request,group_id, app_id=None, page_no=1):
+def resource_list_domainwise(request,groupid, app_id=None, page_no=1):
         """
         * Renders a list of all 'Resources' available within the database (except eBooks).
         """
@@ -320,9 +320,9 @@ def resource_list_domainwise(request,group_id, app_id=None, page_no=1):
         domain_name = request.POST.getlist("domain_name")
         #print "inside resource_list_domainwise of e-library ",domain_name
         try:
-                group_id = ObjectId(group_id)
+                group_id = ObjectId(groupid)
         except:
-                group_name, group_id = get_group_name_id(group_id)
+                group_name, group_id = get_group_name_id(groupid)
         #print "group name and id",group_id
         domain_set = []
         if len(domain_name) == 0:

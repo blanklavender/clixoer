@@ -55,7 +55,7 @@ urlpatterns += [
                         url(r'^cool/oer/ajax/increment_explorecount/?$', cool_incr_explorecnt, name='increment_explorecnt'),                                           
                         #url(r'^cool/oer/ajax/filter/?$', 'cool_resourcelist_filter', name='cool_oer_filter'),                                                         
                         url(r'^(?P<group_id>[^/]+)/?$', homepage, name="homepage1"),                                                                                   
-                        url(r'^(?P<group_id>[^/]+)/e-library', include('gnowsys_ndf.ndf.urls.e-library')),                                                             
+                        url(r'^(?P<groupid>[^/]+)/e-library', include('gnowsys_ndf.ndf.urls.e-library')),                                                             
                         url(r'^(?P<group_id>[^/]+)/module/(?P<node_id>[\w-]+)/(?P<title>[^/]+)/?$', module_detail, name='module_detail'),                              
                         url(r'^(?P<group_id>[^/]+)/course/save_course_page/$', save_course_page, name='save_course_page'),                                             
                         #url(r'^(?P<group_id>[^/]+)/course/content/$', 'course_content', name='course_content'),                                                       

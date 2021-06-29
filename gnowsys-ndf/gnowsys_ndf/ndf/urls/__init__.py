@@ -70,7 +70,10 @@ urlpatterns += [
                         url(r'^(?P<group_id>[^/]+)/domain/(?P<domain_name>[^/]+)/$', domain_page, name='domain_page'),                                                 
                         url(r'^(?P<group_id>[^/]+)/file/uploadDoc/$', uploadDoc, name='uploadDoc'),                                                                    
                         url(r'^(?P<group_id>[^/]+)/domain/(?P<domain_name>[^/]+)/Design_Development/$', loadDesignDevelopment, name='designDev'),                      
-                        url(r'^(?P<group_id>[^/]+)/about/$', about, name='about'),                                                                                     
+                        url(r'^(?P<group_id>[^/]+)/about/$', about, name='about'),
+                        url(r'^(?P<group_id>[^/]+)/contact.html/',site_contact,name='site_contact'),
+                        url(r'^(?P<group_id>[^/]+)/termsofservice.html/',site_termsofuse,name='site_termsofuse'),
+                        url(r'^(?P<group_id>[^/]+)/privacypolicy.html/',site_privacypolicy,name='site_privacypolicy'),
                         url(r'^(?P<group_id>[^/]+)/domain/(?P<domain_name>[^/]+)/help/$', domain_help, name='domainHelp'),                                             
                         url(r'^(?P<group_id>[^/]+)/file/readDoc/(?P<file_id>[\w-]+)/$', readDoc, name='read_file'),                                                    
                         url(r'^(?P<group_id>[^/]+)/ajax/send_message/$', send_message, name='send_message'),                                                           
@@ -83,9 +86,6 @@ urlpatterns += [
  #url(r'^(?P<group_id>[^/]+)/create/unit/$','create_lang_unit',name='create_unit'),                                                              
                         #url(r'^(?P<group_id>[^/]+)/node/create/(?P<member_of>[\w-]+)/(?P<detail_url_name>[\w-]+)/?$', 'node_create_edit', {'node_type': 'GSystem', 'node_id': None}, name='node_create'),                                                                                                                                    
                         #url(r'^(?P<group_id>[^/]+)/node/edit/(?P<node_id>[\w-]+)/$', 'node_name_content_edit', name='node_edit'),                                     
-                        url(r'^(?P<group_id>[^/]+)/upload_using_save_file/', upload_using_save_file, name='upload_using_save_file'),                                   
-                        url(r'^contact.html/',site_contact,name='site_contact'),                                                                                    
-                        url(r'^termsofservice.html/',site_termsofuse,name='site_termsofuse'),                                                                          
-                        url(r'^privacypolicy.html/',site_privacypolicy,name='site_privacypolicy')
+                        url(r'^(?P<group_id>[^/]+)/upload_using_save_file/', upload_using_save_file, name='upload_using_save_file')
                       ]
 

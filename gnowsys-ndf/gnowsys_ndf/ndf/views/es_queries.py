@@ -444,17 +444,20 @@ def cool_incr_explorecnt(request):
     print ("redirecting to link:",link)
     return redirect(link)
 
-def site_contact(request):
-    return render(request,"ndf/contact.html",{'title':'Contact','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics1})
+def site_contact(request,group_id):
+    banner_pics = ['/static/ndf/Website Banners/About/about_2_mod.png','/static/ndf/Website Banners/About/About2.png','/static/ndf/Website Banners/About/About3.png','/static/ndf/Website Banners/About/About4.png']
+    return render(request,"ndf/contact.html",{'title':'Contact','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics})
 
-def site_termsofuse(request):         
+def site_termsofuse(request,group_id):
+    banner_pics = ['/static/ndf/Website Banners/About/about_2_mod.png','/static/ndf/Website Banners/About/About2.png','/static/ndf/Website Banners/About/About3.png','/static/ndf/Website Banners/About/About4.png']
     return render(request,"ndf/termsofservice.html",
                                         {
-                                            'title': 'Terms Of Use','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics1,
+                                            'title': 'Terms Of Use','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics,
                                         })
 
-def site_privacypolicy(request):                                                                                              
-    return render(request,"ndf/privacypolicy.html",{'title': 'Privacy Policy','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics1,
+def site_privacypolicy(request,group_id):
+    banner_pics = ['/static/ndf/Website Banners/About/about_2_mod.png','/static/ndf/Website Banners/About/About2.png','/static/ndf/Website Banners/About/About3.png','/static/ndf/Website Banners/About/About4.png']
+    return render(request,"ndf/privacypolicy.html",{'title': 'Privacy Policy','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics,
                                         })
 
 

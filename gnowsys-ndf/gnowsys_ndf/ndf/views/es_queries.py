@@ -854,12 +854,12 @@ def readDoc(request, group_id,file_id):
                 #response['X-Accel-Redirect']='/downloadables/%s'%(file_node.if_file.original.relurl).split('/')[-1] 
                 print(file_node.name)
                 filename = file_node.name+'.exe'
-                file_path = '/data/downloadables/'+file_node.if_file.original.relurl.split('/')[-1]
+                file_path = '/data/media/'+file_node.if_file.original.relurl
                 response = StreamingHttpResponse(
                     FileWrapper(open(file_path, 'rb'), chunk_size),
                     content_type="application/octet-stream"
                 )
-                response['X-Accel-Redirect']='/downloadables/%s'%(file_node.if_file.original.relurl).split('/')[-1] 
+                response['X-Accel-Redirect']='/media/%s'%(file_node.if_file.original.relurl) 
                 response['Content-Length'] = os.path.getsize(file_path)    
                 response['Content-Disposition'] = "attachment; filename=%s" % filename
                 return response

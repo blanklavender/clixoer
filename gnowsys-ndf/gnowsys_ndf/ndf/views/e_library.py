@@ -175,11 +175,11 @@ def resource_list(request, groupid, app_id=None, page_no=1):
         for each in all_pckgs1[0:all_pckgs.count()]:
                 print("tags:",each.tags)
                 if each.tags[0].find('english') > 0:
-                        allpckgs['English-'+each.language[0]] = '/downloadables/'+each.if_file.original.relurl.split('/')[-1]
+                        allpckgs['English-'+each.language[0]] = each.if_file.original.relurl
                 elif each.tags[0].find('mathematics') > 0:
-                        allpckgs['Mathematics-'+each.language[0]] = '/downloadables/'+each.if_file.original.relurl.split('/')[-1] #each.if_file.original.relurl
+                        allpckgs['Mathematics-'+each.language[0]] = each.if_file.original.relurl #each.if_file.original.relurl
                 else:
-                        allpckgs['Science-'+each.language[0]] = '/downloadables/'+each.if_file.original.relurl.split('/')[-1] #each.if_file.original.relurl
+                        allpckgs['Science-'+each.language[0]] = each.if_file.original.relurl #each.if_file.original.relurl
         print("pckg urls:",allpckgs,groupid,group_id)
         return render(request,"ndf/Elibrary.html", {'title': title, 'app':e_library_GST[0],'appId':app[0].id, "app_gst": app[0],'files': files_new,'detail_urlname': "file_detail",'ebook_pages': educationaluse_stats.get("eBooks", 0),'file_pages':all_modules.count(),'interactive_pages':allinteractives1.count(),'image_pages': allimages1.count(),'educationaluse_stats': json.dumps(educationaluse_stats),'doc_pages': alldocs1.count(),'video_pages': allvideos1.count(),'audio_pages': allaudios1.count(),'groupid': groupid, 'group_id':group_id,"datavisual":datavisual, 'bannerpics': banner_pics,'allpckgs':allpckgs,'lang':request.LANGUAGE_CODE})
 

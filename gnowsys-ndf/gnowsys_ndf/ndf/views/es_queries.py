@@ -847,9 +847,25 @@ def readDoc(request, group_id,file_id):
         
     if file_node is not None:
         if file_node.if_file.original.relurl:
-            # print "md5_or_relurl : ", file_node.if_file.original
-            return HttpResponse(get_file(file_node.if_file.original.relurl),
-                                content_type=file_node.if_file.mime_type)
+            if file_node.tags[0].find('unplatform')>=0:
+                from django.http import StreamingHttpResponse
+                from wsgiref.util import FileWrapper
+                chunk_size = 8192
+                #response['X-Accel-Redirect']='/downloadables/%s'%(file_node.if_file.original.relurl).split('/')[-1] 
+                print(file_node.name)
+                filename = file_node.name+'.exe'
+                file_path = '/data/downloadables/'+file_node.if_file.original.relurl.split('/')[-1]
+                response = StreamingHttpResponse(
+                    FileWrapper(open(file_path, 'rb'), chunk_size),
+                    content_type="application/octet-stream"
+                )
+                response['X-Accel-Redirect']='/downloadables/%s'%(file_node.if_file.original.relurl).split('/')[-1] 
+                response['Content-Length'] = os.path.getsize(file_path)    
+                response['Content-Disposition'] = "attachment; filename=%s" % filename
+                return response
+            else:
+                print("in unplatform else")
+                return HttpResponse(get_file(file_node.if_file.original.relurl),content_type=file_node.if_file.mime_type)
     else:
         return HttpResponse("")
 

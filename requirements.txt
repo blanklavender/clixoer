@@ -65,3 +65,4 @@ urllib3==1.22
 uWSGI==2.0.19.1
 wcwidth==0.2.5
 webencodings==0.5.1
+Sphinx==3.0.0

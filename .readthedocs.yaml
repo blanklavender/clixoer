@@ -17,4 +17,5 @@ formats:
 python:
    version: 3.6
    install:
+   - method: pip:20.2.1
    - requirements: requirements.txt

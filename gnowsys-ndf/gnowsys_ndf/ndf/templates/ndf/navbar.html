@@ -165,14 +165,14 @@ g-fluid" alt="CLIX COOL LOGO FOR TISS COOL PAGE"  width="125px"></a>
         <a class=" ml-3 py-3 nav-link fun-name" tabindex="3" href="{% url 'coolpage' %}" style="position: relative;"  data-toggle="tooltip"
 title="{% trans "Connected Open Online Learning - A TISS response to COVID-19" %}" >
  <i class="fas fa-chalkboard-teacher" data-toggle="tooltip" 
-title="{% trans "Connected Open Online Learning - A TISS response to COVID-19" %}" ></i> {% trans 'TISS-COOL' %}<span class="blink "> New</span>  </a>
+ ></i> {% trans 'TISS-COOL' %}<span class="blink "> New</span>  </a>
       </li>
  <li class="nav-item ">
 
         <a class=" ml-3 py-3 nav-link fun-name" tabindex="3" href="{% url 'cooloers' %}" style="position: relative;" data-toggle="tooltip"
 title="{% trans "Open Education Resources" %}">
  <i class="fas fa-laptop " data-toggle="tooltip"
-title="{% trans "Open Education Resources" %}" ></i>
+ ></i>
 <!--
 <img src="/static/ndf/noun_online education_1619863.svg" width="16" height="15"/>
 -->
@@ -181,7 +181,7 @@ title="{% trans "Open Education Resources" %}" ></i>
       </li>
 
        <li class="nav-item dropdown">
-        <a class=" py-3 nav-link  dropdown-toggle ml-3 fun-name" tabindex="3" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class=" py-3 nav-link  dropdown-toggle ml-3 fun-name" tabindex="3" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{% trans "Select asubject domain" %}"  >
 
 
 
@@ -226,14 +226,13 @@ title="{% trans "Open Education Resources" %}" ></i>
       </li>
       <li class="nav-item ">
 	
-        <a class=" ml-3 py-3  nav-link fun-name" tabindex="3" href="{% url 'about' group_id  %}">
- <i class="fas fa-info-circle" data-toggle="tooltip"
- title="{% trans "Know about CLIx OERs" %}" ></i>
+        <a class=" ml-3 py-3  nav-link fun-name" tabindex="3"  title="{% trans "Know about CLIx OERs" %}" data-toggle="tooltip" href="{% url 'about' group_id  %}">
+ <i class="fas fa-info-circle" data-toggle="tooltip" ></i>
 
  {% trans 'About' %}</a>
       </li>
       <li class="nav-item ">
-          <a class=" ml-2 py-3 nav-link fun-name" tabindex="4"  href="{% url 'help' group_id %}" title="Help"> <i data-toggle="tooltip" class=" far fa-question-circle" title="{% trans  "Explore help material" %}">
+          <a class=" ml-2 py-3 nav-link fun-name" tabindex="4"  href="{% url 'help' group_id %}" title="{% trans  "Explore help material" %}" data-toggle="tooltip"  title="Help"> <i data-toggle="tooltip" class=" far fa-question-circle" >
 </i> {% trans 'Help' %} </a>
         </li>
 <!--       <form class="form-inline my-2 my-md-0 ml-3  fun-name">
@@ -266,8 +265,10 @@ title="{% trans "Open Education Resources" %}" ></i>
 
 </li>
 -->
-<div   class="dropdown show py-3  fun-name" title="{% trans "Choose the Language" %}"  >
-  <a class=" dropdown-toggle"  role="button" id="dropdownMenuLink" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
+<div   class="dropdown show py-3  fun-name" title="{% trans "Choose the Language" %}"  data-toggle="tooltip"  >
+  <a class=" dropdown-toggle"  role="button" id="dropdownMenuLink" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false"
+
+     >
                     {{request.LANGUAGE_CODE|get_header_lang}}    
   </a>
 

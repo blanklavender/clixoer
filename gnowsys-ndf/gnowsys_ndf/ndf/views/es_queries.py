@@ -455,6 +455,10 @@ def site_termsofuse(request,group_id):
                                             'title': 'Terms Of Use','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics,
                                         })
 
+def site_credits(request,group_id):
+    banner_pics = ['/static/ndf/Website Banners/About/about_2_mod.png','/static/ndf/Website Banners/About/About2.png','/static/ndf/Website Banners/About/About3.png','/static/ndf/Website Banners/About/About4.png']
+    return render(request,"ndf/credits.html",{'title': 'Credits','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics})
+
 def site_privacypolicy(request,group_id):
     banner_pics = ['/static/ndf/Website Banners/About/about_2_mod.png','/static/ndf/Website Banners/About/About2.png','/static/ndf/Website Banners/About/About3.png','/static/ndf/Website Banners/About/About4.png']
     return render(request,"ndf/privacypolicy.html",{'title': 'Privacy Policy','group_id': 'home', 'groupid': 'home','bannerpics':banner_pics,
@@ -1105,6 +1109,7 @@ def domain_page(request,group_id,domain_name):
         employeedata = json.load(json_file)
     with open('/home/docker/code/clixoer/gnowsys-ndf/gnowsys_ndf/ndf/static/ndf/testimonial.json','r',encoding='utf-8') as json_file:
         testimonydata = json.load(json_file)
+    print("COOKIES:",request.COOKIES)
     results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid'],visitednode_name=domainnd.name)
     if len(results) ==0:
         obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=domainnd.id,visitednode_name=domainnd.name,preview_count=0,visit_count=1,download_count=0,created_date=datetime.now(),last_updated=datetime.now())

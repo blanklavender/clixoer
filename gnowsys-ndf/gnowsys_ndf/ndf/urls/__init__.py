@@ -74,6 +74,7 @@ urlpatterns += [
                         url(r'^(?P<group_id>[^/]+)/contact.html/',site_contact,name='site_contact'),
                         url(r'^(?P<group_id>[^/]+)/termsofservice.html/',site_termsofuse,name='site_termsofuse'),
                         url(r'^(?P<group_id>[^/]+)/privacypolicy.html/',site_privacypolicy,name='site_privacypolicy'),
+                        url(r'^(?P<group_id>[^/]+)/credits.html/',site_credits,name='site_credits'),
                         url(r'^(?P<group_id>[^/]+)/domain/(?P<domain_name>[^/]+)/help/$', domain_help, name='domainHelp'),                                             
                         url(r'^(?P<group_id>[^/]+)/file/readDoc/(?P<file_id>[\w-]+)/$', readDoc, name='read_file'),                                                    
                         url(r'^(?P<group_id>[^/]+)/ajax/send_message/$', send_message, name='send_message'),                                                           

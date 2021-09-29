@@ -12,11 +12,11 @@ from django.utils.translation import ugettext
 
 #imports from third-party app(s)
 
-from gnowsys_ndf.ndf.utils import (is_dir_exists, ensure_dir, get_current_dbs_path,
-     move_file_or_dirctory)
+#from gnowsys_ndf.ndf.utils import (is_dir_exists, ensure_dir, get_current_dbs_path,
+#     move_file_or_dirctory)
 
 DEBUG = True
-ALLOWED_HOSTS = ['staging-clixoer.tiss.edu', '103.36.84.195', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['103.36.84.176', '127.0.0.1', 'localhost']
 
 TEMPLATE_DEBUG = DEBUG
 DEBUG_PROPAGATE_EXCEPTIONS = DEBUG
@@ -47,12 +47,12 @@ GSTUDIO_DEFAULT_LANGUAGE = ('en', 'English')
 GSTUDIO_WORKSPACE_INSTANCE = False
 GSTUDIO_IMPLICIT_ENROLL = False
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'gdswetha@gmail.com'
-EMAIL_HOST_PASSWORD = ''
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+#EMAIL_HOST_USER = 'gdswetha@gmail.com'
+#EMAIL_HOST_PASSWORD = ''
+#DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # The following email id and password for the email account will be used for sending/receiving SYNCDATA
 SYNCDATA_KEY_PUB = ""
 SYNCDATA_FROM_EMAIL_ID = ""
@@ -128,7 +128,7 @@ DATABASES = {
 	'NAME': 'gstudio_psql',                                                 # Used for postgres db                                                                 
         'USER': 'glab',                                                                 # Used for postgres db                                                         
         'PASSWORD':'Gstudi02)1^',                                               # Used for postgres db                                                                 
-        'HOST':'172.22.0.5',                                                             # Used for p 
+        'HOST':'172.27.0.4',                                                             # Used for p 
         'PORT':'5432',
         },
     }
@@ -154,7 +154,7 @@ SITE_ID = 1
 # to load the internationalization machinery.
 
 USE_I18N = True
-LANGUAGE_COOKIE_NAME = 'language_code'
+#LANGUAGE_COOKIE_NAME = 'language_code'
 
 # Setting system's default encoding to 'utf-8'
 # By defalut, it's 'ascii'
@@ -269,9 +269,8 @@ TEMPLATES = [
                 'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'libraries':{
-                'ndf_tags': 'gnowsys_ndf.ndf.templatetags.ndf_tags',
-
+             'libraries':{                                                        
+                'ndf_tags': 'gnowsys_ndf.ndf.templatetags.ndf_tags',              
             }
         },
     },
@@ -279,7 +278,7 @@ TEMPLATES = [
 
 INSTALLED_APPS = (
     'gnowsys_ndf.ndf',
-    #'hit_count',
+    #'gnowsys_ndf.Testing',
     # 'dlkit',
     'django.contrib.auth',
     'django.contrib.admin',
@@ -342,7 +341,7 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL = "/"
-SESSION_COOKIE_DOMAIN = ""
+#SESSION_COOKIE_DOMAIN = ""
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
 SESSION_SAVE_EVERY_REQUEST = True
@@ -831,7 +830,7 @@ GSTUDIO_ELASTIC_SEARCH_PASSWORD = ""
 GSTUDIO_DOCUMENT_MAPPING = '/data'
 GSTUDIO_ELASTIC_SEARCH = True
 GSTUDIO_ELASTIC_SEARCH_PROTOCOL = 'http' # we can use http or https protocol
-GSTUDIO_ELASTIC_SEARCH_ALIAS = '172.22.0.4'
+GSTUDIO_ELASTIC_SEARCH_ALIAS = '172.27.0.3'
 GSTUDIO_ELASTIC_SEARCH_SUPERUSER = ''
 GSTUDIO_ELASTIC_SEARCH_SUPERUSER_PASSWORD = ''
 GSTUDIO_ELASTIC_SEARCH_PORT = '9200'
@@ -853,40 +852,17 @@ GSTUDIO_ELASTIC_SEARCH_INDEX = {
   # "Counters": ["Counter"]
 }
 
-# # textb
-# import warnings
-# warnings.filterwarnings(
-#         'error', r"DateTimeField received a naive datetime",
-#         RuntimeWarning, r'django\.db\.models\.fields')
-# # textb
 
+# ----------------------------------------------------------------------------                                                                                         
+# following has to be at last                                                                                                                                          
+# just put every thing above it                                                                                                                                        
 
-# --- meeting gapp ---
-#
-# for online_users_ramk:
-#
-# USER_ONLINE_TIMEOUT = 300
-# USER_LASTSEEN_TIMEOUT = 60 * 60 * 24 * 7
-# USERS_ONLINE__TIME_IDLE = 300
-# USERS_ONLINE__TIME_OFFLINE = 10
-# USERS_ONLINE__CACHE_PREFIX_USER
-# USERS_ONLINE__CACHE_USERS
-#
-# --- END of meeting gapp ---
-
-
-
-
-# ----------------------------------------------------------------------------
-# following has to be at last
-# just put every thing above it
-"""
 try:
-    from local_settings import *
-    # print "Local settings applied"
+    from .local_settings import *
+    print("Local settings applied")                                                                                                                                   
 except:
-    # print "Default settings applied"
+    # print "Default settings applied"                                                                                                                                 
     pass
 
-# ========= nothing to be added below this line ===========
-"""
+# ========= nothing to be added below this line ===========                                                                                                            
+

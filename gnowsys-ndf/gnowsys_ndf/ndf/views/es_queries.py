@@ -822,7 +822,7 @@ def readDoc(request, group_id,file_id):
     file_node = get_node_by_id(file_id)
     groupnd = get_node_by_id(group_id)
     print("Session:",request.COOKIES['sessionid'])
-    print("tags:",file_node.tags)
+    #print("tags:",file_node.tags)
     if file_node.tags[0].find('unplatform')>=0:
         results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid']).filter(visitednode_name=groupnd.name)
     else:
@@ -885,12 +885,13 @@ def send_message(request,group_id):
     #return render_to_response(template, {'group_id':group_id})
     from django.core.mail import send_mail, EmailMultiAlternatives
     from django.contrib import messages
-    print("send message")
+    print("send message",EMAIL_HOST_USER)
     print(request,request.POST)
-    subject = 'Feedback message'
+    #subject = 'Feedback message'
     domain = request.POST.get('domain','')
     if domain == '':
         domain = 'About'
+    subject = 'Feedback message from '+domain
     message = 'feedback received for'+domain
     c = {'email': request.POST['email'],
                  'first_name': request.POST['first_name'],'last_name':request.POST['last_name'],'domain':request.POST['domain'],'message':request.POST['message']}

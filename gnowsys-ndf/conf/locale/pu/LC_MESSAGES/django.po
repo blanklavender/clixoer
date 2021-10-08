@@ -1,9 +1,9 @@
-#. extracted from django_pu_new.csv
+#. extracted from django_new_pu.csv
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-06 20:20+0530\n"
+"POT-Creation-Date: 2021-10-07 17:31+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -160,7 +160,11 @@ msgstr ""
 msgid "Our Collaborators"
 msgstr ""
 
-#: gnowsys_ndf/ndf/templates/ndf/contactForm.html:5
+#: gnowsys_ndf/ndf/templates/ndf/base_templates/term.html:11+gnowsys_ndf/ndf/templates/ndf/cool_preview.html:373+gnowsys_ndf/ndf/templates/ndf/cool_preview.html:375
+msgid "Topics"
+msgstr "ਵਿਸ਼ੇ"
+
+#: gnowsys_ndf/ndf/templates/ndf/contactForm.html:4
 msgid "Contact Us"
 msgstr ""
 

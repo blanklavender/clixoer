@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-07 17:30+0530\n"
+"POT-Creation-Date: 2021-10-08 15:18+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2281,12 +2281,12 @@ msgid "Other Forums"
 msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/base_templates/forumdetails.html:82
-msgid "<h3> &nbsp;Add thread to this forum</h3>"
-msgstr ""
+msgid "<h3> &nbsp"
+msgstr "Add thread to this forum</h3>"
 
 #: gnowsys_ndf/ndf/templates/ndf/base_templates/forumdetails.html:84
-msgid "Create &nbsp;Thread "
-msgstr ""
+msgid "Create &nbsp"
+msgstr "Thread "
 
 #: gnowsys_ndf/ndf/templates/ndf/base_templates/forumdetails.html:156
 msgid "Thread Name"
@@ -2679,6 +2679,7 @@ msgid ""
 msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/base_templates/invite_admins.html:167+gnowsys_ndf/ndf/templates/ndf/base_templates/mis_base_list.html:49+gnowsys_ndf/ndf/templates/ndf/base_templates/mis_create_edit.html:211+gnowsys_ndf/ndf/templates/ndf/base_templates/mis_create_edit.html:317
+msgctxt "gnowsys_ndf/ndf/templates/ndf/base_templates/invite_admins.html:167 gnowsys_ndf/ndf/templates/ndf/base_templates/mis_base_list.html:49 gnowsys_ndf/ndf/templates/ndf/base_templates/mis_create_edit.html:211 gnowsys_ndf/ndf/templates/ndf/base_templates/mis_create_edit.html:317"
 msgid "&#215"
 msgstr ""
 
@@ -4496,7 +4497,8 @@ msgid "Editing Name"
 msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/base_templates/task_details.html:298
-msgid "&#215;"
+msgctxt "gnowsys_ndf/ndf/templates/ndf/base_templates/task_details.html:298"
+msgid "&#215"
 msgstr ""
 
 #: gnowsys_ndf/ndf/templates/ndf/base_templates/task_details.html:315
@@ -5153,7 +5155,7 @@ msgstr "లైసెన్సు"
 
 #: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:384+gnowsys_ndf/ndf/templates/ndf/cool_preview.html:385
 msgid "Curator"
-msgstr "సంరక్షకులు"
+msgstr "క్యురేటర్"
 
 #: gnowsys_ndf/ndf/templates/ndf/cool_preview.html:391
 msgid "Date of curation"
@@ -5595,11 +5597,11 @@ msgid "An email has been sent to email-ID associated with your account."
 msgstr ""
 
 #: gnowsys_ndf/ndf/templates/registration/password_reset_done.html:13
-msgid ""
-"Please be patient; the delivery of email may be delayed. Remember to confirm "
-"that the email that you entered is correct and to check your junk or spam "
-"folder or filter if you do not receive this email."
+msgid "Please be patient"
 msgstr ""
+"the delivery of email may be delayed. Remember to confirm that the email "
+"that you entered is correct and to check your junk or spam folder or filter "
+"if you do not receive this email."
 
 #: gnowsys_ndf/ndf/templates/registration/password_reset_email.html:4
 msgid "Greetings "

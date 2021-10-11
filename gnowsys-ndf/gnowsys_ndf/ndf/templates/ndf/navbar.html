@@ -81,6 +81,7 @@ background-color: none;
     </div>
  </div>
 -->
+
   <div class="collapse" id="collapseExample">
                
                     <span class="float-right">      <button class="btn text-white showhide right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -119,14 +120,14 @@ background-color: none;
 </div>
 <nav class="navbar  navbar-expand-lg sticky-top navbar-light bg-light justify-content-center" id="navbar">
   {% if title == 'COOL' %} 
-  <a class="navbar-brand float-left" href="{% url 'e-library' group_id  %}" tabindex="1"><img src="/static/ndf/images/COOLLOGO.png" class="img-fluid" alt="CLIX COOL LOGO FOR TISS COOL PAGE"  width="125px"></a>
+  <a class="navbar-brand float-left" href="{% url 'e-library' groupid  %}" tabindex="1"><img src="/static/ndf/images/COOLLOGO.png" class="img-fluid" alt="CLIX COOL LOGO FOR TISS COOL PAGE"  width="125px"></a>
 
  {% elif title == 'COOL-OER' %}
-  <a class="navbar-brand float-left" href="{% url 'e-library' group_id  %}" tabindex="1"><img src="/static/ndf/images/COOLLOGO.png" class="im\
+  <a class="navbar-brand float-left" href="{% url 'e-library' groupid  %}" tabindex="1"><img src="/static/ndf/images/COOLLOGO.png" class="im\
 g-fluid" alt="CLIX COOL LOGO FOR TISS COOL PAGE"  width="125px"></a>
 
 {% else %}
-   <a class="navbar-brand float-left" href="{% url 'e-library' group_id  %}" tabindex="1"><img src="/static/ndf/images/Clix_logo.png" class="img-fluid" alt="CLix Logo Elibrary"  width="200px"></a>
+   <a class="navbar-brand float-left" href="{% url 'e-library' groupid  %}" tabindex="1"><img src="/static/ndf/images/Clix_logo.png" class="img-fluid" alt="CLix Logo Elibrary"  width="200px"></a>
 {% endif %}
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -142,7 +143,7 @@ g-fluid" alt="CLIX COOL LOGO FOR TISS COOL PAGE"  width="125px"></a>
 </li>
 -->
   <li class="nav-item first-fliter-search active">
-        <a class=" py-3 nav-link  home fun-name " tabindex="2"  href="{% url 'e-library' group_id  %}" data-toggle="tooltip" 
+        <a class=" py-3 nav-link  home fun-name " tabindex="2"  href="{% url 'e-library' groupid  %}" data-toggle="tooltip" 
   title="{% trans  "E-library for open educational resources"%}" > <i class="fas fa-home solid"></i>{% trans 'E-library' %} <span class="sr-only">(current)</span></a>
            </li>
 <!--     
@@ -216,12 +217,12 @@ title="{% trans "Open Education Resources" %}">
 
 <!--          <a href="{% url 'domain_page' group_id 'Mathematics' %}" id="maths" class="dropdown-item domain_name" >Math</a>
 -->  
-          <a href="{% url 'domain_page' group_id 'English' %}" id="english" class="dropdown-item domain_name  " ><i class="fas fa-font" > </i>{% trans 'English' %} </a>
+          <a href="{% url 'domain_page' groupid 'English' %}" id="english" class="dropdown-item domain_name  " ><i class="fas fa-font" > </i>{% trans 'English' %} </a>
 
-          <a href="{% url 'domain_page' group_id 'Mathematics' %}" id="maths" class="dropdown-item domain_name " ><i class="fas fa-calculator" >
+          <a href="{% url 'domain_page' groupid 'Mathematics' %}" id="maths" class="dropdown-item domain_name " ><i class="fas fa-calculator" >
 </i>{% trans 'Math' %}  </a>
 
-          <a href="{% url 'domain_page' group_id 'Science' %}" id="science" class="dropdown-item domain_name " > <i class="fas fa-flask"> </i>{% trans 'Science' %} </a>
+          <a href="{% url 'domain_page' groupid 'Science' %}" id="science" class="dropdown-item domain_name " > <i class="fas fa-flask"> </i>{% trans 'Science' %} </a>
         </div>
       </li>
       <li class="nav-item ">

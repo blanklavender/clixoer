@@ -9,19 +9,11 @@ Welcome to gstudio's documentation
 .. toctree::
     :maxdepth: 2
        
-    gstudio-index
-    api
-    quiz
+    clixoer-index
     cookie
-    curation-workflow
-    dump-restore
-    CounterAnalyticsNotes
     data-collection
-    implementation/implementing-interactives
-    implementation/gstudio-lite
-    gStudio-clix-integration
-    assessment-setup
-
+    COOL-oers
+    
 
 .. toctree::
     :hidden:

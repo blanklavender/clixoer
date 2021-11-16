@@ -1,18 +1,7 @@
 Cookies
 =======
 
-**This document describes how gStudio creates/uses cookies**
-
-+------+-----------------------+-----------------------------------------------------------+--------------------------------------------------------+
-|Sr No.| Cookie Name           | Description                                               | Example                                                |
-+======+=======================+===========================================================+========================================================+
-|   1  | `django_language`       | Contains langage code (not language string)               | - **en** for English                                   |
-|      |                       |                                                           | - **hi** for Hindi
-|      |                       |                                                           | - **te** for Telugu
-+------+-----------------------+-----------------------------------------------------------+--------------------------------------------------------+
-
-
-**Apart from above, following are cookies created/used by django**
+**Following are cookies created/used by django**
 
 +------+-----------------------+-----------------------------------------------+--------------------------------------------------------+
 |Sr No.| Cookie Name           | Description                                   | Example                                                |
@@ -22,3 +11,7 @@ Cookies
 |   2  | `csrftoken`           | The name of the cookie to use for the CSRF    | *pZe0AmnRRMtW3PMvu4xPqQANsIzFPpyG*                     |
 |      |                       | authentication token.                         |                                                        |
 +------+-----------------------+-----------------------------------------------+--------------------------------------------------------+
+|   1  | `django_language`     | Contains langage code (not language string)   | - **en** for English                                   |
+|      |                       |                                               | - **hi** for Hindi                                     |
+|      |                       |                                               | - **te** for Telugu                                    |
++------+-----------------------+-----------------------------------------------------------+--------------------------------------------+

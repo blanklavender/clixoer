@@ -1,4 +1,7 @@
-#Quantitative data
+DATA COLLECTION
+*****************
+
+# Quantitative data
 
 
 For each node visited in against each unique session the preview, visit and download count is stored.

@@ -11,7 +11,7 @@ Cookies
 |   2  | `csrftoken`           | The name of the cookie to use for the CSRF    | *pZe0AmnRRMtW3PMvu4xPqQANsIzFPpyG*                     |
 |      |                       | authentication token.                         |                                                        |
 +------+-----------------------+-----------------------------------------------+--------------------------------------------------------+
-|   3  | `django_language`     | Contains langage code (not language string)   | - **en** for English                                   |
-|      |                       |                                               | - **hi** for Hindi                                     |
-|      |                       |                                               | - **te** for Telugu                                    |
-+------+-----------------------+-----------------------------------------------------------+--------------------------------------------+
+|   3  | `django_language`     | Contains langage code (not language string)   | *en* for English                                       |
+|      |                       |                                               | *hi* for Hindi                                         |
+|      |                       |                                               | *te* for Telugu                                        |
++------+-----------------------+-----------------------------------------------+--------------------------------------------------------+

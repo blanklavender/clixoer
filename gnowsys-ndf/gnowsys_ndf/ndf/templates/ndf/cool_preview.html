@@ -159,7 +159,7 @@ le="color:#fff;"> {% trans 'TISS-COOL' %}</a>  </li>
 
     {% with name=nd.name %}
                                 {% with json_data=coolresourcedata|get_item:name %}    
-         <span  class=""  data-toggle="tooltip"  title="Explore Online">  <a href="{{json_data.oer_url}}" class="btn btn-primary m-2" target="_blank">  <i class="fas fa-rocket fa-lg"></i>   {% trans  'Explore Online' %}  </a>  </span>
+         <span  class=""  data-toggle="tooltip"  title="Explore Online">  <a href="{{json_data.oer_url}}" id="explore-{{nd.id}}" class="btn btn-primary m-2" target="_blank">  <i class="fas fa-rocket fa-lg"></i>   {% trans  'Explore Online' %}  </a>  </span>
 
  {% endwith %}
  {% endwith %}
@@ -176,10 +176,10 @@ le="color:#fff;"> {% trans 'TISS-COOL' %}</a>  </li>
 
    
 
-<a class="dropdown-item" onclick="CopyLink()" id="copy">
+<a class="dropdown-item" onclick="CopyLink()" id="Copy-{{nd.id}}">
 
 <i class="fas fa-copy"> </i>Copy </a>
-<a class="dropdown-item target"  data-score="1" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'facebook-share-dialog', 'height=350,width=600'); return false;"> <i class="fab fa-facebook"> </i>
+<a class="dropdown-item target" id="Facebook-{{nd.id}}" data-score="1" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'facebook-share-dialog', 'height=350,width=600'); return false;"> <i class="fab fa-facebook"> </i>
 Share on Facebook </a>
 
 <!--
@@ -191,21 +191,21 @@ false;"      target="_blank" >
 <i class="fab fa-twitter"> </i>
 Tweet this</a>
 -->
-<a class="dropdown-item target" href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" target="_blank"><i class="fab fa-twitter"> </i>
+<a class="dropdown-item target" id="Twitter-{{nd.id}}" onclick="javascript:void(window.open('https://twitter.com/share?ref_src=twsrc%5Etfw','_blank'))" class="twitter-share-button" data-show-count="false" target="_blank"><i class="fab fa-twitter"> </i>
  Tweet this</a>
-<a class="dropdown-item target" data-score="3"  href="javascript:void(window.open('https://t.me/share/url?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent(document.title), '_blank'))">
+<a class="dropdown-item target" id="Telegram-{{nd.id}}" data-score="3"  onclick="javascript:void(window.open('https://t.me/share/url?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent(document.title), '_blank'))">
     <i class="fab fa-telegram"></i>
     Telegram link </a>
                         </div>
                       </div>
-<button   class="btn btn-primary m-2" data-toggle="modal" data-target="#helpmodalc">
+<button   class="Help btn btn-primary m-2" id="Help-{{nd.id}}" data-toggle="modal" data-target="#helpmodalc">
           <span  data-toggle="tooltip" title="Help Material"  target="#Help_C">   <i class="fas fa-info-circle fa-lg"></i> {% trans  'Help Material' %}  </button>
 
 
 
     </span>
 
- <button class="btn btn-primary m-2"  onclick="window.print();">  <i class="fas fa-print"> </i>{% trans  'Print' %} </button>
+ <button class="Print btn btn-primary m-2" id="Print-{{nd.id}}"  onclick="window.print();">  <i class="fas fa-print"> </i>{% trans  'Print' %} </button>
  
  </div>
 
@@ -742,5 +742,80 @@ $(function () {
   trigger: 'hover'
 })
 })
+
+$("a.btn").click(function() {
+    var id =$(this).attr("id");
+    var nd_id = id.split("-")[1];
+    var link = $(this).attr("href");
+    console.log("in a.modal_modal click:",link)
+   console.log({{CSRF_COOKIE}})
+    $.ajax({
+                            type: "POST",
+                      url: "{% url 'explore_link' group_id %}",
+                      data :{
+                              csrfmiddlewaretoken: "{{csrf_token }}",
+                              node_id:nd_id,
+                              href_link : link,
+                      },
+                      datatype: "html",
+                      success: function(data) {
+            console.log("success");
+                      }
+           });
+});
+
+$("a.dropdown-item").click(function() {
+     var id = $(this).attr("id")
+     var nd_id = id.split("-")[1];
+     console.log("in a.dropdown-item click",id,nd_id)
+     $.ajax({
+             type : "POST",
+             url : "{% url 'share_print_count' group_id  %}",
+             data : {
+                   node_id : nd_id,
+                   action : "Share",
+                   csrfmiddlewaretoken: "{{csrf_token }}",
+             },
+           datatype: "html",
+        success: function () {
+          console.log("incremented");
+        }});
+});
+
+$("button.Help").click(function() {
+     var id = $(this).attr("id")
+     console.log("in a.dropdown-item click",id)
+     $.ajax({
+            type : "POST",
+            url : "{% url 'share_print_count' group_id  %}",
+            data : {
+                   node_id : id,
+                   action : "Help",
+                   csrfmiddlewaretoken: "{{csrf_token }}",
+             },
+           datatype: "html",
+           success: function () {
+           console.log("incremented");
+        }});
+});
+
+$("button.Print").click(function() {
+     var id = $(this).attr("id")
+     console.log("in a.dropdown-item click",id)
+     $.ajax({
+      	    type : "POST",
+            url : "{% url 'share_print_count' group_id  %}",
+            data : {
+                   node_id : id,
+                   action : "Print",
+                   csrfmiddlewaretoken: "{{csrf_token }}",
+             },
+           datatype: "html",
+           success: function () {
+           console.log("incremented");
+	}});
+});
+
+
 </script>
 {% endblock %}

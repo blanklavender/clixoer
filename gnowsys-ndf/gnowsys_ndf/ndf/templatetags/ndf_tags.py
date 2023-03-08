@@ -243,7 +243,7 @@ def get_node(node_id):
 
 @register.simple_tag
 def get_unplatformpkg_node(node_id,lang):
-    #print("get unplatform pkg",node_id,lang)
+    print("get unplatform pkg",node_id,lang)
     if node_id:
         domain = get_attribute_value(node_id,'educationalsubject')
         print("domain:",domain)
@@ -270,7 +270,19 @@ def get_unplatformpkg_node(node_id,lang):
     else:
                 return "",""
 
-
+@register.simple_tag
+def get_downloadpckg(domain,lang):
+    print("get download pkg",domain,lang)
+    if domain == 'english':
+            q = Q('bool',must=[Q('match_phrase',language = 'en'),Q('match_phrase',tags = 'unplatform'),Q('match_phrase',tags = domain)])
+    else:
+            q = Q('bool',must=[Q('match_phrase',language = lang),Q('match_phrase',tags = 'unplatform'),Q('match_phrase',tags = domain)])
+    s1 = Search(using=es, index='nodes',doc_type="node").query(q)
+    s2 = s1.execute()
+    print("unplatform pkr url:",s2[0].id)
+    return s2[0]
+    
+        
 @register.simple_tag
 def get_translated_node(node_id):
     print(node_id)
@@ -324,7 +336,7 @@ def get_schema(node):
 
 @register.filter
 def get_item(dictionary, key):
-    #print "combined key:",key,dictionary.get(key)
+    print("combined key:",key,dictionary.get(key))
     return dictionary.get(key)
 
 
@@ -346,7 +358,7 @@ def get_key(li, key):
 
 @register.filter
 def get_date_format(val):
-    dt = datetime.strptime(val, '%d/%m/%Y %H:%M:%S:%f')
+    dt = datetime.datetime.strptime(val, '%d/%m/%Y %H:%M:%S:%f')
     frmtDt = dt.strftime("%d %B %Y")
     return frmtDt
 

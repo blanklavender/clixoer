@@ -10,9 +10,9 @@ Welcome to gstudio's documentation
     :maxdepth: 2
        
     clixoer-index
-    cookie
     data-collection
     COOL-oers
+    cookie
     
 
 .. toctree::

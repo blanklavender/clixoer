@@ -129,7 +129,7 @@ def resource_list(request, groupid, app_id=None, page_no=1):
         q = Q('bool',must=[Q('terms',member_of=[GST_FILE[0].id,GST_JSMOL[0].id,GST_PAGE[0].id]),Q('match',access_policy='PUBLIC'),Q('match_phrase',language = lang),Q('match_phrase',tags = 'Tool')])
         allinteractives1 = (Search(using=es,index = index,doc_type=doc_type).query(q)).sort({'last_update' : {"order":"asc"}})
         allinteractives2 = allinteractives1.execute()
-        print("interactives count:",allinteractives1.count())
+        print("interactives count:",allinteractives2.hits.total)
         
         domain_set = ['English','Mathematics','Science','Digital Literacy']
         domain_nds = [get_group_name_id(each)[1] for each in domain_set]
@@ -159,9 +159,9 @@ def resource_list(request, groupid, app_id=None, page_no=1):
         if 'sessionid' in request.COOKIES.keys():
                 print("Session:",request.COOKIES['sessionid'])
                 results = hit_counters.objects.filter(session_id=request.COOKIES['sessionid'],visitednode_name='home')
-                print("values:",request.COOKIES['sessionid'],group_id,'home',datetime.now())
+                print("values:",request.COOKIES['sessionid'],group_id,'home',datetime.datetime.now())
                 if len(results) ==0:
-                        obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=group_id,visitednode_name='home',preview_count=0,visit_count=1,download_count=0,created_date=datetime.now(),last_updated=datetime.now())
+                        obj = hit_counters.objects.create(session_id=request.COOKIES['sessionid'],visitednode_id=group_id,visitednode_name='home',preview_count=0,visit_count=1,download_count=0,created_date=datetime.datetime.now(),last_updated=datetime.datetime.now())
                         obj.save()
         #else:
                 #cnt = results[0].visit_count
@@ -173,13 +173,13 @@ def resource_list(request, groupid, app_id=None, page_no=1):
         all_pckgs = (Search(using=es,index = index,doc_type=doc_type).query(q))
         all_pckgs1 = all_pckgs.execute()
         for each in all_pckgs1[0:all_pckgs.count()]:
-                print("tags:",each.tags)
+                print("tags:",each.if_file.original.id)
                 if each.tags[0].find('english') > 0:
-                        allpckgs['English-'+each.language[0]] = each.if_file.original.relurl
+                        allpckgs['English-'+each.language[0]] = each.if_file.original.id
                 elif each.tags[0].find('mathematics') > 0:
-                        allpckgs['Mathematics-'+each.language[0]] = each.if_file.original.relurl #each.if_file.original.relurl
+                        allpckgs['Mathematics-'+each.language[0]] = each.if_file.original.id #each.if_file.original.relurl
                 else:
-                        allpckgs['Science-'+each.language[0]] = each.if_file.original.relurl #each.if_file.original.relurl
+                        allpckgs['Science-'+each.language[0]] = each.if_file.original.id #each.if_file.original.relurl
         print("pckg urls:",allpckgs,groupid,group_id)
         return render(request,"ndf/Elibrary.html", {'title': title, 'app':e_library_GST[0],'appId':app[0].id, "app_gst": app[0],'files': files_new,'detail_urlname': "file_detail",'ebook_pages': educationaluse_stats.get("eBooks", 0),'file_pages':all_modules.count(),'interactive_pages':allinteractives1.count(),'image_pages': allimages1.count(),'educationaluse_stats': json.dumps(educationaluse_stats),'doc_pages': alldocs1.count(),'video_pages': allvideos1.count(),'audio_pages': allaudios1.count(),'groupid': groupid, 'group_id':group_id,"datavisual":datavisual, 'bannerpics': banner_pics,'allpckgs':allpckgs,'lang':request.LANGUAGE_CODE})
 
@@ -412,13 +412,13 @@ def resource_list_domainwise(request,groupid, app_id=None, page_no=1):
         all_interactives2 = all_interactives1.execute()
         #print "interactives count:",all_interactives1.count()
         #print "query",q
-        files_new = all_modules[0:all_modules.count()]
-        datavisual.append({"name":"Doc", "count": alldocs1.count()})
+        files_new = all_modules[0:all_modules2.hits.total]
+        datavisual.append({"name":"Doc", "count": alldocs2.hits.total})
         datavisual.append({"name":"Page", "count": educationaluse_stats.get("Pages", 0)})
-        datavisual.append({"name":"Image","count": allimages1.count()})
-        datavisual.append({"name":"Video","count": allvideos1.count()})
-        datavisual.append({"name":"Interactives","count": all_interactives1.count()})
-        datavisual.append({"name":"Audios","count": allaudios1.count()})
+        datavisual.append({"name":"Image","count": allimages2.hits.total})
+        datavisual.append({"name":"Video","count": allvideos2.hits.total})
+        datavisual.append({"name":"Interactives","count": all_interactives2.hits.total})
+        datavisual.append({"name":"Audios","count": allaudios2.hits.total})
         datavisual.append({"name":"eBooks","count": educationaluse_stats.get("eBooks", 0)})
 
         #print "educational stats:",educationaluse_stats,all_modules2

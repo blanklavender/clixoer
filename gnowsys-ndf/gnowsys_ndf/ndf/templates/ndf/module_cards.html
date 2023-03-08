@@ -1050,7 +1050,18 @@ $(".remove_weight_button").click(function(){
                   };
 
 
-	
+$("dropdown-item target").on("click", function(e){
+ e.preventDefault();
+ var href = $(this).attr("href");
+ $.ajax({
+  url: URL,
+  data: DATA,
+  success: function(response){
+   // your code here to be executed before redirecting
+   window.location.href = href;
+  }//success
+ });//ajax
+});//click	
 
 
 </script>

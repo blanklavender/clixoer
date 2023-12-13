@@ -180,6 +180,14 @@ title="{% trans "Open Education Resources" %}">
 
  {% trans 'COOL-OER' %}<span class="blink "> New</span>  </a>
       </li>
+       <li class="nav-item">
+
+          <a class=" ml-3 py-3 nav-link fun-name" tabindex="3" href="{% url 'coolpage' %}" style="position: relative;"  data-toggle="tooltip"
+  title="{% trans "vERC" %}" >
+  <i class="fas fa-chalkboard-teacher" data-toggle="tooltip" 
+  ></i> {% trans 'vERC' %}<span class="blink "> New</span>  </a>
+        </li>
+        <!--Do backend connections and routing in TheCOOL_OER.html, init.py, es_queries.py, cool_preview.html-->
 
        <li class="nav-item dropdown">
         <a class=" py-3 nav-link  dropdown-toggle ml-3 fun-name" tabindex="3" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="{% trans "Select asubject domain" %}"  >
